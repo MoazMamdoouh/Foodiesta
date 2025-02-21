@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +33,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private RecyclerView recyclerView ;
     private HomeAdapter homeAdapter ;
     private ImageView dailyMealImage ;
-    private TextView dailyMealName ;
     private HomePresenter homePresenter ;
     private View view ;
     public HomeFragment() {
@@ -63,15 +63,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         initHomePresenter();
         requestMeals() ;
         requestRandomMeal() ;
-        //delete it after make the nav button
-        ImageView imageView = view.findViewById(R.id.home_search_icon);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment);
-            }
-        });
-
     }
 
     private void requestRandomMeal() {
@@ -90,10 +81,9 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private void initUI(View view) {
         recyclerView = view.findViewById(R.id.home_rv_meals);
         dailyMealImage = view.findViewById(R.id.home_iv_daily_meal_image);
-        dailyMealName = view.findViewById(R.id.home_tv_daily_meals_name);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()) ;
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext() , 2) ;
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         homeAdapter = new HomeAdapter(getContext() , new RandomMealsResponse(), this) ;
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(homeAdapter);
@@ -114,7 +104,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
 
     @Override
     public void showRandomMeal(RandomDailyMealResponse randomDailyMealResponse) {
-        dailyMealName.setText(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealName());
         Glide.with(getContext()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
                 .into(dailyMealImage) ;

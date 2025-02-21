@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +40,6 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        holder.mealName.setText(randomMealsResponse.getListOfRandomMeals().get(position).getMealName());
         Glide.with(context).load(randomMealsResponse.getListOfRandomMeals().get(position).getMealImage())
                 .placeholder(R.drawable.food)
                 .into(holder.mealImage);
@@ -49,6 +49,8 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
                 onItemClickListener.onItemClicked(randomMealsResponse.getListOfRandomMeals().get(position).getId());
             }
         });
+
+        holder.mealCardView.startAnimation(AnimationUtils.loadAnimation(context , R.anim.home_card_animation));
     }
 
     @Override

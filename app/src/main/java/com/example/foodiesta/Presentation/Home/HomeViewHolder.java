@@ -9,15 +9,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodiesta.R;
+import com.google.android.material.imageview.ShapeableImageView;
 
 public class HomeViewHolder extends RecyclerView.ViewHolder {
-    ImageView mealImage ;
-    TextView mealName ;
+    ShapeableImageView mealImage ;
     CardView mealCardView ;
     public HomeViewHolder(@NonNull View itemView) {
         super(itemView);
-        mealImage = itemView.findViewById(R.id.row_iv_meals_image) ;
-        mealName = itemView.findViewById(R.id.row_tv_meals_name) ;
+        mealImage = itemView.findViewById(R.id.row_home_iv_meals_image) ;
         mealCardView = itemView.findViewById(R.id.row_card_view) ;
     }
 }

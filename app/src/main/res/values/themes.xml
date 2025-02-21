@@ -2,8 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Foodiesta" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/blue</item>
+         <item name="colorPrimary">@color/bright_orange</item>
     </style>
-
     <style name="Theme.Foodiesta" parent="Base.Theme.Foodiesta" />
+    <style name="CircularImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

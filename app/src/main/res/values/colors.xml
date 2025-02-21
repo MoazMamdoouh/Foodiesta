@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_blue">#718CB6</color>
-    <color name="blue">#5F76Bc</color>
+    <color name="fools_gold">#FFEEC2</color>
+    <color name="bright_orange">#F9BC1F</color>
+    <color name="fools_gold_transparent">#80FFEEC2</color>
 </resources>

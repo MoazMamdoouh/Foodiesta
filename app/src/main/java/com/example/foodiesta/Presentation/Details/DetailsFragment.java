@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -33,10 +34,9 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
 
    private ImageView mealImage ;
    private DetailsPresenter detailsPresenter ;
-   private ChipGroup detailsChipsGroup ;
    private TextView mealName ;
-   private Chip categoryChip ;
-   private Chip countryChip ;
+   private Button categoryChip ;
+   private Button countryChip ;
    private TextView mealInstructions ;
    private RecyclerView recyclerView ;
    private DetailsAdapter detailsAdapter ;
@@ -78,7 +78,6 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
     }
     private void initUI(View view) {
         mealImage = view.findViewById(R.id.details_iv_meal_image) ;
-        detailsChipsGroup = view.findViewById(R.id.details_chips_group) ;
         mealName = view.findViewById(R.id.details_tv_meal_name) ;
         categoryChip = view.findViewById(R.id.details_chip_category);
         countryChip = view.findViewById(R.id.details_chip_counrty);

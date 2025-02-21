@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.R;
 import com.google.android.material.chip.Chip;
@@ -26,7 +27,8 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
     private SearchPresenter searchPresenter ;
     private EditText searchEditText ;
     private Chip ingredientChip ;
-    private boolean ingredientChipflag = false ;
+    private boolean ingredientChipFlag = false ;
+    private LottieAnimationView lottieAnimationView ;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -54,11 +56,21 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         ingredientChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ingredientChipflag = true ;
+                ingredientChipFlag = true ;
                 searchEditText.setHint("search with spacific Ingredient ..");
+                showLottieFile();
             }
         });
 
+        showLottieFile();
+
+    }
+
+    private void showLottieFile() {
+        if(!ingredientChipFlag){
+            lottieAnimationView.playAnimation();
+        }
+        else lottieAnimationView.setVisibility(View.GONE);
     }
 
     private void initPresenter() {
@@ -72,7 +84,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
     private void initUI(View view) {
         searchEditText = view.findViewById(R.id.search_et_search_bar) ;
         initRecyclerView(view) ;
-        ingredientChip = view.findViewById(R.id.search_chip_ingredient) ;
+        lottieAnimationView = view.findViewById(R.id.search_lottie_file_search) ;
     }
 
     private void initRecyclerView(View view) {
@@ -86,9 +98,10 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
 
     @Override
     public void onShowResponse(RandomMealsResponse randomMealsResponse) {
-        if (ingredientChipflag) {
+        if (ingredientChipFlag) {
             searchIngredientAdapter.setList(randomMealsResponse);
             searchIngredientRecyclerView.setAdapter(searchIngredientAdapter);
+            showLottieFile();
         }
     }
 

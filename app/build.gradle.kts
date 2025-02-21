@@ -54,4 +54,8 @@ dependencies {
 
     //video
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.1")
+
+    //lottie file
+    implementation ("com.airbnb.android:lottie:5.0.3")
+
 }
