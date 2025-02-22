@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Deatails_repo.DetailsRepo;
 import com.example.foodiesta.Model.Details.DetailsResponse;
@@ -28,7 +30,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-public class DetailsFragment extends Fragment implements DetailsGateWay , OnItemListener {
+public class DetailsFragment extends Fragment implements DetailsGateWay  {
 
    private ImageView mealImage ;
    private DetailsPresenter detailsPresenter ;
@@ -39,7 +41,12 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
    private RecyclerView recyclerView ;
    private DetailsAdapter detailsAdapter ;
    private YouTubePlayerView youTubePlayerView ;
+   private ImageView favIcon ;
    private String categoryName ;
+   private int mealId ;
+   private String mealUrl ;
+   private String mealNameString  ;
+  // private ImageView favIcon ;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -66,6 +73,17 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         initDetailsPresenter();
         requestMealDetailById();
         categoryBtnClicked(view) ;
+        favoriteIconClicked() ;
+    }
+
+    private void favoriteIconClicked() {
+        favIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favIcon.setImageResource(R.drawable.favorite_icon);
+                detailsPresenter.insertMealToFavorite(mealId , mealUrl , mealNameString );
+            }
+        });
     }
 
     private void categoryBtnClicked(View view) {
@@ -82,7 +100,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         Log.i("TAG", "sendCategoryNameToSearch: "+ categoryName);
     }
     private void initDetailsPresenter() {
-        DetailsRepo detailsRepo = new DetailsRepo(MealsRemoteDataSource.getInstance()) ;
+        DetailsRepo detailsRepo = new DetailsRepo(MealsRemoteDataSource.getInstance() ,new MealsLocalDataSource(getContext())) ;
         detailsPresenter = new DetailsPresenter(detailsRepo , this) ;
     }
     private void requestMealDetailById(){
@@ -97,6 +115,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         mealInstructions = view.findViewById(R.id.details_tv_meal_instructions_change) ;
         youTubePlayerView = view.findViewById(R.id.details_youtube_player_view) ;
        // mealVideo = view.findViewById(R.id.details_vv_meal_video)  ;
+        favIcon = view.findViewById(R.id.details_iv_favorite) ;
         initRecyclerView(view);
     }
     private void initRecyclerView(View view) {
@@ -105,7 +124,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        detailsAdapter = new DetailsAdapter(getContext() , new ArrayList<>() , new ArrayList<>() , this) ;
+        detailsAdapter = new DetailsAdapter(getContext() , new ArrayList<>() , new ArrayList<>() ) ;
         recyclerView.setAdapter(detailsAdapter);
     }
     @Override
@@ -116,6 +135,9 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
           setIngredientList(detailsResponse);
           setYoutubeVideo(detailsResponse);
           categoryName = detailsResponse.getListOfRandomMeals().get(0).getMealCategory() ;
+          mealId = detailsResponse.getListOfRandomMeals().get(0).getMealId();
+          mealNameString = detailsResponse.getListOfRandomMeals().get(0).getMealName();
+          mealUrl = detailsResponse.getListOfRandomMeals().get(0).getMealImage() ;
     }
     private void setIngredientList(DetailsResponse detailsResponse) {
         detailsAdapter.setIngredientList(detailsResponse.getListOfRandomMeals().get(0).getIngreientList()
@@ -148,8 +170,4 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         });
     }
 
-    @Override
-    public void onItemListener(String name) {
-
-    }
 }

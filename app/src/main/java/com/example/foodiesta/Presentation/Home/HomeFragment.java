@@ -22,6 +22,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
+import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
 import com.example.foodiesta.R;
@@ -67,13 +68,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         requestMeals() ;
         requestRandomMeal() ;
         initLottieFile();
-        //delete after u finish
-
-        TextView textView = view.findViewById(R.id.home_tv_sentences) ;
-        textView.setOnClickListener(click ->
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment)
-                );
-
+        ((MainActivity) requireActivity()).showBottomNav(true);
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
               );

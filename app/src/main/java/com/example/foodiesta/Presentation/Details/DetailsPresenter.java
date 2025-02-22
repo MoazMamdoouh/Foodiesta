@@ -3,6 +3,7 @@ package com.example.foodiesta.Presentation.Details;
 
 import com.example.foodiesta.Data.Repository.Deatails_repo.DetailsRepo;
 import com.example.foodiesta.Model.Details.DetailsResponse;
+import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 import com.example.foodiesta.Utilities.OnDetailedResponse;
 
 public class DetailsPresenter implements OnDetailedResponse {
@@ -23,7 +24,9 @@ public class DetailsPresenter implements OnDetailedResponse {
     public void Success(DetailsResponse detailsResponse) {
         detailsGateWay.ShowDetails(detailsResponse);
     }
-
+    void insertMealToFavorite(int id , String url , String name ){
+         detailsRepo.insertMealToFavorite(id , url , name );
+    }
     @Override
     public void failed(String msg) {
 

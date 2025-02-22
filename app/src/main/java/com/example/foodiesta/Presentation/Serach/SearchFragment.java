@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.ProfileActivity;
 import com.example.foodiesta.R;
@@ -58,6 +59,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity) requireActivity()).showBottomNav(true);
         viewAttr= view ;
         initUI(view) ;
         initPresenter() ;
@@ -70,14 +72,6 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         categoryBtnClicked();
         //getCategoryNameFromDetails() ;
 
-        Button profile = view.findViewById(R.id.nav_to_profile) ;
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity() , ProfileActivity.class) ;
-                startActivity(intent);
-            }
-        });
     }
 
 

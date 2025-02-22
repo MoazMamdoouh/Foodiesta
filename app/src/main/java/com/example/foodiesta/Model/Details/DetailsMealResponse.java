@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsMealResponse {
+    @SerializedName("idMeal")
+    private int mealId ;
     @SerializedName("strMealThumb")
     private String mealImage ;
     @SerializedName("strMeal")
@@ -165,6 +167,14 @@ public class DetailsMealResponse {
         }
         setMeasureList(this.measureList);
         return measureList;
+    }
+
+    public int getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(int mealId) {
+        this.mealId = mealId;
     }
 
     public void setMeasureList(List<String> measureList) {

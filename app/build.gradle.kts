@@ -58,6 +58,10 @@ dependencies {
     //lottie file
     implementation ("com.airbnb.android:lottie:5.0.3")
 
+    //Room
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+
 
 
 }

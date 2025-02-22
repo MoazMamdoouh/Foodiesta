@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +22,12 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsViewHolder> {
     private Context context ;
     private List<String> ingredientList;
     private List<String> measureList ;
-    private OnItemListener onItemListener ;
 
-    public DetailsAdapter(Context context, List<String> ingredientList , List<String> measureList , OnItemListener onItemListener) {
+    public DetailsAdapter(Context context, List<String> ingredientList , List<String> measureList ) {
         this.context = context;
         this.ingredientList = ingredientList ;
         this.measureList = measureList ;
-        this.onItemListener = onItemListener ;
+
     }
     public void setIngredientList(List<String> ingredientList , List<String> measureList){
         this.ingredientList = ingredientList ;
