@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fools_gold"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Presentation.Serach.SearchFragment">
+
 
     <EditText
         android:id="@+id/search_et_search_bar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
@@ -20,13 +22,53 @@
         android:hint="@string/search_here"
         android:drawableStart="@drawable/search_icon"
         android:textColorHint="@color/white"
+        android:elevation="12dp"
+        android:padding="8dp"
         />
-
+    <Button
+        android:id="@+id/search_btn_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/ingredient"
+        android:textColor="@color/bright_orange"
+        android:background="@drawable/search_btn_background"
+        app:backgroundTint="@null"
+        />
+    <Button
+        android:id="@+id/search_btn_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_bar"
+        app:layout_constraintStart_toEndOf="@id/search_btn_ingredient"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/Country"
+        android:textColor="@color/bright_orange"
+        android:background="@drawable/search_btn_background"
+        app:backgroundTint="@null"
+        />
+    <Button
+        android:id="@+id/search_btn_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_bar"
+        app:layout_constraintStart_toEndOf="@id/search_btn_country"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/category"
+        android:textColor="@color/bright_orange"
+        android:background="@drawable/search_btn_background"
+        app:backgroundTint="@null"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_rv_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/search_et_search_bar"
+        app:layout_constraintTop_toBottomOf="@id/search_btn_ingredient"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="8dp"
@@ -43,4 +85,15 @@
     app:lottie_rawRes="@raw/search_animation"
     app:lottie_loop="true"
     />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/search_lottie_file_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search_btn_country"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_rawRes="@raw/pizza_loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

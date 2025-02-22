@@ -9,4 +9,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/search_btn_background</item>
+        <item name="android:backgroundTint">@null</item> <!-- Remove tint to allow drawable -->
+        <item name="android:textColor">#F8E4B0</item> <!-- Change text color if needed -->
+    </style>
 </resources>

@@ -4,20 +4,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Model.Search.SearchShowListResponse;
 import com.example.foodiesta.R;
 
-public class SearchIngredientAdapter  extends RecyclerView.Adapter<SearchViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     private Context context ;
     private RandomMealsResponse randomMealsResponse;
 
-    public SearchIngredientAdapter(Context context, RandomMealsResponse randomMealsResponse) {
+    public SearchAdapter(Context context, RandomMealsResponse randomMealsResponse) {
         this.context = context;
         this.randomMealsResponse = randomMealsResponse;
     }
@@ -38,7 +38,8 @@ public class SearchIngredientAdapter  extends RecyclerView.Adapter<SearchViewHol
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         Glide.with(context).load(randomMealsResponse.getListOfRandomMeals().get(position).getMealImage())
                 .placeholder(R.drawable.food)
-                .into(holder.imageView);
+                .into(holder.searchMealImage);
+        holder.searchCardView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.search_card_animation));
     }
 
     @Override

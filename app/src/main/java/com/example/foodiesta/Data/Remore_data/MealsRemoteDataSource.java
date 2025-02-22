@@ -1,7 +1,6 @@
 package com.example.foodiesta.Data.Remore_data;
 
-import android.util.Log;
-
+import com.example.foodiesta.Data.Repository.Search_repo.SearchRepoGateWay;
 import com.example.foodiesta.Model.Details.DetailsResponse;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
@@ -40,8 +39,6 @@ public class MealsRemoteDataSource {
         responseCall.enqueue(new Callback<RandomMealsResponse>() {
             @Override
             public void onResponse(Call<RandomMealsResponse> call, Response<RandomMealsResponse> response) {
-                Log.d("TAG", "onResponse: ");
-
                 onResponseSend.success(response.body());
             }
 
@@ -82,6 +79,51 @@ public class MealsRemoteDataSource {
             }
         });
     }
-    public void getIngredientImage(String name){
+
+    public void getListOfIngredient(SearchRepoGateWay searchRepoGateWay){
+
+        Call<RandomMealsResponse> responseCall = api.getListOfMeals("");
+        responseCall.enqueue(new Callback<RandomMealsResponse>() {
+            @Override
+            public void onResponse(Call<RandomMealsResponse> call, Response<RandomMealsResponse> response) {
+                searchRepoGateWay.getRandomListByFilter(response.body() , "ingredient");
+            }
+
+            @Override
+            public void onFailure(Call<RandomMealsResponse> call, Throwable t) {
+                searchRepoGateWay.getErrorMsg("Error :" + t.getMessage());
+            }
+        });
+    }
+
+    public void getListOfCountries(SearchRepoGateWay searchRepoGateWay){
+
+        Call<RandomMealsResponse> responseCall = api.getListOfCountries("Canadian");
+        responseCall.enqueue(new Callback<RandomMealsResponse>() {
+            @Override
+            public void onResponse(Call<RandomMealsResponse> call, Response<RandomMealsResponse> response) {
+                searchRepoGateWay.getRandomListByFilter(response.body() , "countries");
+            }
+
+            @Override
+            public void onFailure(Call<RandomMealsResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getListOfCategories(SearchRepoGateWay searchRepoGateWay){
+
+        Call<RandomMealsResponse> responseCall = api.getListOfCategory("Seafood");
+        responseCall.enqueue(new Callback<RandomMealsResponse>() {
+            @Override
+            public void onResponse(Call<RandomMealsResponse> call, Response<RandomMealsResponse> response) {
+                searchRepoGateWay.getRandomListByFilter(response.body() , "category");
+            }
+
+            @Override
+            public void onFailure(Call<RandomMealsResponse> call, Throwable t) {
+                searchRepoGateWay.getErrorMsg("Error :" + t.getMessage());
+            }
+        });
     }
 }

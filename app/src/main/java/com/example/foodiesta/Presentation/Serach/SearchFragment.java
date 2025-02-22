@@ -11,24 +11,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.R;
-import com.google.android.material.chip.Chip;
 
 
 public class SearchFragment extends Fragment implements SearchShowResponse  {
 
-    private SearchIngredientAdapter searchIngredientAdapter ;
+    private SearchAdapter searchIngredientAdapter ;
     private RecyclerView searchIngredientRecyclerView ;
     private SearchPresenter searchPresenter ;
     private EditText searchEditText ;
-    private Chip ingredientChip ;
-    private boolean ingredientChipFlag = false ;
+    private Button ingredientBtn ;
+    private Button countryBtn ;
+    private Button categoryBtn ;
+    private boolean filterFlag = true ;
     private LottieAnimationView lottieAnimationView ;
+    private LottieAnimationView lottieLoadingAnimation ;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -51,40 +54,115 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         super.onViewCreated(view, savedInstanceState);
         initUI(view) ;
         initPresenter() ;
-        requestIngredientList();
-
-        ingredientChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ingredientChipFlag = true ;
-                searchEditText.setHint("search with spacific Ingredient ..");
-                showLottieFile();
-            }
-        });
-
-        showLottieFile();
+        showSearchLottieFile();
+        // ingredient filter clicked
+        ingredientBtnClicked() ;
+        //country filter clicked
+        countryBtnClicked();
+        //category filter clicked
+        categoryBtnClicked();
 
     }
 
-    private void showLottieFile() {
-        if(!ingredientChipFlag){
+    private void categoryBtnClicked() {
+        categoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showLoadingLottieFile();
+                searchEditText.setHint("Search By Category ...");
+                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+                categoryBtn.setTextColor(getResources().getColor(R.color.white));
+
+                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                requestRandomListOfCategory() ;
+            }
+        });
+    }
+
+    private void countryBtnClicked() {
+        countryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showLoadingLottieFile();
+                searchEditText.setHint("Search By Country ...");
+                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+                countryBtn.setTextColor(getResources().getColor(R.color.white));
+
+                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                requestRandomListOfCounties();
+            }
+        });
+    }
+
+    private void showLoadingLottieFile(){
+        lottieAnimationView.setVisibility(View.GONE);
+        lottieLoadingAnimation.setVisibility(View.VISIBLE);
+        lottieLoadingAnimation.playAnimation();
+    }
+    private void disableLoadingLottieFile(){
+        lottieLoadingAnimation.setVisibility(View.GONE);
+    }
+    private void ingredientBtnClicked() {
+        ingredientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingLottieFile();
+                searchEditText.setHint("Search By Ingredient ...");
+                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+                ingredientBtn.setTextColor(getResources().getColor(R.color.white));
+
+                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+                categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+                requestRandomListOfIngredientList();
+            }
+        });
+    }
+
+    private void requestRandomListOfCategory() {
+        searchPresenter.requestRandomListOfCategory();
+    }
+
+    private void requestRandomListOfCounties() {
+        searchPresenter.requestRandomListOfCountries();
+    }
+    void requestRandomListOfIngredientList() {
+        searchPresenter.requestRandomListOfIngredient() ;
+    }
+
+
+    private void showSearchLottieFile() {
+        if(filterFlag) {
             lottieAnimationView.playAnimation();
-        }
-        else lottieAnimationView.setVisibility(View.GONE);
+        }else lottieAnimationView.cancelAnimation();
     }
 
     private void initPresenter() {
         searchPresenter = new SearchPresenter(this) ;
     }
 
-     void requestIngredientList() {
-        searchPresenter.getListOfIngredient() ;
-    }
-
     private void initUI(View view) {
         searchEditText = view.findViewById(R.id.search_et_search_bar) ;
         initRecyclerView(view) ;
         lottieAnimationView = view.findViewById(R.id.search_lottie_file_search) ;
+        ingredientBtn = view.findViewById(R.id.search_btn_ingredient) ;
+        countryBtn = view.findViewById(R.id.search_btn_country) ;
+        categoryBtn = view.findViewById(R.id.search_btn_category) ;
+        lottieLoadingAnimation = view.findViewById(R.id.search_lottie_file_loading) ;
+        lottieLoadingAnimation.setVisibility(View.GONE) ;
     }
 
     private void initRecyclerView(View view) {
@@ -93,16 +171,21 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         searchIngredientRecyclerView.setLayoutManager(linearLayoutManager);
-        searchIngredientAdapter = new SearchIngredientAdapter(getContext() , new RandomMealsResponse());
+        searchIngredientAdapter = new SearchAdapter(getContext() , new RandomMealsResponse());
+    }
+
+
+    @Override
+    public void onShowResponseOfRandomListByFilter(RandomMealsResponse randomMealsResponse, String query) {
+        disableLoadingLottieFile();
+        searchIngredientAdapter.setList(randomMealsResponse);
+        searchIngredientRecyclerView.setAdapter(searchIngredientAdapter);
+        searchIngredientAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onShowResponse(RandomMealsResponse randomMealsResponse) {
-        if (ingredientChipFlag) {
-            searchIngredientAdapter.setList(randomMealsResponse);
-            searchIngredientRecyclerView.setAdapter(searchIngredientAdapter);
-            showLottieFile();
-        }
+    public void failureResponse(String msg) {
+        Toast.makeText(getContext(), "Error" + msg, Toast.LENGTH_SHORT).show();
     }
 
 }

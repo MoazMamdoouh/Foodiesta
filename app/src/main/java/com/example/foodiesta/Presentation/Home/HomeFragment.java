@@ -15,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
@@ -35,6 +37,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private CardView dailyMealCardView ;
     private View view ;
     private int mealId = 0 ;
+    private LottieAnimationView lottieAnimationView ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -63,11 +66,23 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         initHomePresenter();
         requestMeals() ;
         requestRandomMeal() ;
-      //  navigateThroughDailyMeal();
+        initLottieFile();
+        //delete after u finish
+
+        TextView textView = view.findViewById(R.id.home_tv_sentences) ;
+        textView.setOnClickListener(click ->
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment)
+                );
 
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
               );
+    }
+
+    private void initLottieFile() {
+        lottieAnimationView.playAnimation();
+        dailyMealCardView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     private void navigateThroughDailyMeal() {
@@ -93,6 +108,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         dailyMealCardView = view.findViewById(R.id.home_card_daily_meal) ;
         recyclerView = view.findViewById(R.id.home_rv_meals);
         dailyMealImage = view.findViewById(R.id.home_iv_daily_meal_image);
+        lottieAnimationView = view.findViewById(R.id.home_lottie_pizza_loading) ;
         recyclerView.setHasFixedSize(true);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext() , 2) ;
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -110,13 +126,16 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
 
     @Override
     public void showMeals(RandomMealsResponse randomMealsResponse) {
+      lottieAnimationView.setVisibility(View.GONE);
+      dailyMealCardView.setVisibility(View.VISIBLE);
+      recyclerView.setVisibility(View.VISIBLE);
       homeAdapter.setRandomMealsResponse(randomMealsResponse) ;
       homeAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showRandomMeal(RandomDailyMealResponse randomDailyMealResponse) {
-        Glide.with(getContext()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
+        Glide.with(requireActivity()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
                 .error(R.drawable.fooderror)
                 .into(dailyMealImage) ;

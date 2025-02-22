@@ -6,7 +6,6 @@ import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Api {
@@ -19,6 +18,11 @@ public interface Api {
 
     @GET("lookup.php")
     Call<DetailsResponse> getMealDetails(@Query("i") int id) ;
+
+    @GET("filter.php")
+    Call<RandomMealsResponse> getListOfCategory(@Query("c") String categoryName) ;
+    @GET("filter.php")
+    Call<RandomMealsResponse> getListOfCountries(@Query("a") String countyName) ;
 
 
 
