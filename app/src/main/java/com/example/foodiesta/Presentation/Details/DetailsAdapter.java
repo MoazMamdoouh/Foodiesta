@@ -55,6 +55,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsViewHolder> {
         }
         Glide.with(context).load("https://www.themealdb.com/images/ingredients/" + encodedIngredient + "-Medium.png")
                             .placeholder(R.drawable.food)
+                            .error(R.drawable.fooderror)
                             .into(holder.mealIngredientImage);
             onItemListener.onItemListener(ingredientList.get(position));
     }

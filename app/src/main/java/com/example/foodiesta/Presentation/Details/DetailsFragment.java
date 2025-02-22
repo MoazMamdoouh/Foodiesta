@@ -116,6 +116,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
     private void setMealImage(DetailsResponse detailsResponse){
         Glide.with(getContext()).load(detailsResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
+                .error(R.drawable.fooderror)
                 .into(mealImage);
     }
     private void setChips(DetailsResponse detailsResponse) {

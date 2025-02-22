@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,8 +25,6 @@ import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.OnItemClickListener;
 
-import java.util.ArrayList;
-
 
 public class HomeFragment extends Fragment implements  OnItemClickListener , HomeGateWay {
 
@@ -34,7 +32,9 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private HomeAdapter homeAdapter ;
     private ImageView dailyMealImage ;
     private HomePresenter homePresenter ;
+    private CardView dailyMealCardView ;
     private View view ;
+    private int mealId = 0 ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -63,6 +63,17 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         initHomePresenter();
         requestMeals() ;
         requestRandomMeal() ;
+      //  navigateThroughDailyMeal();
+
+         dailyMealCardView.setOnClickListener(click ->
+                 navigateThroughDailyMeal()
+              );
+    }
+
+    private void navigateThroughDailyMeal() {
+        com.example.foodiesta.Presentation.Home.HomeFragmentDirections.ActionHomeFragmentToDetailsFragment homeFragmentDirections =
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(mealId) ;
+        Navigation.findNavController(view).navigate(homeFragmentDirections);
     }
 
     private void requestRandomMeal() {
@@ -79,6 +90,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     }
 
     private void initUI(View view) {
+        dailyMealCardView = view.findViewById(R.id.home_card_daily_meal) ;
         recyclerView = view.findViewById(R.id.home_rv_meals);
         dailyMealImage = view.findViewById(R.id.home_iv_daily_meal_image);
         recyclerView.setHasFixedSize(true);
@@ -106,11 +118,14 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     public void showRandomMeal(RandomDailyMealResponse randomDailyMealResponse) {
         Glide.with(getContext()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
+                .error(R.drawable.fooderror)
                 .into(dailyMealImage) ;
+        mealId = randomDailyMealResponse.getListOfRandomMeals().get(0).getId() ;
     }
 
     @Override
     public void showError(String msg) {
 
     }
+
 }

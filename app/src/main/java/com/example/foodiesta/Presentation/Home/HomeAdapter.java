@@ -42,6 +42,7 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         Glide.with(context).load(randomMealsResponse.getListOfRandomMeals().get(position).getMealImage())
                 .placeholder(R.drawable.food)
+                .error(R.drawable.fooderror)
                 .into(holder.mealImage);
         holder.mealCardView.setOnClickListener(new View.OnClickListener() {
             @Override

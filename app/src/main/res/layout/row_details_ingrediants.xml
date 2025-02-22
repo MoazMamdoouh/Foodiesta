@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@color/bright_orange"
         >
     <ImageView
         android:id="@+id/row_ingredient_iv_ingredient_image"
