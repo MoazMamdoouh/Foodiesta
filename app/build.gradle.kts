@@ -58,7 +58,6 @@ dependencies {
     //lottie file
     implementation ("com.airbnb.android:lottie:5.0.3")
 
-    //curved bottom navigation
-    implementation ("com.github.qamarelsafadi:CurvedBottomNavigation:0.1.3")
+
 
 }

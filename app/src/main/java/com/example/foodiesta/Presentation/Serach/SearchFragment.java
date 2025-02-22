@@ -5,9 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,7 @@ import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.R;
 
 
-public class SearchFragment extends Fragment implements SearchShowResponse  {
+public class SearchFragment extends Fragment implements SearchShowResponse , OnSearchItemClicked  {
 
     private SearchAdapter searchIngredientAdapter ;
     private RecyclerView searchIngredientRecyclerView ;
@@ -32,6 +34,8 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
     private boolean filterFlag = true ;
     private LottieAnimationView lottieAnimationView ;
     private LottieAnimationView lottieLoadingAnimation ;
+    private String categoryName ;
+    private View viewAttr ;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -52,6 +56,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewAttr= view ;
         initUI(view) ;
         initPresenter() ;
         showSearchLottieFile();
@@ -61,14 +66,17 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         countryBtnClicked();
         //category filter clicked
         categoryBtnClicked();
-
+        //getCategoryNameFromDetails() ;
     }
-
+    private void getCategoryNameFromDetails() {
+        categoryName = SearchFragmentArgs.fromBundle(getArguments()).getCategoryName() ;
+        Log.i("TAG", "getCategoryNameFromDetails: " + categoryName);
+    }
     private void categoryBtnClicked() {
         categoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showLoadingLottieFile();
+                showLoadingLottieFile();
                 searchEditText.setHint("Search By Category ...");
                 categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
                 categoryBtn.setTextColor(getResources().getColor(R.color.white));
@@ -78,17 +86,15 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
 
                 countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
                 countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                requestRandomListOfCategory() ;
+                  requestRandomListOfCategory("SeaFood");
             }
         });
     }
-
     private void countryBtnClicked() {
         countryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showLoadingLottieFile();
+                showLoadingLottieFile();
                 searchEditText.setHint("Search By Country ...");
                 countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
                 countryBtn.setTextColor(getResources().getColor(R.color.white));
@@ -103,7 +109,6 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
             }
         });
     }
-
     private void showLoadingLottieFile(){
         lottieAnimationView.setVisibility(View.GONE);
         lottieLoadingAnimation.setVisibility(View.VISIBLE);
@@ -131,19 +136,15 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
             }
         });
     }
-
-    private void requestRandomListOfCategory() {
-        searchPresenter.requestRandomListOfCategory();
+    private void requestRandomListOfCategory(String category) {
+        searchPresenter.requestRandomListOfCategory(category);
     }
-
     private void requestRandomListOfCounties() {
         searchPresenter.requestRandomListOfCountries();
     }
     void requestRandomListOfIngredientList() {
         searchPresenter.requestRandomListOfIngredient() ;
     }
-
-
     private void showSearchLottieFile() {
         if(filterFlag) {
             lottieAnimationView.playAnimation();
@@ -171,7 +172,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         searchIngredientRecyclerView.setLayoutManager(linearLayoutManager);
-        searchIngredientAdapter = new SearchAdapter(getContext() , new RandomMealsResponse());
+        searchIngredientAdapter = new SearchAdapter(getContext() , new RandomMealsResponse() , this);
     }
 
 
@@ -188,4 +189,11 @@ public class SearchFragment extends Fragment implements SearchShowResponse  {
         Toast.makeText(getContext(), "Error" + msg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onSearchItemClicked(int id) {
+        SearchFragmentDirections.ActionSearchFragmentToDetailsFragment
+                actionSearchFragmentToDetailsFragment =
+                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(id);
+        Navigation.findNavController(viewAttr).navigate(actionSearchFragmentToDetailsFragment);
+    }
 }

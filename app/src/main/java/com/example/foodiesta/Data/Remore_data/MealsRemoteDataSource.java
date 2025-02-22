@@ -111,9 +111,9 @@ public class MealsRemoteDataSource {
         });
     }
 
-    public void getListOfCategories(SearchRepoGateWay searchRepoGateWay){
+    public void getListOfCategories(SearchRepoGateWay searchRepoGateWay , String category){
 
-        Call<RandomMealsResponse> responseCall = api.getListOfCategory("Seafood");
+        Call<RandomMealsResponse> responseCall = api.getListOfCategory(category);
         responseCall.enqueue(new Callback<RandomMealsResponse>() {
             @Override
             public void onResponse(Call<RandomMealsResponse> call, Response<RandomMealsResponse> response) {

@@ -22,7 +22,7 @@ public class SearchPresenter implements SearchGateWay {
     void requestRandomListOfCountries(){
         searchRepo.requestListOfCountries() ;
     }
-    void requestRandomListOfCategory(){searchRepo.requestRandomListOfCategory() ; }
+    void requestRandomListOfCategory(String category){searchRepo.requestRandomListOfCategory(category) ; }
 
     @Override
     public void getRandomListByFilterResponseSuccess(RandomMealsResponse randomMealsResponse , String query) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,15 +16,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Deatails_repo.DetailsRepo;
 import com.example.foodiesta.Model.Details.DetailsResponse;
 import com.example.foodiesta.R;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -35,12 +33,13 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
    private ImageView mealImage ;
    private DetailsPresenter detailsPresenter ;
    private TextView mealName ;
-   private Button categoryChip ;
-   private Button countryChip ;
+   private Button categoryBtn;
+   private Button countryBtn;
    private TextView mealInstructions ;
    private RecyclerView recyclerView ;
    private DetailsAdapter detailsAdapter ;
    private YouTubePlayerView youTubePlayerView ;
+   private String categoryName ;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -66,7 +65,21 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
         initUI(view);
         initDetailsPresenter();
         requestMealDetailById();
+        categoryBtnClicked(view) ;
+    }
 
+    private void categoryBtnClicked(View view) {
+        categoryBtn.setOnClickListener( category ->
+                sendCategoryNameToSearch(view)
+                );
+    }
+
+    private void sendCategoryNameToSearch(View view){
+        DetailsFragmentDirections.ActionDetailsFragmentToSearchFragment
+                detailsFragmentToSearchFragment =
+                DetailsFragmentDirections.actionDetailsFragmentToSearchFragment(categoryName) ;
+        Navigation.findNavController(view).navigate(detailsFragmentToSearchFragment);
+        Log.i("TAG", "sendCategoryNameToSearch: "+ categoryName);
     }
     private void initDetailsPresenter() {
         DetailsRepo detailsRepo = new DetailsRepo(MealsRemoteDataSource.getInstance()) ;
@@ -79,8 +92,8 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
     private void initUI(View view) {
         mealImage = view.findViewById(R.id.details_iv_meal_image) ;
         mealName = view.findViewById(R.id.details_tv_meal_name) ;
-        categoryChip = view.findViewById(R.id.details_chip_category);
-        countryChip = view.findViewById(R.id.details_chip_counrty);
+        categoryBtn = view.findViewById(R.id.details_chip_category);
+        countryBtn = view.findViewById(R.id.details_chip_counrty);
         mealInstructions = view.findViewById(R.id.details_tv_meal_instructions_change) ;
         youTubePlayerView = view.findViewById(R.id.details_youtube_player_view) ;
        // mealVideo = view.findViewById(R.id.details_vv_meal_video)  ;
@@ -102,8 +115,8 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
           setMealNameAndInstruction(detailsResponse);
           setIngredientList(detailsResponse);
           setYoutubeVideo(detailsResponse);
+          categoryName = detailsResponse.getListOfRandomMeals().get(0).getMealCategory() ;
     }
-
     private void setIngredientList(DetailsResponse detailsResponse) {
         detailsAdapter.setIngredientList(detailsResponse.getListOfRandomMeals().get(0).getIngreientList()
         ,detailsResponse.getListOfRandomMeals().get(0).getMeasureList());
@@ -120,10 +133,9 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
                 .into(mealImage);
     }
     private void setChips(DetailsResponse detailsResponse) {
-        categoryChip.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCategory());
-        countryChip.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCountry());
+        categoryBtn.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCategory());
+        countryBtn.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCountry());
     }
-
     private void setYoutubeVideo(DetailsResponse detailsResponse) {
         getLifecycle().addObserver(youTubePlayerView);
 
@@ -138,5 +150,6 @@ public class DetailsFragment extends Fragment implements DetailsGateWay , OnItem
 
     @Override
     public void onItemListener(String name) {
+
     }
 }

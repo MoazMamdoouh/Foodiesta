@@ -16,10 +16,12 @@ import com.example.foodiesta.R;
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     private Context context ;
     private RandomMealsResponse randomMealsResponse;
+    private OnSearchItemClicked onSearchItemClicked ;
 
-    public SearchAdapter(Context context, RandomMealsResponse randomMealsResponse) {
+    public SearchAdapter(Context context, RandomMealsResponse randomMealsResponse , OnSearchItemClicked onSearchItemClicked) {
         this.context = context;
         this.randomMealsResponse = randomMealsResponse;
+        this.onSearchItemClicked = onSearchItemClicked ;
     }
 
     public void setList(RandomMealsResponse randomMealsResponse){
@@ -40,6 +42,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
                 .placeholder(R.drawable.food)
                 .into(holder.searchMealImage);
         holder.searchCardView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.search_card_animation));
+
+        holder.searchCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSearchItemClicked.onSearchItemClicked(randomMealsResponse.getListOfRandomMeals().get(position).getId());
+            }
+        });
     }
 
     @Override

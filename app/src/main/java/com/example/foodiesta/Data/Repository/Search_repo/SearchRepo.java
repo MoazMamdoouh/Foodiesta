@@ -23,8 +23,8 @@ public class SearchRepo implements SearchRepoGateWay {
         mealsRemoteDataSource.getListOfCountries(this);
     }
 
-    public void requestRandomListOfCategory(){
-        mealsRemoteDataSource.getListOfCategories(this);
+    public void requestRandomListOfCategory(String category){
+        mealsRemoteDataSource.getListOfCategories(this , category);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsViewHolder> {
                             .placeholder(R.drawable.food)
                             .error(R.drawable.fooderror)
                             .into(holder.mealIngredientImage);
-            onItemListener.onItemListener(ingredientList.get(position));
+
     }
 
     @Override
