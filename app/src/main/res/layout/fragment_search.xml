@@ -64,6 +64,13 @@
         android:background="@drawable/search_btn_background"
         app:backgroundTint="@null"
         />
+    <Button
+        android:id="@+id/nav_to_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_bar"
+        app:layout_constraintStart_toEndOf="@id/search_btn_country"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_rv_list"
         android:layout_width="wrap_content"

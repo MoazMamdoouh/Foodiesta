@@ -10,4 +10,6 @@
     <string name="search_here">Search For A Meal  ...</string>
     <string name="ingredient">Ingredient</string>
     <string name="get_food">Hungry? Let’s Fix That!🍔</string>
+    <string name="user_name">Chef Name</string>
+    <string name="chef_email">Chef Email</string>
 </resources>

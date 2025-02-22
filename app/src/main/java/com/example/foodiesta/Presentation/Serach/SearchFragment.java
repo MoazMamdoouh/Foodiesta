@@ -1,5 +1,6 @@
 package com.example.foodiesta.Presentation.Serach;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
+import com.example.foodiesta.ProfileActivity;
 import com.example.foodiesta.R;
 
 
@@ -67,7 +69,18 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         //category filter clicked
         categoryBtnClicked();
         //getCategoryNameFromDetails() ;
+
+        Button profile = view.findViewById(R.id.nav_to_profile) ;
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , ProfileActivity.class) ;
+                startActivity(intent);
+            }
+        });
     }
+
+
     private void getCategoryNameFromDetails() {
         categoryName = SearchFragmentArgs.fromBundle(getArguments()).getCategoryName() ;
         Log.i("TAG", "getCategoryNameFromDetails: " + categoryName);
