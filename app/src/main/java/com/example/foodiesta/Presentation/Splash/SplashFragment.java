@@ -46,7 +46,7 @@ public class SplashFragment extends Fragment {
             @Override
             public void run() {
                 lottieAnimationView.playAnimation();
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
+                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
             }
         } , 5000) ;
     }

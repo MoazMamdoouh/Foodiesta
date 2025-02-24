@@ -12,4 +12,8 @@
     <string name="get_food">Hungry? Let’s Fix That!🍔</string>
     <string name="user_name">Chef Name</string>
     <string name="chef_email">Chef Email</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="login_as_guest">Login As Guest</string>
+    <string name="chef_name">Chef Name</string>
 </resources>
