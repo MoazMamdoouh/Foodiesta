@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodiesta.R;
 
 public class FavoriteViewHolder extends RecyclerView.ViewHolder {
-    ImageView favIcon ;
-    ImageView mealImage ;
+    public ImageView favIcon ;
+    public ImageView mealImage ;
     public FavoriteViewHolder(@NonNull View itemView) {
         super(itemView);
         favIcon = itemView.findViewById(R.id.row_favorite_iv_fav_icon) ;

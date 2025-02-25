@@ -27,4 +27,8 @@ public interface FavoriteDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertToCalender(CalenderEntity calenderEntity) ;
+
+    @Query("SELECT * FROM calender_meals_table WHERE year=:year AND month=:month AND day=:day")
+    LiveData<List<CalenderEntity>> getMealFromCalenderTable(int year, int month, int day);
+
 }

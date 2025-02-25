@@ -48,7 +48,6 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
    private String mealUrl ;
    private String mealNameString  ;
    private DatePickerDialog datePickerDialog ;
-  // private ImageView favIcon ;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -85,7 +84,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
                 datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        detailsPresenter.insertMealToCalender(year , month+1 , dayOfMonth , mealId , mealUrl , mealNameString);
+                        detailsPresenter.insertMealToCalender(year , month, dayOfMonth , mealId , mealUrl , mealNameString);
                     }
                 }, 2025 , 0 , 15) ;
                 datePickerDialog.show();

@@ -55,4 +55,9 @@ public class MealsLocalDataSource {
             }
         }).start();
     }
+
+    public LiveData<List<CalenderEntity>> getMealFromCalender(int year , int month , int day){
+        return favoriteDao.getMealFromCalenderTable(year , month , day) ;
+    }
+
 }
