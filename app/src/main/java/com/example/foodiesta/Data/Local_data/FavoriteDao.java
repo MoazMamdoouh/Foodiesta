@@ -31,4 +31,7 @@ public interface FavoriteDao {
     @Query("SELECT * FROM calender_meals_table WHERE year=:year AND month=:month AND day=:day")
     LiveData<List<CalenderEntity>> getMealFromCalenderTable(int year, int month, int day);
 
+    @Delete
+    void deleteMealFromCalender(CalenderEntity calenderEntity) ;
+
 }

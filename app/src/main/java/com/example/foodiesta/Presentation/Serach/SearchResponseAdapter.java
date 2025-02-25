@@ -17,10 +17,12 @@ import java.util.List;
 public class SearchResponseAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     private Context context ;
     private List<ListOfFoodResponse> listOfRandomMeals ;
+    private OnSearchItemClicked onSearchItemClicked;
 
-    public SearchResponseAdapter(Context context, List<ListOfFoodResponse> listOfRandomMeals) {
+    public SearchResponseAdapter(Context context, List<ListOfFoodResponse> listOfRandomMeals , OnSearchItemClicked onSearchItemClicked) {
         this.context = context;
         this.listOfRandomMeals = listOfRandomMeals;
+        this.onSearchItemClicked = onSearchItemClicked ;
     }
 
     @NonNull
@@ -45,6 +47,9 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<SearchViewHolder
                 .error(R.drawable.fooderror)
                 .into(holder.searchMealImage) ;
         holder.mealName.setText(listOfRandomMeals.get(position).getMealName());
+        holder.searchCardView.setOnClickListener(clicked->{
+            onSearchItemClicked.onSearchItemClicked(listOfRandomMeals.get(position).getId());
+        });
     }
 
     @Override

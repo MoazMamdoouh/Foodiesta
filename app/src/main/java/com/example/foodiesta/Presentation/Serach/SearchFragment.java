@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
@@ -38,6 +39,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     private SearchResponseAdapter searchListOfSpacificItem;
     private IngredientsAdapter allIngredientsAdapter ;
     private CountryAdapter countryAdapter ;
+    private View viewatt ;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -64,6 +66,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         categoryBtnClicked();
         ingredientBtnClicked();
         countryBtnClicked();
+        viewatt = view;
     }
     private void initUI(View view) {
         searchEditText = view.findViewById(R.id.search_et_search_bar) ;
@@ -83,7 +86,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         searchRecyclerView.setLayoutManager(linearLayoutManager);
         searchIngredientAdapter = new CategoriesAdapter(getContext() , new ArrayList<>() , this);
         //category adapter
-        searchListOfSpacificItem = new SearchResponseAdapter(getContext() , new ArrayList<>());
+        searchListOfSpacificItem = new SearchResponseAdapter(getContext() , new ArrayList<>() , this);
         allIngredientsAdapter = new IngredientsAdapter(getContext() , new ArrayList<>() , this) ;
         countryAdapter = new CountryAdapter(getContext() , new ArrayList<>() , this)  ;
     }
@@ -285,6 +288,13 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
             searchPresenter.requestListOfSpacificCountry(itemName);
         }
 
+    }
+
+    @Override
+    public void onSearchItemClicked(int id) {
+        SearchFragmentDirections.ActionSearchFragmentToDetailsFragment actionSearchFragmentToDetailsFragment
+                = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(id) ;
+        Navigation.findNavController(viewatt).navigate(actionSearchFragmentToDetailsFragment);
     }
 
     private void changeFilterBtnLayout(String filterName){

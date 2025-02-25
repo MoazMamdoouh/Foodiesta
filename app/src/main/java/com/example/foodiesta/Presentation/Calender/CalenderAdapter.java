@@ -18,10 +18,11 @@ import java.util.List;
 public class CalenderAdapter extends RecyclerView.Adapter<CalenderViewHolder> {
     private Context context ;
     private List<CalenderEntity> calenderEntities ;
-
-    public CalenderAdapter(Context context, List<CalenderEntity> calenderEntities) {
+    private OnCalenderIconClicked onCalenderIconClicked ;
+    public CalenderAdapter(Context context, List<CalenderEntity> calenderEntities , OnCalenderIconClicked onCalenderIconClicked) {
         this.context = context;
         this.calenderEntities = calenderEntities;
+        this.onCalenderIconClicked = onCalenderIconClicked ;
     }
 
     void setCalenderList(List<CalenderEntity> calenderEntities){
@@ -42,6 +43,16 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderViewHolder> {
     public void onBindViewHolder(@NonNull CalenderViewHolder holder, int position) {
         Glide.with(context).load(calenderEntities.get(position).getMealImage())
                 .into(holder.mealImage) ;
+        holder.mealName.setText(calenderEntities.get(position).getMealName());
+        holder.calenderCardView.setOnClickListener(clicked ->{
+            int id = calenderEntities.get(position).getMealId() ;
+            int year = calenderEntities.get(position).getYear() ;
+            int month = calenderEntities.get(position).getMonth();
+            int day = calenderEntities.get(position).getDay() ;
+            String imageImage = calenderEntities.get(position).getMealImage() ;
+            String imageName = calenderEntities.get(position).getMealName();
+            onCalenderIconClicked.onCalenderIconClicked(id , year , month , day , imageImage , imageName);
+        });
     }
 
     @Override

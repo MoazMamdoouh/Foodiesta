@@ -18,6 +18,7 @@ import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Repository.Favorite_repo.FavoriteRepo;
 import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 import com.example.foodiesta.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,20 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
     }
 
     @Override
-    public void ovFavoriteItemClickListener(int id, String url, String name) {
-        favoritePresenter.deleteMealFromFavorite(id , url , name );
+    public void onFavoriteItemClickListener(int id, String url, String name) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Delete "+ name )
+                .setMessage("Are you sure you want to delete "+name+ " ?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    favoritePresenter.deleteMealFromFavorite(id , url , name );
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                })
+                .show();
+    }
+
+    @Override
+    public void onFavoriteCardClicked(int id) {
+        
     }
 }

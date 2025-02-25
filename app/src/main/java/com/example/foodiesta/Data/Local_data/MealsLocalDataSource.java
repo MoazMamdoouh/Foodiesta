@@ -60,4 +60,13 @@ public class MealsLocalDataSource {
         return favoriteDao.getMealFromCalenderTable(year , month , day) ;
     }
 
+    public void deleteMealFromCalender(int id , int year , int month , int day , String mealImage , String mealName) {
+        CalenderEntity calenderEntity = new CalenderEntity(id , year,month,day,mealImage,mealName) ;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                favoriteDao.deleteMealFromCalender(calenderEntity);
+            }
+        }).start();
+    }
 }

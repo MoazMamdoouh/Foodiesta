@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -44,15 +43,20 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
                 .placeholder(R.drawable.food)
                 .error(R.drawable.fooderror)
                 .into(holder.mealImage) ;
+        holder.mealName.setText(favoriteEntities.get(position).getMealName());
+        int id = favoriteEntities.get(position).getMealId();
         holder.favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = favoriteEntities.get(position).getMealId();
                 String url = favoriteEntities.get(position).getMealUrl() ;
                 String name = favoriteEntities.get(position).getMealName() ;
-                onFavoriteItemClicked.ovFavoriteItemClickListener(id ,url , name );
+                onFavoriteItemClicked.onFavoriteItemClickListener(id ,url , name );
             }
         });
+        holder.favoriteCard.setOnClickListener(clicked ->{
+            onFavoriteItemClicked.onFavoriteCardClicked(id);
+        });
+
     }
 
     @Override

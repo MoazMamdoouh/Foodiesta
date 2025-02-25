@@ -60,7 +60,7 @@ public class SearchPresenter implements SearchGateWay  {
         }else if (filterName.equals("ingredient")){
             searchFragment.getListOfAllIngredientByName(foodObjectResponse);
         }else if (filterName.equals("country")){
-            searchFragment.getListOfCategoriesByName(foodObjectResponse);
+            searchFragment.getListOfCountriesByName(foodObjectResponse);
         }
     }
 

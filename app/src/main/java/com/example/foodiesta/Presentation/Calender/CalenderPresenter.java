@@ -18,4 +18,8 @@ public class CalenderPresenter {
     LiveData<List<CalenderEntity>> getMealThroughSpacificDate(int year , int month , int day ){
        return  calenderRepo.getMealThroughSpacificDate(year , month , day );
     }
+
+    public void deleteMealFromCalender(int id , int year , int month , int day , String mealImage , String mealName) {
+        calenderRepo.deleteMealFromCalender(id ,year , month , day , mealImage , mealName);
+    }
 }

@@ -21,11 +21,12 @@ import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Repository.Calender.CalenderRepo;
 import com.example.foodiesta.Model.Calender.CalenderEntity;
 import com.example.foodiesta.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalenderFragment extends Fragment {
+public class CalenderFragment extends Fragment  implements OnCalenderIconClicked{
 
     private CalendarView calendarView ;
     private CalenderPresenter calenderPresenter ;
@@ -95,7 +96,22 @@ public class CalenderFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        calenderAdapter = new CalenderAdapter(getContext() , new ArrayList<>()) ;
+        calenderAdapter = new CalenderAdapter(getContext() , new ArrayList<>() , this) ;
         recyclerView.setAdapter(calenderAdapter);
+    }
+
+
+    @Override
+    public void onCalenderIconClicked(int id, int year, int month, int day, String mealImage, String mealName) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Delete "+mealName)
+                .setMessage("Are you sure you want to delete "+mealName +" from Calender ? ")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    calenderPresenter.deleteMealFromCalender(id , year , month , day , mealImage, mealName);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+
+                })
+                .show();
     }
 }
