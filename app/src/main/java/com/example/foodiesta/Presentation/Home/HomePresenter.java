@@ -1,11 +1,10 @@
 package com.example.foodiesta.Presentation.Home;
 
 import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
-import com.example.foodiesta.Utilities.OnResponseSend;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
+import com.example.foodiesta.Utilities.OnFoodObjectResponse;
 
-public class HomePresenter implements OnResponseSend {
+public class HomePresenter implements OnFoodObjectResponse {
 
     private HomeRepository repository ;
     private HomeGateWay homeGateWay ;
@@ -24,17 +23,17 @@ public class HomePresenter implements OnResponseSend {
     }
 
     @Override
-    public void success(RandomMealsResponse randomMealsResponse) {
-        homeGateWay.showMeals(randomMealsResponse);
+    public void success(FoodObjectResponse foodObjectResponse) {
+        homeGateWay.showMeals(foodObjectResponse);
+    }
+
+    @Override
+    public void successGetDailyRandomMeal(FoodObjectResponse foodObjectResponse) {
+        homeGateWay.showRandomMeal(foodObjectResponse);
     }
 
     @Override
     public void failed(String msg) {
         homeGateWay.showError(msg);
-    }
-
-    @Override
-    public void dailyMealSuccess(RandomDailyMealResponse randomDailyMealResponse) {
-        homeGateWay.showRandomMeal(randomDailyMealResponse);
     }
 }

@@ -10,23 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.OnItemClickListener;
 
 public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
     private Context context ;
-    private RandomMealsResponse randomMealsResponse ;
+    private FoodObjectResponse foodObjectResponse;
     private OnItemClickListener onItemClickListener ;
 
-    public HomeAdapter(Context context, RandomMealsResponse randomMealsResponse , OnItemClickListener onItemClickListener) {
+    public HomeAdapter(Context context, FoodObjectResponse foodObjectResponse, OnItemClickListener onItemClickListener) {
         this.context = context;
-        this.randomMealsResponse = randomMealsResponse;
+        this.foodObjectResponse = foodObjectResponse;
         this.onItemClickListener = onItemClickListener ;
     }
 
-    public void setRandomMealsResponse(RandomMealsResponse randomMealsResponse){
-        this.randomMealsResponse = randomMealsResponse ;
+    public void setRandomMealsResponse(FoodObjectResponse foodObjectResponse){
+        this.foodObjectResponse = foodObjectResponse;
     }
 
     @NonNull
@@ -40,14 +40,15 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        Glide.with(context).load(randomMealsResponse.getListOfRandomMeals().get(position).getMealImage())
+        holder.mealName.setText(foodObjectResponse.getListOfRandomMeals().get(position).getMealName());
+        Glide.with(context).load(foodObjectResponse.getListOfRandomMeals().get(position).getMealImage())
                 .placeholder(R.drawable.food)
                 .error(R.drawable.fooderror)
                 .into(holder.mealImage);
         holder.mealCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClicked(randomMealsResponse.getListOfRandomMeals().get(position).getId());
+                onItemClickListener.onItemClicked(foodObjectResponse.getListOfRandomMeals().get(position).getId());
             }
         });
 
@@ -56,6 +57,6 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public int getItemCount() {
-        return randomMealsResponse.getListOfRandomMeals().size();
+        return foodObjectResponse.getListOfRandomMeals().size();
     }
 }

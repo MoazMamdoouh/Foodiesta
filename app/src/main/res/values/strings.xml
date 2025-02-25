@@ -16,4 +16,5 @@
     <string name="registration">Registration</string>
     <string name="login_as_guest">Login As Guest</string>
     <string name="chef_name">Chef Name</string>
+    <string name="meal_name">meal name</string>
 </resources>

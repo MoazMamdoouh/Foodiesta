@@ -2,8 +2,7 @@ package com.example.foodiesta.Data.Repository.Home_repo;
 
 
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Utilities.OnResponseSend;
+import com.example.foodiesta.Utilities.OnFoodObjectResponse;
 
 public class HomeRepository {
 
@@ -13,10 +12,10 @@ public class HomeRepository {
         this.mealsRemoteDataSource = mealsRemoteDataSource;
     }
 
-    public void getAllRemoteMeals(OnResponseSend onResponseSend){
-        mealsRemoteDataSource.getRandomMealsResponse(onResponseSend);
+    public void getAllRemoteMeals(OnFoodObjectResponse onFoodObjectResponse){
+        mealsRemoteDataSource.getRandomMealsResponse(onFoodObjectResponse);
     }
-    public void getRandomMeal(OnResponseSend onResponseSend){
-        mealsRemoteDataSource.getRandomDailyMeal(onResponseSend);
+    public void getRandomMeal(OnFoodObjectResponse onFoodObjectResponse){
+        mealsRemoteDataSource.getRandomDailyMeal(onFoodObjectResponse);
     }
 }

@@ -1,45 +1,43 @@
 package com.example.foodiesta.Presentation.Serach;
 
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.MainActivity;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.ProfileActivity;
+import com.example.foodiesta.Model.Search.Country.CountryObjectResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
+import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
+import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 import com.example.foodiesta.R;
-
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 
 public class SearchFragment extends Fragment implements SearchShowResponse , OnSearchItemClicked  {
 
-    private SearchAdapter searchIngredientAdapter ;
-    private RecyclerView searchIngredientRecyclerView ;
+    private CategoriesAdapter searchIngredientAdapter ;
+    private RecyclerView searchRecyclerView;
     private SearchPresenter searchPresenter ;
     private EditText searchEditText ;
-    private Button ingredientBtn ;
-    private Button countryBtn ;
-    private Button categoryBtn ;
+    private Button ingredientBtn ,countryBtn , categoryBtn ;
     private boolean filterFlag = true ;
-    private LottieAnimationView lottieAnimationView ;
-    private LottieAnimationView lottieLoadingAnimation ;
-    private String categoryName ;
-    private View viewAttr ;
-
+    private LottieAnimationView lottieAnimationView , lottieLoadingAnimation ;
+    private SearchResponseAdapter searchListOfSpacificItem;
+    private IngredientsAdapter allIngredientsAdapter ;
+    private CountryAdapter countryAdapter ;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -60,108 +58,13 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) requireActivity()).showBottomNav(true);
-        viewAttr= view ;
         initUI(view) ;
         initPresenter() ;
         showSearchLottieFile();
-        // ingredient filter clicked
-        ingredientBtnClicked() ;
-        //country filter clicked
-        countryBtnClicked();
-        //category filter clicked
         categoryBtnClicked();
-        //getCategoryNameFromDetails() ;
-
+        ingredientBtnClicked();
+        countryBtnClicked();
     }
-
-
-    private void getCategoryNameFromDetails() {
-        categoryName = SearchFragmentArgs.fromBundle(getArguments()).getCategoryName() ;
-        Log.i("TAG", "getCategoryNameFromDetails: " + categoryName);
-    }
-    private void categoryBtnClicked() {
-        categoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLoadingLottieFile();
-                searchEditText.setHint("Search By Category ...");
-                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
-                categoryBtn.setTextColor(getResources().getColor(R.color.white));
-
-                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-                  requestRandomListOfCategory("SeaFood");
-            }
-        });
-    }
-    private void countryBtnClicked() {
-        countryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLoadingLottieFile();
-                searchEditText.setHint("Search By Country ...");
-                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
-                countryBtn.setTextColor(getResources().getColor(R.color.white));
-
-                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                requestRandomListOfCounties();
-            }
-        });
-    }
-    private void showLoadingLottieFile(){
-        lottieAnimationView.setVisibility(View.GONE);
-        lottieLoadingAnimation.setVisibility(View.VISIBLE);
-        lottieLoadingAnimation.playAnimation();
-    }
-    private void disableLoadingLottieFile(){
-        lottieLoadingAnimation.setVisibility(View.GONE);
-    }
-    private void ingredientBtnClicked() {
-        ingredientBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLoadingLottieFile();
-                searchEditText.setHint("Search By Ingredient ...");
-                ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
-                ingredientBtn.setTextColor(getResources().getColor(R.color.white));
-
-                countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-                categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
-
-                requestRandomListOfIngredientList();
-            }
-        });
-    }
-    private void requestRandomListOfCategory(String category) {
-        searchPresenter.requestRandomListOfCategory(category);
-    }
-    private void requestRandomListOfCounties() {
-        searchPresenter.requestRandomListOfCountries();
-    }
-    void requestRandomListOfIngredientList() {
-        searchPresenter.requestRandomListOfIngredient() ;
-    }
-    private void showSearchLottieFile() {
-        if(filterFlag) {
-            lottieAnimationView.playAnimation();
-        }else lottieAnimationView.cancelAnimation();
-    }
-
-    private void initPresenter() {
-        searchPresenter = new SearchPresenter(this) ;
-    }
-
     private void initUI(View view) {
         searchEditText = view.findViewById(R.id.search_et_search_bar) ;
         initRecyclerView(view) ;
@@ -172,23 +75,199 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         lottieLoadingAnimation = view.findViewById(R.id.search_lottie_file_loading) ;
         lottieLoadingAnimation.setVisibility(View.GONE) ;
     }
-
     private void initRecyclerView(View view) {
-        searchIngredientRecyclerView = view.findViewById(R.id.search_rv_list) ;
-        searchIngredientRecyclerView.setHasFixedSize(true);
+        searchRecyclerView = view.findViewById(R.id.search_rv_list) ;
+        searchRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        searchIngredientRecyclerView.setLayoutManager(linearLayoutManager);
-        searchIngredientAdapter = new SearchAdapter(getContext() , new RandomMealsResponse() , this);
+        searchRecyclerView.setLayoutManager(linearLayoutManager);
+        searchIngredientAdapter = new CategoriesAdapter(getContext() , new ArrayList<>() , this);
+        //category adapter
+        searchListOfSpacificItem = new SearchResponseAdapter(getContext() , new ArrayList<>());
+        allIngredientsAdapter = new IngredientsAdapter(getContext() , new ArrayList<>() , this) ;
+        countryAdapter = new CountryAdapter(getContext() , new ArrayList<>() , this)  ;
+    }
+    private void initPresenter() {
+        searchPresenter = new SearchPresenter(this , this) ;
+    }
+    private void showSearchLottieFile() {
+        if(filterFlag) {
+            lottieAnimationView.playAnimation();
+        }else lottieAnimationView.cancelAnimation();
+    }
+    private void categoryBtnClicked() {
+        categoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingLottieFile();
+                changeFilterBtnLayout("category");
+                requestRandomListOfCategory();
+
+            }
+        });
+    }
+    private void setupCategorySearchObserver(CategoryObjectResponse response){
+        Observable<String> obs = Observable.create(emitter -> {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    emitter.onNext(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        });
+
+        obs.debounce(1, TimeUnit.SECONDS).flatMap(item -> Observable.fromIterable(response.getListOfCategoriesSearches())
+                .filter(listItem -> listItem.getCategoryName().toLowerCase().contains(item.toLowerCase())).toList().toObservable())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        onNext -> {
+                            searchIngredientAdapter.setList(onNext);
+                        }
+                );
+    }
+    private void requestRandomListOfCategory() {
+        searchPresenter.requestListOfCategory();
+    }
+    void getListOfCategoriesByName(FoodObjectResponse foodObjectResponse){
+        searchRecyclerView.setAdapter(searchListOfSpacificItem);
+        searchListOfSpacificItem.setListOfSearchResult(foodObjectResponse.getListOfRandomMeals());
+        setupRandomMealResponseObserver(foodObjectResponse);
+    }
+    private void setupRandomMealResponseObserver(FoodObjectResponse foodObjectResponse){
+        Observable<String> obs = Observable.create(emitter -> {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    emitter.onNext(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        });
+
+        obs.debounce(1, TimeUnit.SECONDS).flatMap(item -> Observable.fromIterable(foodObjectResponse.getListOfRandomMeals())
+                        .filter(listItem -> listItem.getMealName().toLowerCase().contains(item.toLowerCase())).toList().toObservable())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        onNext -> {
+                            searchListOfSpacificItem.setListOfSearchResult(onNext);
+                        }
+                );
     }
 
+     private void ingredientBtnClicked() {
+        ingredientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingLottieFile();
+                changeFilterBtnLayout("ingredient");
+                searchPresenter.requestListOfIngredient();
+
+            }
+        });
+    }
+    void getAllIngredient(IngredientObjectResponse ingredientObjectResponse){
+            disableLoadingLottieFile();
+            allIngredientsAdapter.setAllIngredientList(ingredientObjectResponse.getAllIngredientsList());
+            searchRecyclerView.setAdapter(allIngredientsAdapter);
+            setUpAllIngredientObserver(ingredientObjectResponse);
+    }
+
+    void setUpAllIngredientObserver(IngredientObjectResponse ingredientObjectResponse){
+        Observable<String> obs = Observable.create(emitter -> {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    emitter.onNext(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        });
+        obs.debounce(1, TimeUnit.SECONDS).flatMap(item -> Observable.fromIterable(ingredientObjectResponse.getAllIngredientsList())
+                        .filter(listItem -> listItem.getIngredientName().toLowerCase().contains(item.toLowerCase())).toList().toObservable())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        onNext -> {
+                            allIngredientsAdapter.setAllIngredientList(onNext);
+                        }
+                );
+    }
+    void getListOfAllIngredientByName(FoodObjectResponse foodObjectResponse){
+         disableLoadingLottieFile();
+         searchListOfSpacificItem.setListOfSearchResult(foodObjectResponse.getListOfRandomMeals());
+         searchRecyclerView.setAdapter(searchListOfSpacificItem);
+         setupRandomMealResponseObserver(foodObjectResponse);
+    }
+
+    private void countryBtnClicked() {
+        countryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingLottieFile();
+                changeFilterBtnLayout("country");
+                searchPresenter.requestListOfCountries();
+            }
+        });
+    }
+     void getAllCountries(CountryObjectResponse countryObjectResponse){
+            disableLoadingLottieFile();
+            countryAdapter.setCountyList(countryObjectResponse.getListOfCountriesSearches());
+            searchRecyclerView.setAdapter(countryAdapter);
+            setUpAllCountriesObserver(countryObjectResponse);
+    }
+    void setUpAllCountriesObserver(CountryObjectResponse countryObjectResponse){
+        Observable<String> obs = Observable.create(emitter -> {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    emitter.onNext(s.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        });
+        obs.debounce(1, TimeUnit.SECONDS).flatMap(item -> Observable.fromIterable(countryObjectResponse.getListOfCountriesSearches())
+                        .filter(listItem -> listItem.getCountryName().toLowerCase().contains(item.toLowerCase())).toList().toObservable())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        onNext -> {
+                            countryAdapter.setCountyList(onNext);
+                        }
+                );
+    }
+
+    void getListOfCountriesByName(FoodObjectResponse foodObjectResponse){
+        searchListOfSpacificItem.setListOfSearchResult(foodObjectResponse.getListOfRandomMeals());
+        searchRecyclerView.setAdapter(searchListOfSpacificItem);
+        setupRandomMealResponseObserver(foodObjectResponse);
+    }
+
+    private void showLoadingLottieFile(){
+        lottieAnimationView.setVisibility(View.GONE);
+        lottieLoadingAnimation.setVisibility(View.VISIBLE);
+        lottieLoadingAnimation.playAnimation();
+    }
+    private void disableLoadingLottieFile(){
+        lottieLoadingAnimation.setVisibility(View.GONE);
+    }
 
     @Override
-    public void onShowResponseOfRandomListByFilter(RandomMealsResponse randomMealsResponse, String query) {
+    public void onShowResponseOfRandomListByFilter(CategoryObjectResponse randomMealsResponse) {
         disableLoadingLottieFile();
-        searchIngredientAdapter.setList(randomMealsResponse);
-        searchIngredientRecyclerView.setAdapter(searchIngredientAdapter);
-        searchIngredientAdapter.notifyDataSetChanged();
+        searchIngredientAdapter.setList(randomMealsResponse.getListOfCategoriesSearches());
+        searchRecyclerView.setAdapter(searchIngredientAdapter);
+        setupCategorySearchObserver(randomMealsResponse);
     }
 
     @Override
@@ -197,10 +276,48 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     }
 
     @Override
-    public void onSearchItemClicked(int id) {
-        SearchFragmentDirections.ActionSearchFragmentToDetailsFragment
-                actionSearchFragmentToDetailsFragment =
-                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(id);
-        Navigation.findNavController(viewAttr).navigate(actionSearchFragmentToDetailsFragment);
+    public void onFilterItemClicked(String  itemName , String filterName) {
+        if(filterName.equals("category")){
+            searchPresenter.requestListOfSpacificCategory(itemName);
+        }else if (filterName.equals("ingredient")){
+            searchPresenter.requestListOfSpacificIngredient(itemName);
+        }else if (filterName.equals("country")){
+            searchPresenter.requestListOfSpacificCountry(itemName);
+        }
+
+    }
+
+    private void changeFilterBtnLayout(String filterName){
+        if(filterName.equals("ingredient")){
+            searchEditText.setHint("Search By Ingredient ...");
+            ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+            ingredientBtn.setTextColor(getResources().getColor(R.color.white));
+
+            countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+            categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+        }else if (filterName.equals("category")){
+            searchEditText.setHint("Search By Category ...");
+            categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+            categoryBtn.setTextColor(getResources().getColor(R.color.white));
+
+            ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+            countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+        }else if (filterName.equals("country")){
+            searchEditText.setHint("Search By Country ...");
+            countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
+            countryBtn.setTextColor(getResources().getColor(R.color.white));
+
+            ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+
+            categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
+            categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+        }
     }
 }

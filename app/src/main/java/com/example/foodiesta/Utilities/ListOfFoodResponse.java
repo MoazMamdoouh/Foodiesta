@@ -1,8 +1,9 @@
-package com.example.foodiesta.Model.Home.Random_meal;
+package com.example.foodiesta.Utilities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SingleRandomMeal {
+public class ListOfFoodResponse {
+
     @SerializedName("idMeal")
     private int id ;
     @SerializedName("strMeal")

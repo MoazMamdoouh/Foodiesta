@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_search_card_view_show"
@@ -11,10 +11,28 @@
 
     <ImageView
         android:id="@+id/row_search_iv_show_list"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="120dp"
         android:src="@drawable/food"
         android:scaleType="fitXY"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="bottom"
+        android:background="@color/fools_gold_transparent"
+
+        >
+        <TextView
+            android:id="@+id/row_search_tv_meal_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/meal_name"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

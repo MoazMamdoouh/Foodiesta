@@ -1,10 +1,9 @@
 package com.example.foodiesta.Presentation.Home;
 
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
 
 public interface HomeGateWay {
-     void showMeals(RandomMealsResponse randomMealsResponse);
-     void showRandomMeal(RandomDailyMealResponse randomDailyMealResponse);
+     void showMeals(FoodObjectResponse foodObjectResponse);
+     void showRandomMeal(FoodObjectResponse foodObjectResponse);
      void showError(String msg) ;
 }

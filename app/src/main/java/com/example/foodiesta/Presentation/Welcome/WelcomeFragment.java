@@ -46,6 +46,9 @@ public class WelcomeFragment extends Fragment {
         initUI(view);
         registrationBtnClicked(view);
 
+        loginBtn.setOnClickListener(click ->{
+            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_homeFragment);
+        });
     }
 
     private void registrationBtnClicked(View view) {

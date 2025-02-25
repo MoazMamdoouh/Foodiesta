@@ -1,46 +1,73 @@
 package com.example.foodiesta.Presentation.Serach;
 
-import android.util.Log;
-
 import com.example.foodiesta.Data.Repository.Search_repo.SearchRepo;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
+import com.example.foodiesta.Model.Search.Country.CountryObjectResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
+import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
+import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 
-public class SearchPresenter implements SearchGateWay {
+public class SearchPresenter implements SearchGateWay  {
 
     private SearchRepo searchRepo ;
     private SearchShowResponse searchShowResponse ;
-
-    public SearchPresenter(SearchShowResponse searchShowResponse) {
-        this.searchRepo = new SearchRepo(this) ;
+    private SearchFragment searchFragment  ;
+    public SearchPresenter(SearchShowResponse searchShowResponse , SearchFragment searchFragment) {
+        this.searchRepo = new SearchRepo() ;
         this.searchShowResponse = searchShowResponse ;
+        this.searchFragment = searchFragment ;
+    }
+    public void requestListOfCategory() {
+        searchRepo.requestListOfCategories(this);
     }
 
-    void requestRandomListOfIngredient(){
-        searchRepo.requestListOfIngredient();
+    public void requestListOfIngredient() {
+        searchRepo.requestListOfIngredient(this);
+    }
+    public void requestListOfCountries(){
+        searchRepo.requestListOfCountries(this);
+    }
+    public void requestListOfSpacificCategory(String categoryName) {
+        searchRepo.requestListOfSpacificCategory( this,categoryName);
     }
 
-    void requestRandomListOfCountries(){
-        searchRepo.requestListOfCountries() ;
+    public void requestListOfSpacificIngredient(String name) {
+        searchRepo.requestListOfSpacificIngredient(this,name);
     }
-    void requestRandomListOfCategory(String category){searchRepo.requestRandomListOfCategory(category) ; }
+
+    public void requestListOfSpacificCountry(String itemName) {
+        searchRepo.requestListOfSpacificCountry(this,itemName);
+    }
 
     @Override
-    public void getRandomListByFilterResponseSuccess(RandomMealsResponse randomMealsResponse , String query) {
-        if(query.equals("ingredient")){
-            Log.i("TAG", "presenter: ingredient ");
-            searchShowResponse.onShowResponseOfRandomListByFilter(randomMealsResponse , query);
+    public void getListOfAllCategories(CategoryObjectResponse randomMealsResponse, String query) {
+            searchShowResponse.onShowResponseOfRandomListByFilter(randomMealsResponse);
+    }
+
+    @Override
+    public void getListOfAllIngredients(IngredientObjectResponse ingredientObjectResponse) {
+        searchFragment.getAllIngredient(ingredientObjectResponse);
+    }
+
+    @Override
+    public void getListOfAllCountries(CountryObjectResponse countryObjectResponse) {
+        searchFragment.getAllCountries(countryObjectResponse);
+    }
+
+    @Override
+    public void getListByFilter(FoodObjectResponse foodObjectResponse, String filterName) {
+        if(filterName.equals("category")) {
+            searchFragment.getListOfCategoriesByName(foodObjectResponse);
+        }else if (filterName.equals("ingredient")){
+            searchFragment.getListOfAllIngredientByName(foodObjectResponse);
+        }else if (filterName.equals("country")){
+            searchFragment.getListOfCategoriesByName(foodObjectResponse);
         }
-        else if (query.equals("countries")) {
-            Log.i("TAG", "presenter: countries");
-            searchShowResponse.onShowResponseOfRandomListByFilter(randomMealsResponse , query);
-        }
-        else {
-            Log.i("TAG", "presenter: category ");
-            searchShowResponse.onShowResponseOfRandomListByFilter(randomMealsResponse , query);
-        }    }
+    }
 
     @Override
     public void failureResponse(String msg) {
 
     }
+
+
 }

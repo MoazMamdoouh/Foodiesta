@@ -1,9 +1,9 @@
 package com.example.foodiesta.Presentation.Serach;
 
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
+import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
 
 public interface SearchShowResponse {
-    void onShowResponseOfRandomListByFilter(RandomMealsResponse randomMealsResponse , String query) ;
+    void onShowResponseOfRandomListByFilter(CategoryObjectResponse randomMealsResponse) ;
 
     void failureResponse(String msg) ;
 }

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Chif Name"
+                android:hint="Chef Name"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -50,7 +50,7 @@
                 android:id="@+id/registration_ti_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Chif-Email@gmail.com "
+                android:hint="ChefEmail"
                 android:inputType="textEmailAddress"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -106,4 +106,12 @@
         android:textColor="@color/bright_orange"
         />
     </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/registration_lottie_file_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_rawRes="@raw/pizza_loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

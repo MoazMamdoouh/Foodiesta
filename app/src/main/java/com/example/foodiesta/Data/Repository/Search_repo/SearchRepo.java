@@ -1,51 +1,36 @@
 package com.example.foodiesta.Data.Repository.Search_repo;
 
-import android.util.Log;
-
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
 import com.example.foodiesta.Presentation.Serach.SearchGateWay;
 
-public class SearchRepo implements SearchRepoGateWay {
+public class SearchRepo  {
 
-    private SearchGateWay searchGateWay ;
     private MealsRemoteDataSource mealsRemoteDataSource ;
-    public SearchRepo(SearchGateWay searchGateWay) {
-        this.searchGateWay = searchGateWay ;
+    public SearchRepo() {
         mealsRemoteDataSource = MealsRemoteDataSource.getInstance() ;
     }
 
-    public void requestListOfIngredient(){
-        mealsRemoteDataSource.getListOfIngredient(this);
+    public void requestListOfCategories(SearchGateWay searchRepoGateWay) {
+       mealsRemoteDataSource.getAllCategories(searchRepoGateWay);
     }
 
-    public void requestListOfCountries(){
-        mealsRemoteDataSource.getListOfCountries(this);
+    public void requestListOfSpacificCategory(SearchGateWay searchGateWay , String categoryName) {
+        mealsRemoteDataSource.getListOfSpacificCategory(searchGateWay,categoryName);
     }
 
-    public void requestRandomListOfCategory(String category){
-        mealsRemoteDataSource.getListOfCategories(this , category);
+    public void requestListOfIngredient(SearchGateWay searchGateWay) {
+        mealsRemoteDataSource.getListOfAllIngredients(searchGateWay);
     }
 
-    @Override
-    public void getRandomListByFilter(RandomMealsResponse randomMealsResponse , String query) {
-        if(query.equals("ingredient")){
-            Log.i("TAG", "getRandomListByFilter: ingredient ");
-            searchGateWay.getRandomListByFilterResponseSuccess(randomMealsResponse , query);
-        }
-        else if (query.equals("countries")) {
-            Log.i("TAG", "getRandomListByFilter: countries");
-            searchGateWay.getRandomListByFilterResponseSuccess(randomMealsResponse , query);
-        }
-        else if (query.equals("category")) {
-            Log.i("TAG", "getRandomListByFilter: category ");
-            searchGateWay.getRandomListByFilterResponseSuccess(randomMealsResponse , query);
-        }
+    public void requestListOfSpacificIngredient(SearchGateWay searchGateWay,String name) {
+        mealsRemoteDataSource.getListOfSpacificIngredient(searchGateWay,name);
     }
 
+    public void requestListOfCountries(SearchGateWay searchGateWay) {
+        mealsRemoteDataSource.getListOfCountries(searchGateWay);
+    }
 
-    @Override
-    public void getErrorMsg(String msg) {
-        searchGateWay.failureResponse(msg);
+    public void requestListOfSpacificCountry(SearchGateWay searchGateWay,String itemName) {
+        mealsRemoteDataSource.getListOfSpacificCountry(searchGateWay , itemName);
     }
 }

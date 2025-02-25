@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -23,8 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
 import com.example.foodiesta.MainActivity;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.OnItemClickListener;
 
@@ -81,6 +79,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     }
 
     private void navigateThroughDailyMeal() {
+
         com.example.foodiesta.Presentation.Home.HomeFragmentDirections.ActionHomeFragmentToDetailsFragment homeFragmentDirections =
                 HomeFragmentDirections.actionHomeFragmentToDetailsFragment(mealId) ;
         Navigation.findNavController(view).navigate(homeFragmentDirections);
@@ -107,7 +106,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         recyclerView.setHasFixedSize(true);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext() , 2) ;
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        homeAdapter = new HomeAdapter(getContext() , new RandomMealsResponse(), this) ;
+        homeAdapter = new HomeAdapter(getContext() , new FoodObjectResponse(), this) ;
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(homeAdapter);
     }
@@ -120,16 +119,15 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     }
 
     @Override
-    public void showMeals(RandomMealsResponse randomMealsResponse) {
+    public void showMeals(FoodObjectResponse foodObjectResponse) {
       lottieAnimationView.setVisibility(View.GONE);
       dailyMealCardView.setVisibility(View.VISIBLE);
       recyclerView.setVisibility(View.VISIBLE);
-      homeAdapter.setRandomMealsResponse(randomMealsResponse) ;
+      homeAdapter.setRandomMealsResponse(foodObjectResponse) ;
       homeAdapter.notifyDataSetChanged();
     }
-
     @Override
-    public void showRandomMeal(RandomDailyMealResponse randomDailyMealResponse) {
+    public void showRandomMeal(FoodObjectResponse randomDailyMealResponse) {
         Glide.with(requireActivity()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
                 .error(R.drawable.fooderror)

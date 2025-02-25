@@ -1,8 +1,10 @@
 package com.example.foodiesta.Data.Remore_data;
 
 import com.example.foodiesta.Model.Details.DetailsResponse;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
-import com.example.foodiesta.Model.Home.Random_meal.RandomDailyMealResponse;
+import com.example.foodiesta.Model.Search.Country.CountryObjectResponse;
+import com.example.foodiesta.Utilities.FoodObjectResponse;
+import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
+import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,18 +13,28 @@ import retrofit2.http.Query;
 public interface Api {
 
     @GET("filter.php")
-    Call<RandomMealsResponse> getListOfMeals(@Query("i") String mealName) ;
+    Call<FoodObjectResponse> getListOfIngredients(@Query("i") String mealName) ;
 
     @GET("random.php")
-    Call<RandomDailyMealResponse> getRandomDailyMeal();
+    Call<FoodObjectResponse> getRandomDailyMeal();
 
     @GET("lookup.php")
     Call<DetailsResponse> getMealDetails(@Query("i") int id) ;
 
+
+    @GET("categories.php")
+    Call<CategoryObjectResponse> getListOfCategory(@Query("c") String categoryName) ;
+
+    @GET("list.php")
+    Call<IngredientObjectResponse> getAllIngredientsNames(@Query("i") String ingredientList) ;
+
+    @GET("list.php")
+    Call<CountryObjectResponse> getAllCountriesNames(@Query("a") String countryName) ;
+
     @GET("filter.php")
-    Call<RandomMealsResponse> getListOfCategory(@Query("c") String categoryName) ;
-    @GET("filter.php")
-    Call<RandomMealsResponse> getListOfCountries(@Query("a") String countyName) ;
+    Call<FoodObjectResponse> getListOFSpacificCountry(@Query("a") String country) ;
+
+
 
 
 

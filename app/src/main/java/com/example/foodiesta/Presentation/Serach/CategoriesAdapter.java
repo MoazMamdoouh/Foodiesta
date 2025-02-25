@@ -4,28 +4,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodiesta.Model.Home.List_meals.RandomMealsResponse;
+import com.example.foodiesta.Model.Search.Category.ListOfCategoriesSearch;
 import com.example.foodiesta.R;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
+import java.util.List;
+
+public class CategoriesAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     private Context context ;
-    private RandomMealsResponse randomMealsResponse;
+    private List<ListOfCategoriesSearch> randomMealsResponse;
     private OnSearchItemClicked onSearchItemClicked ;
 
-    public SearchAdapter(Context context, RandomMealsResponse randomMealsResponse , OnSearchItemClicked onSearchItemClicked) {
+    public CategoriesAdapter(Context context, List<ListOfCategoriesSearch> randomMealsResponse
+            , OnSearchItemClicked onSearchItemClicked) {
         this.context = context;
         this.randomMealsResponse = randomMealsResponse;
         this.onSearchItemClicked = onSearchItemClicked ;
     }
 
-    public void setList(RandomMealsResponse randomMealsResponse){
+    public void setList(List<ListOfCategoriesSearch> randomMealsResponse){
         this.randomMealsResponse = randomMealsResponse ;
+        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -38,21 +41,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        Glide.with(context).load(randomMealsResponse.getListOfRandomMeals().get(position).getMealImage())
+        Glide.with(context).load(randomMealsResponse.get(position).getCategoryImage())
                 .placeholder(R.drawable.food)
-                .into(holder.searchMealImage);
-        holder.searchCardView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.search_card_animation));
-
-        holder.searchCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSearchItemClicked.onSearchItemClicked(randomMealsResponse.getListOfRandomMeals().get(position).getId());
-            }
+                .error(R.drawable.fooderror)
+                .into(holder.searchMealImage) ;
+        holder.mealName.setText(randomMealsResponse.get(position).getCategoryName());
+        holder.searchCardView.setOnClickListener(click->{
+            String name = randomMealsResponse.get(position).getCategoryName();
+            onSearchItemClicked.onFilterItemClicked(name , "category");
         });
     }
 
     @Override
     public int getItemCount() {
-        return randomMealsResponse.getListOfRandomMeals().size();
+        return randomMealsResponse.size();
     }
 }
