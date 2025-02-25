@@ -8,6 +8,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.example.foodiesta.Model.Calender.CalenderEntity;
 import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface FavoriteDao {
 
     @Delete
     void deleteMealFromFavorite(FavoriteEntity favoriteEntity) ;
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertToCalender(CalenderEntity calenderEntity) ;
 }

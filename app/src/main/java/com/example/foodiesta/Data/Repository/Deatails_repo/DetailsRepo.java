@@ -22,4 +22,7 @@ public class DetailsRepo {
         mealsLocalDataSource.insertFavoriteMeal(id , mealUrl , mealName);
     }
 
+    public void insertMealToCalender(int year, int month, int day, int id, String mealImage, String mealName) {
+        mealsLocalDataSource.insertMealToCalender(year , month , day , id , mealImage , mealName) ;
+    }
 }

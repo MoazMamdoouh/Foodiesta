@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.foodiesta.Model.Calender.CalenderEntity;
 import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class MealsLocalDataSource {
     private Context context ;
 
     public MealsLocalDataSource(Context context) {
-        this.context = context ;
         favoriteDao = FavoriteDataBase.getInstance(context).favoriteDao();
+        this.context = context ;
     }
 
 
@@ -43,5 +44,15 @@ public class MealsLocalDataSource {
             }
         }).start();
 
+    }
+
+    public void insertMealToCalender(int year, int month, int day, int id, String mealImage, String mealName) {
+        CalenderEntity calenderEntity = new CalenderEntity(id , year , month , day , mealImage , mealName);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                favoriteDao.insertToCalender(calenderEntity);
+            }
+        }).start();
     }
 }

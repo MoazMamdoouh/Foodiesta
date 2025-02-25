@@ -27,6 +27,9 @@ public class DetailsPresenter implements OnDetailedResponse {
     void insertMealToFavorite(int id , String url , String name ){
          detailsRepo.insertMealToFavorite(id , url , name );
     }
+    void insertMealToCalender(int year , int month , int day , int id , String mealImage , String mealName){
+        detailsRepo.insertMealToCalender(year , month , day , id , mealImage , mealName ) ;
+    }
     @Override
     public void failed(String msg) {
 

@@ -39,7 +39,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsViewHolder> {
     public DetailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context) ;
         View view = layoutInflater.inflate(R.layout.row_details_ingrediants , parent , false);
-        DetailsViewHolder detailsViewHolder = new DetailsViewHolder(view) ;
+        DetailsViewHolder detailsViewHolder = new DetailsViewHolder(view , context) ;
         return detailsViewHolder ;
     }
 
@@ -57,7 +57,6 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsViewHolder> {
                             .placeholder(R.drawable.food)
                             .error(R.drawable.fooderror)
                             .into(holder.mealIngredientImage);
-
     }
 
     @Override

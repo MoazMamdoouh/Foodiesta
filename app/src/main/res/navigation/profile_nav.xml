@@ -9,5 +9,18 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.foodiesta.Presentation.Favorite.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_calenderFragment"
+            app:destination="@id/calenderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calenderFragment"
+        android:name="com.example.foodiesta.Presentation.Calender.CalenderFragment"
+        android:label="fragment_calender"
+        tools:layout="@layout/fragment_calender" >
+        <action
+            android:id="@+id/action_calenderFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+    </fragment>
 </navigation>

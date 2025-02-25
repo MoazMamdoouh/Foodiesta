@@ -1,5 +1,6 @@
 package com.example.foodiesta.Presentation.Details;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
@@ -41,11 +42,12 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
    private RecyclerView recyclerView ;
    private DetailsAdapter detailsAdapter ;
    private YouTubePlayerView youTubePlayerView ;
-   private ImageView favIcon ;
+   private ImageView favIcon , calenderIcon;
    private String categoryName ;
    private int mealId ;
    private String mealUrl ;
    private String mealNameString  ;
+   private DatePickerDialog datePickerDialog ;
   // private ImageView favIcon ;
 
     public DetailsFragment() {
@@ -74,6 +76,21 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         requestMealDetailById();
         categoryBtnClicked(view) ;
         favoriteIconClicked() ;
+        calenderIconClicked();
+    }
+
+    private void calenderIconClicked() {
+        calenderIcon.setOnClickListener(clicked ->{
+
+                datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        detailsPresenter.insertMealToCalender(year , month+1 , dayOfMonth , mealId , mealUrl , mealNameString);
+                    }
+                }, 2025 , 0 , 15) ;
+                datePickerDialog.show();
+            });
+
     }
 
     private void favoriteIconClicked() {
@@ -114,8 +131,8 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         countryBtn = view.findViewById(R.id.details_chip_counrty);
         mealInstructions = view.findViewById(R.id.details_tv_meal_instructions_change) ;
         youTubePlayerView = view.findViewById(R.id.details_youtube_player_view) ;
-       // mealVideo = view.findViewById(R.id.details_vv_meal_video)  ;
         favIcon = view.findViewById(R.id.details_iv_favorite) ;
+        calenderIcon = view.findViewById(R.id.details_iv_Calender) ;
         initRecyclerView(view);
     }
     private void initRecyclerView(View view) {

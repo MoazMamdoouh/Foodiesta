@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fools_gold"
     tools:context=".MainActivity">
 
 
@@ -12,21 +13,22 @@
         android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:navGraph="@navigation/nav_graph"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        android:layout_marginBottom="4dp"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        app:itemIconTint="@color/black"
+        android:layout_width="350dp"
         android:layout_height="60dp"
-        android:background="@color/bright_orange"
-        android:layout_gravity="bottom"
+        app:itemIconTint="@color/black"
+        android:background="@drawable/search_btn_clicked_background"
         app:menu="@menu/bottom_nav_menu"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
