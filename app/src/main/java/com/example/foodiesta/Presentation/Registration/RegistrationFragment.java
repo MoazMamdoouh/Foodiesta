@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class RegistrationFragment extends Fragment {
 
@@ -28,89 +32,91 @@ public class RegistrationFragment extends Fragment {
     private Button loginBtn , registration ;
     private RegistrationPresenter registrationPresenter ;
     private String chefName ,chefEmail , chefPassword , confirmPassword ;
-    private DatabaseReference databaseReference ;
+    private View viewAtt ;
     private LottieAnimationView lottieAnimationView ;
 
     public RegistrationFragment() {
         // Required empty public constructor
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_registration, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        viewAtt = view ;
         initUI(view);
         initPresenter();
-        //checkForEmptyEditText();
         registrationBtnClicked(view);
+        loginBtnClicked(view);
+    }
 
+    private void loginBtnClicked(View view) {
+        loginBtn.setOnClickListener(clicked ->{
+            Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_loginFragment);
+        });
     }
 
     private void initPresenter() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Chef");
-        RegistrationRemoteFireBase registrationRemoteFireBase = new RegistrationRemoteFireBase(databaseReference);
+        RegistrationRemoteFireBase registrationRemoteFireBase = new RegistrationRemoteFireBase();
         RegistrationRepo registrationRepo = new RegistrationRepo(registrationRemoteFireBase) ;
-        registrationPresenter = new RegistrationPresenter(registrationRepo);
+        registrationPresenter = new RegistrationPresenter(registrationRepo , this );
     }
 
     private void registrationBtnClicked(View view) {
         registration.setOnClickListener(click -> {
-                            lottieAnimationView.setVisibility(View.VISIBLE);
-                            lottieAnimationView.playAnimation();
-                            chefName = chefNameEditText.getText().toString();
-                            chefEmail = chefEmailEditText.getText().toString();
-                            chefPassword = chefPasswordEditText.getText().toString();
-                            confirmPassword = confirmPasswordEditText.getText().toString();
-                            if(checkForRegisterChef()){
-                                Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_homeFragment);
-                            }
-                });
+            showLoadingAnimation();
+            chefName = chefNameEditText.getText().toString();
+            chefEmail = chefEmailEditText.getText().toString();
+            chefPassword = chefPasswordEditText.getText().toString();
+            confirmPassword = confirmPasswordEditText.getText().toString();
+            if(checkForEmptyEditText()) {
+                registrationPresenter.requestToRegisterChef(chefName, chefEmail, chefPassword);
+            }
+        });
     }
 
-    private boolean checkForRegisterChef() {
-        boolean flag = false ;
-        String chefStringFlag = registrationPresenter.requestToRegisterChef(chefName, chefEmail, chefPassword, confirmPassword);
-        if(chefStringFlag.equals("exist")){
-            lottieAnimationView.setVisibility(View.GONE);
-            Toast.makeText(getContext(), "User Already Exist", Toast.LENGTH_SHORT).show();
-            flag = false ;
+    private boolean checkForEmptyEditText() {
+
+        if(TextUtils.isEmpty(chefName)){
+            chefNameEditText.setError("chef name is Required");
+            return false;
         }
-        if(chefStringFlag.equals("success")){
-            lottieAnimationView.setVisibility(View.GONE);
-            Toast.makeText(getContext(), "Success to Register", Toast.LENGTH_SHORT).show();
-            flag = true ;
+        if(TextUtils.isEmpty(chefEmail)){
+            chefEmailEditText.setError("chef Email is Required");
+            return false;
         }
-        return flag ;
+        if(TextUtils.isEmpty(chefPassword)) {
+            chefPasswordEditText.setError("chef Password is Required");
+            return false;
+        }
+        if(chefPassword.length() < 6){
+            chefPasswordEditText.setError("password must have 6 or more characters");
+            return false;
+        }
+        if(!chefPassword.equals(confirmPassword)){
+            chefPasswordEditText.setError("password does not match ");
+            confirmPasswordEditText.setError("password does not match ");
+            return false;
+        }
+        else return true ;
     }
 
-    private void checkForEmptyEditText() {
-        if(chefNameEditText.getText() == null || chefNameEditText.getText().toString().trim().isEmpty()){
-            registration.setClickable(false);
-        }
-        if(chefEmailEditText.getText() == null || chefEmailEditText.getText().toString().trim().isEmpty()){
-            registration.setClickable(false);
-        }
-        if(chefPasswordEditText.getText() == null || chefPasswordEditText.getText().toString().trim().isEmpty()){
-            registration.setClickable(false);
-        }
-        if(confirmPasswordEditText.getText() == null || confirmPasswordEditText.getText().toString().trim().isEmpty()){
-            registration.setClickable(false);
-        }
+    void registrationSuccess(){
+        hideLoadingAnimation();
+        Navigation.findNavController(viewAtt).navigate(R.id.action_registrationFragment_to_homeFragment);
+    }
+    void registrationFailed(String msg){
+        hideLoadingAnimation();
+        Toast.makeText(getContext(), "Failed to Register" + msg, Toast.LENGTH_LONG).show();
     }
 
     private void initUI(View view) {
@@ -122,5 +128,14 @@ public class RegistrationFragment extends Fragment {
         registration = view.findViewById(R.id.registration_btn_registration) ;
         lottieAnimationView = view.findViewById(R.id.registration_lottie_file_loading) ;
         lottieAnimationView.setVisibility(View.GONE);
+    }
+
+    private void showLoadingAnimation(){
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        lottieAnimationView.playAnimation();
+    }
+    private void hideLoadingAnimation(){
+        lottieAnimationView.setVisibility(View.GONE);
+        lottieAnimationView.cancelAnimation();
     }
 }

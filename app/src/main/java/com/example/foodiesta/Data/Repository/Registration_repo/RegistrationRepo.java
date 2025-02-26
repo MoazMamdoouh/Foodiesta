@@ -1,6 +1,7 @@
 package com.example.foodiesta.Data.Repository.Registration_repo;
 
 import com.example.foodiesta.Data.Remore_data.RegistrationRemoteFireBase;
+import com.example.foodiesta.Presentation.Registration.OnRegistrationResponse;
 
 public class RegistrationRepo {
     private RegistrationRemoteFireBase registrationRemoteFireBase ;
@@ -9,7 +10,9 @@ public class RegistrationRepo {
         this.registrationRemoteFireBase = registrationRemoteFireBase;
     }
 
-    public String  requestToRegisterChef(String chefName, String chefEmail, String chefPassword, String confirmPassword) {
-        return registrationRemoteFireBase.requestToRegisterChef(chefName,chefEmail,chefPassword,confirmPassword);
+    public void   requestToRegisterChef(String chefName, String chefEmail
+            , String chefPassword, OnRegistrationResponse onRegistrationResponse) {
+          registrationRemoteFireBase.requestToRegisterChef(chefName,chefEmail,chefPassword
+                , onRegistrationResponse);
     }
 }
