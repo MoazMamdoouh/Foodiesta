@@ -89,5 +89,13 @@
             android:textColor="@color/bright_orange"
             />
     </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/login_lottie_file_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_rawRes="@raw/pizza_loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

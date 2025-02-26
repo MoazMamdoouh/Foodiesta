@@ -1,5 +1,6 @@
 package com.example.foodiesta.Presentation.Splash;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,13 @@ import android.view.ViewGroup;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class SplashFragment extends Fragment {
 
     private LottieAnimationView lottieAnimationView;
+    private FirebaseAuth firebaseAuth ;
     public SplashFragment() {
         // Required empty public constructor
     }
@@ -42,12 +45,17 @@ public class SplashFragment extends Fragment {
         ((MainActivity) requireActivity()).showBottomNav(false);
         super.onViewCreated(view, savedInstanceState);
         lottieAnimationView = view.findViewById(R.id.splash_lottie_file) ;
+        firebaseAuth = FirebaseAuth.getInstance() ;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 lottieAnimationView.playAnimation();
-
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
+                if (firebaseAuth.getCurrentUser() != null) {
+                    Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
+                }else {
+                    Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
+                }
             }
         } , 5000) ;
     }
