@@ -1,5 +1,12 @@
 package com.example.foodiesta.Presentation.Home;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -70,7 +77,11 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
               );
+
+
     }
+
+
 
     private void initLottieFile() {
         lottieAnimationView.playAnimation();
