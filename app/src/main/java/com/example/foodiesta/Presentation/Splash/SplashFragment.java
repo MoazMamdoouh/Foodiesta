@@ -17,12 +17,14 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class SplashFragment extends Fragment {
 
     private LottieAnimationView lottieAnimationView;
     private FirebaseAuth firebaseAuth ;
+    private FirebaseUser firebaseUser ;
     public SplashFragment() {
         // Required empty public constructor
     }
@@ -46,13 +48,18 @@ public class SplashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lottieAnimationView = view.findViewById(R.id.splash_lottie_file) ;
         firebaseAuth = FirebaseAuth.getInstance() ;
+        firebaseUser = firebaseAuth.getCurrentUser() ;
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 lottieAnimationView.playAnimation();
                 if (firebaseAuth.getCurrentUser() != null) {
-                    Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
+                    if(firebaseUser.isEmailVerified()) {
+                        Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
+                    }else {
+                        Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_loginFragment);
+                    }
                 }else {
                     Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
                 }

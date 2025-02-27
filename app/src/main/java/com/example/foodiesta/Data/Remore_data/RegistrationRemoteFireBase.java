@@ -1,9 +1,7 @@
 package com.example.foodiesta.Data.Remore_data;
 
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
 import com.example.foodiesta.Presentation.Registration.OnRegistrationResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,10 +10,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,13 +28,12 @@ public class RegistrationRemoteFireBase {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         firebaseAuth.createUserWithEmailAndPassword(chefEmail , chefPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     firebaseUser.sendEmailVerification().addOnSuccessListener( new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

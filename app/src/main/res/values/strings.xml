@@ -21,4 +21,6 @@
     <string name="reset_password">Reset Password</string>
     <string name="enter_email_address">Enter Email Address</string>
     <string name="a_link_is_gonna_send_to_you_on_ur_email_to_reset_password">A link is gonna send to you on Ur Email</string>
+    <string name="you_need_to_check_email_for_verfication_and_log_in">you need to check email for verfication and log in</string>
+    <string name="ok">OK</string>
 </resources>

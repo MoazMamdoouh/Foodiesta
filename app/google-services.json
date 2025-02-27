@@ -8,25 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:543883204101:android:513cf4db0fa3d1d95bee6c",
-        "android_client_info": {
-          "package_name": "com.example.firebasedemo"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCuWLLR4UzjzqUvG11PLvuqWxAUSC5g3J8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:543883204101:android:df1dcfbb449133995bee6c",
         "android_client_info": {
           "package_name": "com.example.foodiesta"

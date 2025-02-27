@@ -18,7 +18,7 @@ import com.example.foodiesta.R;
 public class WelcomeFragment extends Fragment {
 
     private Button loginBtn ;
-    private Button registrationBtn ;
+    private Button registrationBtn , guestBtn  ;
 
     public WelcomeFragment() {
         // Required empty public constructor
@@ -44,8 +44,13 @@ public class WelcomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initUI(view);
+        loginBtnClicked(view);
         registrationBtnClicked(view);
+        guestBtnClicked(view);
 
+    }
+
+    private void loginBtnClicked(View view) {
         loginBtn.setOnClickListener(click ->{
             Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
         });
@@ -57,8 +62,16 @@ public class WelcomeFragment extends Fragment {
                 );
     }
 
+    private void guestBtnClicked(View view){
+        guestBtn.setOnClickListener(clicked ->{
+            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_homeFragment);
+        });
+    }
+
     private void initUI(View view) {
         loginBtn = view.findViewById(R.id.welcome_btn_login) ;
         registrationBtn = view.findViewById(R.id.welcome_btn_registration) ;
+        guestBtn = view.findViewById(R.id.welcome_btn_guest) ;
     }
+
 }

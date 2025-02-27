@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,10 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Data.Remore_data.RegistrationRemoteFireBase;
 import com.example.foodiesta.Data.Repository.Registration_repo.RegistrationRepo;
 import com.example.foodiesta.R;
+import com.example.foodiesta.Utilities.CustomDialog;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class RegistrationFragment extends Fragment {
@@ -34,6 +33,9 @@ public class RegistrationFragment extends Fragment {
     private String chefName ,chefEmail , chefPassword , confirmPassword ;
     private View viewAtt ;
     private LottieAnimationView lottieAnimationView ;
+    private FirebaseUser firebaseUser ;
+    private FirebaseAuth firebaseAuth ;
+    private CustomDialog customDialog ;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -57,6 +59,17 @@ public class RegistrationFragment extends Fragment {
         initPresenter();
         registrationBtnClicked(view);
         loginBtnClicked(view);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+            Log.i("TAG", "onStart: " + firebaseUser.isEmailVerified());
+        checkForVerification(viewAtt);
     }
 
     private void loginBtnClicked(View view) {
@@ -80,6 +93,8 @@ public class RegistrationFragment extends Fragment {
             confirmPassword = confirmPasswordEditText.getText().toString();
             if(checkForEmptyEditText()) {
                 registrationPresenter.requestToRegisterChef(chefName, chefEmail, chefPassword);
+            }else {
+                hideLoadingAnimation();
             }
         });
     }
@@ -110,9 +125,24 @@ public class RegistrationFragment extends Fragment {
         else return true ;
     }
 
+    private void checkForVerification(View view){
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if(currentUser != null) {
+          currentUser.reload().addOnSuccessListener(r -> {
+              if (currentUser.isEmailVerified()) {
+                  customDialog.dismiss();
+                  Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_homeFragment);
+              } else {
+                  Log.i("TAG", "checkForVerification: not verified");
+              }
+          });
+      }
+    }
+
     void registrationSuccess(){
         hideLoadingAnimation();
-        Navigation.findNavController(viewAtt).navigate(R.id.action_registrationFragment_to_homeFragment);
+        customDialog.success("Registration Successfully" , "check your email to varify your account and SingIn");
     }
     void registrationFailed(String msg){
         hideLoadingAnimation();
@@ -128,6 +158,7 @@ public class RegistrationFragment extends Fragment {
         registration = view.findViewById(R.id.registration_btn_registration) ;
         lottieAnimationView = view.findViewById(R.id.registration_lottie_file_loading) ;
         lottieAnimationView.setVisibility(View.GONE);
+        customDialog = new CustomDialog(getContext()) ;
     }
 
     private void showLoadingAnimation(){
@@ -138,4 +169,5 @@ public class RegistrationFragment extends Fragment {
         lottieAnimationView.setVisibility(View.GONE);
         lottieAnimationView.cancelAnimation();
     }
+
 }
