@@ -196,7 +196,6 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         if (url == null || url.isEmpty()) {
             return null;
         }
-
         Uri uri = Uri.parse(url);
         String videoId = null;
 
@@ -205,7 +204,6 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         } else if (url.contains("youtu.be")) {
             videoId = uri.getLastPathSegment();
         }
-
         return videoId;
     }
 

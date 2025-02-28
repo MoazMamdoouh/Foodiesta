@@ -91,7 +91,7 @@ public class RegistrationFragment extends Fragment {
             chefEmail = chefEmailEditText.getText().toString();
             chefPassword = chefPasswordEditText.getText().toString();
             confirmPassword = confirmPasswordEditText.getText().toString();
-            clearTextFeilds();
+
             if(checkForEmptyEditText()) {
                 registrationPresenter.requestToRegisterChef(chefName, chefEmail, chefPassword);
             }else {
@@ -142,6 +142,7 @@ public class RegistrationFragment extends Fragment {
     }
 
     void registrationSuccess(){
+        clearTextFeilds();
         hideLoadingAnimation();
         customDialog.success("Registration Successfully" , "check your email to varify your account and SingIn");
     }
