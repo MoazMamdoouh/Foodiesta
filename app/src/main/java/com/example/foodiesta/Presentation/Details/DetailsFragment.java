@@ -1,6 +1,7 @@
 package com.example.foodiesta.Presentation.Details;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -175,15 +176,38 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         countryBtn.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCountry());
     }
     private void setYoutubeVideo(DetailsResponse detailsResponse) {
-        getLifecycle().addObserver(youTubePlayerView);
+            getLifecycle().addObserver(youTubePlayerView);
 
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = "S0Q4gqBUs7c";
-                youTubePlayer.loadVideo(videoId, 0);
+            String videoUrl = detailsResponse.getListOfRandomMeals().get(0).getMealVideo();
+            String videoId = extractYoutubeVideoId(videoUrl);
+
+            if (videoId != null) {
+                youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.loadVideo(videoId, 0);
+                    }
+                });
+            } else {
+                Log.e("YouTube", "Invalid YouTube URL: " + videoUrl);
             }
-        });
+        }
+    private String extractYoutubeVideoId(String url) {
+        if (url == null || url.isEmpty()) {
+            return null;
+        }
+
+        Uri uri = Uri.parse(url);
+        String videoId = null;
+
+        if (url.contains("youtube.com")) {
+            videoId = uri.getQueryParameter("v");
+        } else if (url.contains("youtu.be")) {
+            videoId = uri.getLastPathSegment();
+        }
+
+        return videoId;
     }
 
 }
+

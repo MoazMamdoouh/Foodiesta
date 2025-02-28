@@ -91,6 +91,7 @@ public class RegistrationFragment extends Fragment {
             chefEmail = chefEmailEditText.getText().toString();
             chefPassword = chefPasswordEditText.getText().toString();
             confirmPassword = confirmPasswordEditText.getText().toString();
+            clearTextFeilds();
             if(checkForEmptyEditText()) {
                 registrationPresenter.requestToRegisterChef(chefName, chefEmail, chefPassword);
             }else {
@@ -168,6 +169,13 @@ public class RegistrationFragment extends Fragment {
     private void hideLoadingAnimation(){
         lottieAnimationView.setVisibility(View.GONE);
         lottieAnimationView.cancelAnimation();
+    }
+
+    private void clearTextFeilds(){
+        chefNameEditText.setText("");
+        chefEmailEditText.setText("");
+        chefPasswordEditText.setText("");
+        confirmPasswordEditText.setText("");
     }
 
 }

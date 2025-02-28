@@ -94,6 +94,8 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         String  format = DateFormat.getDateInstance().format(calendar);
         SharedPreferences timeSharedPreference = getActivity().getSharedPreferences("timeSharedPreference " , Context.MODE_PRIVATE);
         SharedPreferences imageSharedPreference =  getActivity().getSharedPreferences("imageSharedPreference " , Context.MODE_PRIVATE);
+        SharedPreferences idSharedPreference =  getActivity().getSharedPreferences("idSharedPreference " , Context.MODE_PRIVATE);
+               mealId = idSharedPreference.getInt("mealId" , 0) ;
         String savedDate = timeSharedPreference.getString("CurrentDate" , null);
         String imageSp =  imageSharedPreference.getString("imageUrl" , null);
         if(savedDate == null){
@@ -176,10 +178,21 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
                 .error(R.drawable.fooderror)
                 .into(dailyMealImage) ;
         mealId = randomDailyMealResponse.getListOfRandomMeals().get(0).getId() ;
+        mealIdSharedPreference(randomDailyMealResponse);
+        imageUrlSharedPreference(randomDailyMealResponse);
+    }
+    private void imageUrlSharedPreference(FoodObjectResponse randomDailyMealResponse){
         SharedPreferences imageSharedPreference =  getActivity().getSharedPreferences("imageSharedPreference " , Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = imageSharedPreference.edit() ;
-            editor.putString("imageUrl" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage());
-            editor.apply();
+        SharedPreferences.Editor editor = imageSharedPreference.edit() ;
+        editor.putString("imageUrl" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage());
+        editor.apply();
+    }
+
+    private void mealIdSharedPreference(FoodObjectResponse randomDailyMealResponse){
+        SharedPreferences idSharedPreference =  getActivity().getSharedPreferences("idSharedPreference " , Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = idSharedPreference.edit() ;
+        editor.putInt("mealId" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getId());
+        editor.apply();
     }
 
     @Override
