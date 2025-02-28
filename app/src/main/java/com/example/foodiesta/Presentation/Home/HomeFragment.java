@@ -3,6 +3,7 @@ package com.example.foodiesta.Presentation.Home;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,10 @@ import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class HomeFragment extends Fragment implements  OnItemClickListener , HomeGateWay {
 
@@ -44,6 +50,8 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private View view ;
     private int mealId = 0 ;
     private LottieAnimationView lottieAnimationView ;
+    private Date calendar ;
+    private String imageUrl  ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -71,16 +79,40 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         initUI(view);
         initHomePresenter();
         requestMeals() ;
-        requestRandomMeal() ;
         initLottieFile();
         ((MainActivity) requireActivity()).showBottomNav(true);
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
               );
 
+         getCurrentDate();
+
 
     }
 
+    private void getCurrentDate() {
+        String  format = DateFormat.getDateInstance().format(calendar);
+        SharedPreferences timeSharedPreference = getActivity().getSharedPreferences("timeSharedPreference " , Context.MODE_PRIVATE);
+        SharedPreferences imageSharedPreference =  getActivity().getSharedPreferences("imageSharedPreference " , Context.MODE_PRIVATE);
+        String savedDate = timeSharedPreference.getString("CurrentDate" , null);
+        String imageSp =  imageSharedPreference.getString("imageUrl" , null);
+        if(savedDate == null){
+            SharedPreferences.Editor editor = timeSharedPreference.edit();
+            editor.putString("CurrentDate", format);
+            editor.apply();
+            requestRandomMeal();
+        } else if(savedDate.equals(format) && imageSp != null){
+                Glide.with(getContext()).load(imageSp)
+                        .placeholder(R.drawable.food)
+                        .error(R.drawable.fooderror)
+                        .into(dailyMealImage);
+        }else {
+            SharedPreferences.Editor editor = timeSharedPreference.edit();
+            editor.putString("CurrentDate", format);
+            editor.apply();
+            requestRandomMeal() ;
+        }
+    }
 
 
     private void initLottieFile() {
@@ -120,10 +152,10 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         homeAdapter = new HomeAdapter(getContext() , new FoodObjectResponse(), this) ;
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(homeAdapter);
+        calendar = Calendar.getInstance().getTime();
     }
     @Override
     public void onItemClicked(int id) {
-        Toast.makeText(getContext(), "item id = " + id, Toast.LENGTH_SHORT).show();
         com.example.foodiesta.Presentation.Home.HomeFragmentDirections.ActionHomeFragmentToDetailsFragment homeFragmentDirections =
                 HomeFragmentDirections.actionHomeFragmentToDetailsFragment(id) ;
         Navigation.findNavController(view).navigate(homeFragmentDirections);
@@ -144,6 +176,10 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
                 .error(R.drawable.fooderror)
                 .into(dailyMealImage) ;
         mealId = randomDailyMealResponse.getListOfRandomMeals().get(0).getId() ;
+        SharedPreferences imageSharedPreference =  getActivity().getSharedPreferences("imageSharedPreference " , Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = imageSharedPreference.edit() ;
+            editor.putString("imageUrl" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage());
+            editor.apply();
     }
 
     @Override

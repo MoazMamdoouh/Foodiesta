@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,13 +132,7 @@ public class LoginFragment extends Fragment {
                   @Override
                   public void onComplete(@NonNull Task<AuthResult> task) {
                       if (task.isSuccessful()) {
-                          if(checkForAccountValidation()) {
-                              hideLottieLoadingAnimation();
-                              Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
-                          }else {
-                              hideLottieLoadingAnimation();
-                              emailEditText.setError("please verify Your Account First");
-                          }
+                          checkForAccountValidation(view);
                       } else {
                           hideLottieLoadingAnimation();
                           String errorMessage = task.getException().getMessage();
@@ -174,8 +169,18 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private boolean checkForAccountValidation() {
-       return  firebaseUser.isEmailVerified() ;
+    private void checkForAccountValidation(View view) {
+        if(firebaseUser != null) {
+            firebaseUser.reload().addOnSuccessListener(r -> {
+                if (firebaseUser.isEmailVerified()) {
+                    hideLottieLoadingAnimation();
+                    Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_homeFragment);
+                } else {
+                    hideLottieLoadingAnimation();
+                    emailEditText.setError("please verify Your Account First");
+                }
+            });
+        }
     }
 
 }

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.favoriteFragment) {
-                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                   // startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                     return true;
                 } else {
                     return NavigationUI.onNavDestinationSelected(item, navController);
