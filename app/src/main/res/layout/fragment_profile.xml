@@ -61,8 +61,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logout"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/registration_btn_shape"
+
+            />
+        <Button
+            android:id="@+id/profile_btn_fetch_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/download_favorite_meals"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/welcome_registration_btn_shape"
+            android:textColor="@color/bright_orange"
+            />
+
+        <Button
+            android:id="@+id/profile_btn_fetch_calendet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/download_calender_meals"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/welcome_registration_btn_shape"
+            app:backgroundTint="@null"
+            android:textColor="@color/bright_orange"
             />
     </LinearLayout>
 

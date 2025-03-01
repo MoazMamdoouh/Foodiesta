@@ -26,4 +26,6 @@
     <string name="backup_favorite_meals">BackUp Favorite Meals</string>
     <string name="backup_calender_meals">BackUp Calender Meals</string>
     <string name="logout">LogOut</string>
+    <string name="download_favorite_meals">DownLoad Favorite Meals</string>
+    <string name="download_calender_meals">DownLoad Calender Meals</string>
 </resources>

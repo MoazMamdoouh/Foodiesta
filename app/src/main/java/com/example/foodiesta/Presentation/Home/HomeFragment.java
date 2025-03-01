@@ -24,6 +24,7 @@ import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
 import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
+import com.example.foodiesta.Utilities.LoadingDialog;
 import com.example.foodiesta.Utilities.OnItemClickListener;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
     private CardView dailyMealCardView ;
     private View view ;
     private int mealId = 0 ;
-    private LottieAnimationView lottieAnimationView ;
+    private LoadingDialog loadingDialog ;
     private Date calendar ;
     public HomeFragment() {
         // Required empty public constructor
@@ -65,20 +66,20 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view ;
+        loadingDialog = new LoadingDialog(getContext());
         initUI(view);
         initHomePresenter();
         requestMeals() ;
-        initLottieFile();
         ((MainActivity) requireActivity()).showBottomNav(true);
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
               );
 
          getCurrentDate();
+         loadingDialog.showLoadingAnimation();
 
 
     }
-
     private void getCurrentDate() {
         String  format = DateFormat.getDateInstance().format(calendar);
         SharedPreferences timeSharedPreference = getActivity().getSharedPreferences("timeSharedPreference " , Context.MODE_PRIVATE);
@@ -104,14 +105,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
             requestRandomMeal() ;
         }
     }
-
-
-    private void initLottieFile() {
-        lottieAnimationView.playAnimation();
-        dailyMealCardView.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-    }
-
     private void navigateThroughDailyMeal() {
 
         com.example.foodiesta.Presentation.Home.HomeFragmentDirections.ActionHomeFragmentToDetailsFragment homeFragmentDirections =
@@ -136,7 +129,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
         dailyMealCardView = view.findViewById(R.id.home_card_daily_meal) ;
         recyclerView = view.findViewById(R.id.home_rv_meals);
         dailyMealImage = view.findViewById(R.id.home_iv_daily_meal_image);
-        lottieAnimationView = view.findViewById(R.id.home_lottie_pizza_loading) ;
         recyclerView.setHasFixedSize(true);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext() , 2) ;
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -153,7 +145,7 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
     }
 
     public void showRandomMeals(FoodObjectResponse foodObjectResponse){
-        lottieAnimationView.setVisibility(View.GONE);
+        loadingDialog.hideDialog();
         dailyMealCardView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         homeAdapter.setRandomMealsResponse(foodObjectResponse) ;

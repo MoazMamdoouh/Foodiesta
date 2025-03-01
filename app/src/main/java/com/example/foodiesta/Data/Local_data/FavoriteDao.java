@@ -27,6 +27,12 @@ public interface FavoriteDao {
     @Delete
     Completable deleteMealFromFavorite(FavoriteEntity favoriteEntity) ;
 
+    @Query("DELETE FROM favorite_meals_table")
+    Completable deleteAllFavoriteMeals();
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    Completable insertListOfFavoriteMeals(List<FavoriteEntity> favoriteEntities) ;
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertToCalender(CalenderEntity calenderEntity) ;
 
@@ -36,4 +42,10 @@ public interface FavoriteDao {
     @Delete
     Completable deleteMealFromCalender(CalenderEntity calenderEntity) ;
 
+    @Query("SELECT * FROM calender_meals_table")
+    Flowable<List<CalenderEntity>> getAllCalenderMeals();
+    @Query("DELETE FROM calender_meals_table")
+    Completable deleteAllFromCalender();
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    Completable insertListOfCalenderMeals(List<CalenderEntity> calenderEntities) ;
 }

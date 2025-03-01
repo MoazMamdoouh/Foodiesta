@@ -1,15 +1,15 @@
 package com.example.foodiesta.Data.Remore_data;
 
 
-import android.view.View;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 
+import com.example.foodiesta.Model.Calender.CalenderEntity;
+import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 import com.example.foodiesta.Presentation.Login.OnLoginResponse;
+import com.example.foodiesta.Presentation.Profile.OnFireStoreResponse;
 import com.example.foodiesta.Presentation.Registration.OnRegistrationResponse;
-import com.example.foodiesta.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,16 +27,21 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseAuthWebException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class RegistrationRemoteFireBase {
+public class MealsRemoteFireBase {
     private FirebaseAuth firebaseAuth ;
     private FirebaseFirestore firestore ;
     private FirebaseUser firebaseUser ;
     private String userId;
-    public RegistrationRemoteFireBase() {
+    public MealsRemoteFireBase() {
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
     }
@@ -120,4 +125,75 @@ public class RegistrationRemoteFireBase {
         });
     }
 
+    public void insertFavoriteMealsToServer(String userId, FirebaseFirestore firebaseFirestore
+            , List<FavoriteEntity> response , OnFireStoreResponse onFireStoreResponse) {
+
+        for (FavoriteEntity meal : response) {
+            firebaseFirestore.collection("users_backUp")
+                    .document(userId)
+                    .collection("favorite_meals")
+                    .document(String.valueOf(meal.getMealId()))
+                    .set(meal)
+                    .addOnSuccessListener(aVoid ->  onFireStoreResponse.successInsertionToServer("favorite"))
+                    .addOnFailureListener(e -> Log.e("FirestoreError", "Backup failed", e));
+        }
+    }
+
+    public void downloadFavoriteMeals(String userId , FirebaseFirestore firebaseFirestore ,OnFireStoreResponse onFireStoreResponse ) {
+        firebaseFirestore.collection("users_backUp")
+                .document(userId)
+                .collection("favorite_meals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<FavoriteEntity> favoriteEntities = new ArrayList<>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                FavoriteEntity meal = document.toObject(FavoriteEntity.class);
+                                favoriteEntities.add(meal);
+                            }
+                            onFireStoreResponse.successDownload(favoriteEntities , "favorite");
+                        } else {
+                            Log.e("FirestoreError", "Error getting meals", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void insertCalenderMealsToServer(List<CalenderEntity> calenderEntities ,FirebaseFirestore firebaseFirestore
+     , String userID , OnFireStoreResponse onFireStoreResponse) {
+        for (CalenderEntity calender : calenderEntities) {
+            firebaseFirestore.collection("users_backUp")
+                    .document(userID)
+                    .collection("calender_meals")
+                    .document(String.valueOf(calender.getMealId()))
+                    .set(calender)
+                    .addOnSuccessListener(aVoid ->  onFireStoreResponse.successInsertionToServer("calender"))
+                    .addOnFailureListener(e -> Log.e("FirestoreError", "Backup failed", e));
+        }
+    }
+
+    public void downLoadAllCalenderMeals(String userId, FirebaseFirestore firebaseFirestore, OnFireStoreResponse onFireStoreResponse) {
+        firebaseFirestore.collection("users_backUp")
+                .document(userId)
+                .collection("calender_meals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<FavoriteEntity> favoriteEntities = new ArrayList<>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                FavoriteEntity meal = document.toObject(FavoriteEntity.class);
+                                favoriteEntities.add(meal);
+                            }
+                            onFireStoreResponse.successDownload(favoriteEntities , "calender");
+                        } else {
+                            Log.e("FirestoreError", "Error getting meals", task.getException());
+                        }
+                    }
+                });
+
+    }
 }

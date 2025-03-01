@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.example.foodiesta.Model.Calender.CalenderEntity;
 import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -56,6 +57,43 @@ public class MealsLocalDataSource {
         favoriteDao.deleteMealFromCalender(calenderEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void deleteAllFavoriteMealsFromRoom() {
+        favoriteDao.deleteAllFavoriteMeals().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public <T> void insertFavoriteMeals(List<T> downloadedList , String type) {
+        if (type.equals("favorite")) {
+            List<FavoriteEntity> favoriteEntities = new ArrayList<>();
+            for (T item : downloadedList) {
+                if (item instanceof FavoriteEntity) {
+                    favoriteEntities.add((FavoriteEntity) item);
+                }
+            }
+            favoriteDao.insertListOfFavoriteMeals(favoriteEntities).subscribeOn(Schedulers.io())
+                    .subscribe();
+        }else{
+            List<CalenderEntity> calenderEntities = new ArrayList<>();
+            for (T item : downloadedList) {
+                if (item instanceof CalenderEntity) {
+                    calenderEntities.add((CalenderEntity) item);
+                }
+            }
+            favoriteDao.insertListOfCalenderMeals(calenderEntities).subscribeOn(Schedulers.io())
+                    .subscribe();
+        }
+    }
+
+    public Flowable<List<CalenderEntity>> getAllCalenderMeals() {
+        return favoriteDao.getAllCalenderMeals();
+    }
+
+    public void deleteAllCalenderMealsFromRoom() {
+        favoriteDao.deleteAllFromCalender().subscribeOn(Schedulers.io())
                 .subscribe();
     }
 }

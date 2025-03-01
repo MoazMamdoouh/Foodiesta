@@ -50,6 +50,8 @@ public class SplashFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance() ;
         firebaseUser = firebaseAuth.getCurrentUser() ;
 
+        ((MainActivity) requireActivity()).showBottomNav(false);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

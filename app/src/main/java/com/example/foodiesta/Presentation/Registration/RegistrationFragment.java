@@ -16,8 +16,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.foodiesta.Data.Remore_data.RegistrationRemoteFireBase;
+import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.Data.Repository.Registration_repo.RegistrationRepo;
+import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.CustomDialog;
 import com.google.android.material.textfield.TextInputEditText;
@@ -60,6 +61,8 @@ public class RegistrationFragment extends Fragment {
         registrationBtnClicked(view);
         loginBtnClicked(view);
 
+        ((MainActivity) requireActivity()).showBottomNav(false);
+
     }
 
     @Override
@@ -79,8 +82,8 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void initPresenter() {
-        RegistrationRemoteFireBase registrationRemoteFireBase = new RegistrationRemoteFireBase();
-        RegistrationRepo registrationRepo = new RegistrationRepo(registrationRemoteFireBase) ;
+        MealsRemoteFireBase mealsRemoteFireBase = new MealsRemoteFireBase();
+        RegistrationRepo registrationRepo = new RegistrationRepo(mealsRemoteFireBase) ;
         registrationPresenter = new RegistrationPresenter(registrationRepo , this );
     }
 

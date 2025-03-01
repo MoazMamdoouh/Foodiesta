@@ -11,6 +11,10 @@ public class FavoriteEntity {
     String mealUrl ;
     String mealName ;
 
+    public FavoriteEntity() {
+
+    }
+
     public FavoriteEntity(int mealId, String mealUrl, String mealName) {
         this.mealId = mealId;
         this.mealUrl = mealUrl;
@@ -20,23 +24,18 @@ public class FavoriteEntity {
     public int getMealId() {
         return mealId;
     }
-
     public void setMealId(int mealId) {
         this.mealId = mealId;
     }
-
     public String getMealUrl() {
         return mealUrl;
     }
-
     public void setMealUrl(String mealUrl) {
         this.mealUrl = mealUrl;
     }
-
     public String getMealName() {
         return mealName;
     }
-
     public void setMealName(String mealName) {
         this.mealName = mealName;
     }

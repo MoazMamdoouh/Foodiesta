@@ -7,16 +7,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
+import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.Data.Repository.ProfileRepo;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.CustomDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,12 +29,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment<T> extends Fragment {
 
     private TextView chefNameTextView, chefEmailTextView;
     private FirebaseAuth firebaseAuth;
     private String userId;
-    private Button favoriteBackUpBtn , calenderBackUpBtn , logOutBtn;
+    private Button favoriteBackUpBtn , calenderBackUpBtn , logOutBtn , downloadFavoriteBtn , downloadCalenderBtn;
     private FirebaseFirestore firebaseFirestore;
     private ProfilePresenter profilePresenter;
 
@@ -63,7 +63,10 @@ public class ProfileFragment extends Fragment {
         initPresenter();
         getUserName();
         favoriteBackUpBtnClicked();
+        downloadFavoriteBtnClicked();
         logOutBtnClicked(view);
+        calenderBtnClicked();
+        downloadCalenderBtn();
     }
 
     private void logOutBtnClicked(View view) {
@@ -82,14 +85,17 @@ public class ProfileFragment extends Fragment {
         favoriteBackUpBtn = view.findViewById(R.id.profile_btn_backup_favorite);
         calenderBackUpBtn = view.findViewById(R.id.profile_btn_backup_calendet) ;
         logOutBtn = view.findViewById(R.id.profile_btn_log_out) ;
+        downloadFavoriteBtn = view.findViewById(R.id.profile_btn_fetch_favorite) ;
+        downloadCalenderBtn = view.findViewById(R.id.profile_btn_fetch_calendet) ;
         //fire base
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
     private void initPresenter() {
+        MealsRemoteFireBase mealsRemoteFireBase = new MealsRemoteFireBase() ;
         MealsLocalDataSource mealsLocalDataSource = new MealsLocalDataSource(getContext());
-        ProfileRepo profileRepo = new ProfileRepo(mealsLocalDataSource);
+        ProfileRepo profileRepo = new ProfileRepo(mealsLocalDataSource , mealsRemoteFireBase);
         profilePresenter = new ProfilePresenter(profileRepo, this);
     }
 
@@ -97,16 +103,58 @@ public class ProfileFragment extends Fragment {
         favoriteBackUpBtn.setOnClickListener(
                 click -> {
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-                    profilePresenter.getListOfFavoriteMeal(userId, firebaseFirestore, firebaseAuth);
+                    profilePresenter.getListOfFavoriteMeal(userId, firebaseFirestore);
                 }
         );
     }
 
-    public void successInsert() {
-        CustomDialog customDialog = new CustomDialog(getContext()) ;
-        customDialog.success("BackUp Success" , "");
+    private void downloadFavoriteBtnClicked() {
+        downloadFavoriteBtn.setOnClickListener(
+                clicked -> {
+                    userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                    profilePresenter.downloadAllFavoriteMeals(userId,firebaseFirestore);
+                    Toast.makeText(getContext(), "clicked", Toast.LENGTH_LONG).show();
+                }
+        );
     }
 
+    public void successInsertFavorite(String type) {
+        CustomDialog customDialog = new CustomDialog(getContext()) ;
+        customDialog.success("BackUp Success" , "");
+        if(type.equals("favorite")){
+            profilePresenter.deleteAllFavoriteMealsFromRoom();
+        }else {
+            profilePresenter.deleteAllCalenderMealsFromRoom();
+        }
+
+    }
+
+    void successDownLoadFavorite(List<T> downloadedList  , String type){
+        CustomDialog customDialog = new CustomDialog(getContext()) ;
+        customDialog.success("DownLoad Success" , "");
+        if(type.equals("favorite")){
+            profilePresenter.inseMealsList(downloadedList , type);
+        }else {
+            profilePresenter.inseMealsList(downloadedList , type);
+        }
+    }
+    private void calenderBtnClicked(){
+        calenderBackUpBtn.setOnClickListener(
+                clicked -> {
+                    userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                    profilePresenter.insertCalenderMealsToServer(firebaseFirestore , userId) ;
+                }
+        );
+    }
+
+    private void downloadCalenderBtn(){
+        downloadCalenderBtn.setOnClickListener(
+                clicked ->{
+                    userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                    profilePresenter.downLoadAllCalenderMeals(userId,firebaseFirestore);
+                }
+        );
+    }
     private void getUserName() {
 
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -115,9 +163,10 @@ public class ProfileFragment extends Fragment {
         documentReference.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                chefNameTextView.setText(value.getString("chefName"));
-                chefEmailTextView.setText(value.getString("chefEmail"));
-                Log.e("FirestoreError", "Document does not exist for userId: " + userId);
+                if(value != null && value.exists()){
+                    chefNameTextView.setText(value.getString("chefName"));
+                    chefEmailTextView.setText(value.getString("chefEmail"));
+                }
             }
         });
     }

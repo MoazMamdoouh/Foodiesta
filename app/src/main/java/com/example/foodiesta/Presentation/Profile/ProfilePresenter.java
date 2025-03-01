@@ -4,19 +4,17 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.foodiesta.Data.Repository.ProfileRepo;
+import com.example.foodiesta.Model.Calender.CalenderEntity;
 import com.example.foodiesta.Model.Favorite.FavoriteEntity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class ProfilePresenter {
+public class ProfilePresenter implements OnFireStoreResponse {
 
     private ProfileRepo profileRepo ;
     private ProfileFragment profileFragment ;
@@ -27,28 +25,59 @@ public class ProfilePresenter {
     }
 
     @SuppressLint("CheckResult")
-    void getListOfFavoriteMeal(String userId , FirebaseFirestore firebaseFirestore
-            , FirebaseAuth firebaseAuth ){
+    void getListOfFavoriteMeal(String userId , FirebaseFirestore firebaseFirestore){
         Flowable<List<FavoriteEntity>> flowable = profileRepo.getListOfFavoriteMeals() ;
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> insertFavoriteMealsToFireStore(userId , firebaseFirestore
-                                ,firebaseAuth , response )
+                        response -> profileRepo.insertFavoriteMealsInServer(userId , firebaseFirestore
+                                 , response , this )
                 );
     }
 
-    void insertFavoriteMealsToFireStore(String userId , FirebaseFirestore firebaseFirestore
-            , FirebaseAuth firebaseAuth , List<FavoriteEntity> favoriteEntities){
 
-        for (FavoriteEntity meal : favoriteEntities) {
-            firebaseFirestore.collection("users_backUp")
-                    .document(userId)
-                    .collection("favorite_meals")
-                    .document(String.valueOf(meal.getMealId()))
-                    .set(meal)
-                    .addOnSuccessListener(aVoid -> profileFragment.successInsert())
-                    .addOnFailureListener(e -> Log.e("FirestoreError", "Backup failed", e));
-        }
+    public void deleteAllFavoriteMealsFromRoom() {
+        profileRepo.deleteAllFavoriteMealsFromRoom();
+    }
+
+    public void downloadAllFavoriteMeals(String userID , FirebaseFirestore firestore) {
+        profileRepo.downLoadFavoriteMeals(userID , firestore , this);
+    }
+
+    @Override
+    public void successInsertionToServer(String success) {
+           profileFragment.successInsertFavorite(success);
+    }
+
+    @Override
+    public void successDownload(List listedDownload , String type) {
+        profileFragment.successDownLoadFavorite(listedDownload , type);
+        Log.i("TAG", "successDownload: ");
+    }
+
+    @Override
+    public void failedInsertionToServer(String success) {
+    }
+
+    public <T> void inseMealsList(List<T> downloadedList , String type) {
+        profileRepo.insertFavoriteMeals(downloadedList , type);
+    }
+
+    @SuppressLint("CheckResult")
+    public void insertCalenderMealsToServer(FirebaseFirestore firebaseFirestore, String userID) {
+        Flowable<List<CalenderEntity>> flowable = profileRepo.getListOfCalenderMeals();
+        flowable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        response ->  profileRepo.insertCalenderMealsToServer(response , firebaseFirestore , userID ,this)
+                                );
+    }
+
+    public void deleteAllCalenderMealsFromRoom() {
+        profileRepo.deleteAllCalenderMealsFromRoom();
+    }
+
+    public void downLoadAllCalenderMeals(String userId, FirebaseFirestore firebaseFirestore) {
+        profileRepo.downLoadAllCalenderMeals(userId , firebaseFirestore , this);
     }
 }

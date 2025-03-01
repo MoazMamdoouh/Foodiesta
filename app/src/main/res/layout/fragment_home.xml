@@ -7,14 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Presentation.Home.HomeFragment"
     >
-  <com.airbnb.lottie.LottieAnimationView
-      android:id="@+id/home_lottie_pizza_loading"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:lottie_rawRes="@raw/pizza_loading"
-      app:lottie_loop="true"
-      app:lottie_autoPlay="true"
-    />
   <androidx.cardview.widget.CardView
       android:id="@+id/home_card_daily_meal"
       android:layout_width="match_parent"

@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.foodiesta.Data.Remore_data.RegistrationRemoteFireBase;
+
+import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.Data.Repository.Login.LoginRepo;
+import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.LoadingDialog;
 import com.google.android.material.textfield.TextInputEditText;
@@ -64,6 +65,8 @@ public class LoginFragment extends Fragment {
         loginBtnClicked(view);
         registrationBtnClicked(view);
         forgetPasswordClicked();
+
+        ((MainActivity) requireActivity()).showBottomNav(false);
     }
 
     private void initUI(View view) {
@@ -78,8 +81,8 @@ public class LoginFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser() ;
     }
     private void initPresenter(){
-        RegistrationRemoteFireBase registrationRemoteFireBase = new RegistrationRemoteFireBase();
-        LoginRepo loginRepo = new LoginRepo(registrationRemoteFireBase);
+        MealsRemoteFireBase mealsRemoteFireBase = new MealsRemoteFireBase();
+        LoginRepo loginRepo = new LoginRepo(mealsRemoteFireBase);
         loginPresenter  = new LoginPresenter(loginRepo , this );
     }
     private void registrationBtnClicked(View view) {
@@ -137,7 +140,8 @@ public class LoginFragment extends Fragment {
 
     public void LoginSuccess() {
       loadingDialog.hideDialog();
-      checkForAccountValidation(viewAtt);
+     // checkForAccountValidation(viewAtt);
+        Navigation.findNavController(viewAtt).navigate(R.id.action_loginFragment_to_homeFragment);
     }
 
     public void loginFailed(String failed) {
