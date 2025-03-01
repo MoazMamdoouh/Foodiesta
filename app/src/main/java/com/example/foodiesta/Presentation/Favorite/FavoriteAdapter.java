@@ -26,6 +26,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
     }
     public void  setList(List<FavoriteEntity> favoriteEntities){
         this.favoriteEntities = favoriteEntities ;
+        notifyDataSetChanged();
     }
 
     @NonNull

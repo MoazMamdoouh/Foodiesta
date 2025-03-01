@@ -7,6 +7,8 @@ import com.example.foodiesta.Model.Calender.CalenderEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 public class CalenderRepo {
 
     private MealsLocalDataSource mealsLocalDataSource ;
@@ -15,7 +17,7 @@ public class CalenderRepo {
         this.mealsLocalDataSource = mealsLocalDataSource;
     }
 
-    public LiveData<List<CalenderEntity>> getMealThroughSpacificDate(int year , int month , int day ){
+    public Flowable<List<CalenderEntity>> getMealThroughSpacificDate(int year , int month , int day ){
        return  mealsLocalDataSource.getMealFromCalender(year , month , day);
     }
 

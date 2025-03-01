@@ -7,6 +7,8 @@ import com.example.foodiesta.Model.Favorite.FavoriteEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 public class FavoriteRepo {
 
     private MealsLocalDataSource mealsLocalDataSource ;
@@ -15,7 +17,7 @@ public class FavoriteRepo {
         this.mealsLocalDataSource = mealsLocalDataSource;
     }
 
-    public LiveData<List<FavoriteEntity>> getFavoriteMeals(){
+    public Flowable<List<FavoriteEntity>> getFavoriteMeals(){
         return mealsLocalDataSource.getFavoriteMeals() ;
     }
 

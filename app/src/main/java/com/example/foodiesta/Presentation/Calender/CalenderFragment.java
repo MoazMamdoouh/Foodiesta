@@ -1,13 +1,10 @@
 package com.example.foodiesta.Presentation.Calender;
 
-import android.database.Observable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,27 +61,24 @@ public class CalenderFragment extends Fragment  implements OnCalenderIconClicked
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                getMealsThroughSpacificDate(year , month , dayOfMonth) ;
+                requestMealsThroughSpacificDate(year , month , dayOfMonth) ;
                 Toast.makeText(getContext(), "date is " + year +"/" + month +"/"+dayOfMonth , Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void getMealsThroughSpacificDate(int year , int month , int dayOfMonth) {
-        LiveData<List<CalenderEntity>> listLiveData = calenderPresenter.getMealThroughSpacificDate(year, month, dayOfMonth) ;
-        Observer<List<CalenderEntity>> observable = new Observer<List<CalenderEntity>>() {
-            @Override
-            public void onChanged(List<CalenderEntity> calenderEntities) {
-                calenderAdapter.setCalenderList(calenderEntities);
-            }
-        };
-        listLiveData.observe(getViewLifecycleOwner() , observable);
+    private void requestMealsThroughSpacificDate(int year , int month , int dayOfMonth) {
+         calenderPresenter.getMealThroughSpacificDate(year, month, dayOfMonth) ;
     }
+    void getMealsThroughSpacificDate(List<CalenderEntity> calenderEntities){
+         calenderAdapter.setCalenderList(calenderEntities);
+    }
+
 
     private void intiPresenter(){
         MealsLocalDataSource mealsLocalDataSource = new MealsLocalDataSource(getContext());
         CalenderRepo calenderRepo = new CalenderRepo(mealsLocalDataSource);
-        calenderPresenter = new CalenderPresenter(calenderRepo) ;
+        calenderPresenter = new CalenderPresenter(calenderRepo , this) ;
     }
     private void initUI(View view) {
         calendarView = view.findViewById(R.id.calender_cl) ;

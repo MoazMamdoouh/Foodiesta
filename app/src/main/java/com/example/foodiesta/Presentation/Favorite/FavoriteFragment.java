@@ -5,8 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,25 +50,20 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
 
         initUI(view);
         initPresenter() ;
-        getFavoriteMeals();
+        requestFavoriteMeals();
     }
 
-    private void getFavoriteMeals() {
-       LiveData<List<FavoriteEntity>> favoriteMeals = favoritePresenter.getFavoriteMeals() ;
-        Observer<List<FavoriteEntity>> listObserver = new Observer<List<FavoriteEntity>>() {
-            @Override
-            public void onChanged(List<FavoriteEntity> favoriteEntities) {
-                favoriteAdapter.setList(favoriteEntities);
-                favoriteAdapter.notifyDataSetChanged();
-            }
-        };
-        favoriteMeals.observe(getViewLifecycleOwner() , listObserver);
+     void requestFavoriteMeals() {
+                favoritePresenter.requestFavoriteMeals() ;
+    }
+    void getListOfFavoriteMeals(List<FavoriteEntity> favoriteEntities){
+        favoriteAdapter.setList(favoriteEntities);
     }
 
     private void initPresenter() {
         MealsLocalDataSource mealsLocalDataSource = new MealsLocalDataSource(getContext()) ;
         FavoriteRepo favoriteRepo = new FavoriteRepo(mealsLocalDataSource) ;
-        favoritePresenter = new FavoritePresenter(favoriteRepo);
+        favoritePresenter = new FavoritePresenter(favoriteRepo , this);
     }
 
     private void initUI(View view) {
