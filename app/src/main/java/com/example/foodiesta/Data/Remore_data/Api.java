@@ -20,7 +20,7 @@ public interface Api {
     Single<FoodObjectResponse> getRandomDailyMeal();
 
     @GET("lookup.php")
-    Call<DetailsResponse> getMealDetails(@Query("i") int id) ;
+    Single<DetailsResponse> getMealDetails(@Query("i") int id) ;
 
 
     @GET("categories.php")

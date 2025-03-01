@@ -1,15 +1,9 @@
 package com.example.foodiesta.Presentation.Home;
 
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkRequest;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -18,14 +12,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
@@ -34,7 +25,6 @@ import com.example.foodiesta.MainActivity;
 import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.OnItemClickListener;
-
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;

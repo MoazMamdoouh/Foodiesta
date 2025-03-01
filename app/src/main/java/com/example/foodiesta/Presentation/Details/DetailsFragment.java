@@ -26,13 +26,14 @@ import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.Data.Repository.Deatails_repo.DetailsRepo;
 import com.example.foodiesta.Model.Details.DetailsResponse;
 import com.example.foodiesta.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 
-public class DetailsFragment extends Fragment implements DetailsGateWay  {
+public class DetailsFragment extends Fragment  {
 
    private ImageView mealImage ;
    private DetailsPresenter detailsPresenter ;
@@ -144,17 +145,25 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
         detailsAdapter = new DetailsAdapter(getContext() , new ArrayList<>() , new ArrayList<>() ) ;
         recyclerView.setAdapter(detailsAdapter);
     }
-    @Override
-    public void ShowDetails(DetailsResponse detailsResponse) {
-          setMealImage(detailsResponse);
-          setbuttons(detailsResponse);
-          setMealNameAndInstruction(detailsResponse);
-          setIngredientList(detailsResponse);
-          setYoutubeVideo(detailsResponse);
-          categoryName = detailsResponse.getListOfRandomMeals().get(0).getMealCategory() ;
-          mealId = detailsResponse.getListOfRandomMeals().get(0).getMealId();
-          mealNameString = detailsResponse.getListOfRandomMeals().get(0).getMealName();
-          mealUrl = detailsResponse.getListOfRandomMeals().get(0).getMealImage() ;
+
+    void showDetails(DetailsResponse detailsResponse){
+        setMealImage(detailsResponse);
+        setbuttons(detailsResponse);
+        setMealNameAndInstruction(detailsResponse);
+        setIngredientList(detailsResponse);
+        setYoutubeVideo(detailsResponse);
+        categoryName = detailsResponse.getListOfRandomMeals().get(0).getMealCategory() ;
+        mealId = detailsResponse.getListOfRandomMeals().get(0).getMealId();
+        mealNameString = detailsResponse.getListOfRandomMeals().get(0).getMealName();
+        mealUrl = detailsResponse.getListOfRandomMeals().get(0).getMealImage() ;
+    }
+
+    void detailsError(String error){
+        Snackbar.make(getView(), "Hello from Snackbar!", Snackbar.LENGTH_LONG)
+                .setAction("Undo", v -> {
+
+                })
+                .show();
     }
     private void setIngredientList(DetailsResponse detailsResponse) {
         detailsAdapter.setIngredientList(detailsResponse.getListOfRandomMeals().get(0).getIngreientList()

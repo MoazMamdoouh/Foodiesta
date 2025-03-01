@@ -1,12 +1,10 @@
 package com.example.foodiesta.Data.Remore_data;
 
-import com.example.foodiesta.Model.Details.DetailsResponse;
 import com.example.foodiesta.Model.Search.Country.CountryObjectResponse;
 import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
 import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 import com.example.foodiesta.Presentation.Serach.SearchGateWay;
-import com.example.foodiesta.Utilities.OnDetailedResponse;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.core.Single;
@@ -45,19 +43,8 @@ public class MealsRemoteDataSource {
         return api.getRandomDailyMeal() ;
     }
 
-    public void getMealDetails(int id  , OnDetailedResponse onDetailedResponse){
-        Call<DetailsResponse> responseCall = api.getMealDetails(id) ;
-        responseCall.enqueue(new Callback<DetailsResponse>() {
-            @Override
-            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
-                onDetailedResponse.Success(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<DetailsResponse> call, Throwable t) {
-                onDetailedResponse.failed(t.getMessage());
-            }
-        });
+    public Single getMealDetails(int id ){
+        return api.getMealDetails(id) ;
     }
 
     public void getAllCategories(SearchGateWay searchGateWay){

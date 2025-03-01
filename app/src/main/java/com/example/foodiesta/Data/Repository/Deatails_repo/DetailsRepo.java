@@ -3,8 +3,8 @@ package com.example.foodiesta.Data.Repository.Deatails_repo;
 
 import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
-import com.example.foodiesta.Utilities.OnDetailedResponse;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class DetailsRepo {
     private MealsRemoteDataSource mealsRemoteDataSource ;
@@ -15,8 +15,8 @@ public class DetailsRepo {
         this.mealsLocalDataSource = mealsLocalDataSource ;
     }
 
-    public void getMealDetails(int id  , OnDetailedResponse onDetailedResponse){
-        mealsRemoteDataSource.getMealDetails(id , onDetailedResponse);
+    public Single getMealDetails(int id ){
+        return mealsRemoteDataSource.getMealDetails(id );
     }
     public void insertMealToFavorite(int id , String mealUrl , String mealName ) {
         mealsLocalDataSource.insertFavoriteMeal(id , mealUrl , mealName);
