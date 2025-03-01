@@ -23,4 +23,7 @@
     <string name="a_link_is_gonna_send_to_you_on_ur_email_to_reset_password">A link is gonna send to you on Ur Email</string>
     <string name="you_need_to_check_email_for_verfication_and_log_in">you need to check email for verfication and log in</string>
     <string name="ok">OK</string>
+    <string name="backup_favorite_meals">BackUp Favorite Meals</string>
+    <string name="backup_calender_meals">BackUp Calender Meals</string>
+    <string name="logout">LogOut</string>
 </resources>

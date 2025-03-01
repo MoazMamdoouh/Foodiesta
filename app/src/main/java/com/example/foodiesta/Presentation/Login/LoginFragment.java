@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Data.Remore_data.RegistrationRemoteFireBase;
 import com.example.foodiesta.Data.Repository.Login.LoginRepo;
 import com.example.foodiesta.R;
+import com.example.foodiesta.Utilities.LoadingDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,10 +32,10 @@ public class LoginFragment extends Fragment {
     private String chefEmail , password ;
     private FirebaseAuth firebaseAuth ;
     private FirebaseUser firebaseUser;
-    private LottieAnimationView lottieAnimationView ;
     private ForgetPasswordBottomSheet forgetPasswordBottomSheet ;
     private LoginPresenter loginPresenter ;
     private View viewAtt ;
+    private LoadingDialog loadingDialog ;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -56,6 +58,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewAtt = view ;
+        loadingDialog = new LoadingDialog(getContext()) ;
         initUI(view);
         initPresenter();
         loginBtnClicked(view);
@@ -69,8 +72,6 @@ public class LoginFragment extends Fragment {
         loginBtn = view.findViewById(R.id.login_btn_login) ;
         registrationBtn = view.findViewById(R.id.login_btn_registration);
         forgetPasswordText = view.findViewById(R.id.login_tv_forget_password) ;
-        lottieAnimationView = view.findViewById(R.id.login_lottie_file_loading);
-        lottieAnimationView.setVisibility(View.GONE);
         forgetPasswordBottomSheet = new ForgetPasswordBottomSheet();
         //fire base init
         firebaseAuth = FirebaseAuth.getInstance() ;
@@ -81,22 +82,11 @@ public class LoginFragment extends Fragment {
         LoginRepo loginRepo = new LoginRepo(registrationRemoteFireBase);
         loginPresenter  = new LoginPresenter(loginRepo , this );
     }
-
     private void registrationBtnClicked(View view) {
         registrationBtn.setOnClickListener(clicked ->{
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrationFragment);
         });
     }
-
-    private void showLottieLoadingAnimation(){
-        lottieAnimationView.setVisibility(View.VISIBLE);
-        lottieAnimationView.playAnimation();
-    }
-    private void  hideLottieLoadingAnimation(){
-        lottieAnimationView.cancelAnimation();
-        lottieAnimationView.setVisibility(View.GONE);
-    }
-
     private void  forgetPasswordClicked(){
         forgetPasswordText.setOnClickListener(clicked -> {
             forgetPasswordBottomSheet.show(getActivity().getSupportFragmentManager(), "BottomSheetTag");
@@ -105,7 +95,7 @@ public class LoginFragment extends Fragment {
 
     private void loginBtnClicked(View view) {
       loginBtn.setOnClickListener(clicked ->{
-          showLottieLoadingAnimation();
+          loadingDialog.showLoadingAnimation();
           chefEmail = emailEditText.getText().toString();
           password = passwordEditText.getText().toString();
           if (TextUtils.isEmpty(chefEmail)) {
@@ -131,10 +121,9 @@ public class LoginFragment extends Fragment {
         if(firebaseUser != null) {
             firebaseUser.reload().addOnSuccessListener(r -> {
                 if (firebaseUser.isEmailVerified()) {
-                    hideLottieLoadingAnimation();
                     Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_homeFragment);
+                    Log.i("TAG", "checkForAccountValidation: true");
                 } else {
-                    hideLottieLoadingAnimation();
                     emailEditText.setError("please verify Your Account First");
                 }
             });
@@ -147,14 +136,13 @@ public class LoginFragment extends Fragment {
     }
 
     public void LoginSuccess() {
-        hideLottieLoadingAnimation();
-        Navigation.findNavController(viewAtt).navigate(R.id.action_loginFragment_to_homeFragment);
-
+      loadingDialog.hideDialog();
+      checkForAccountValidation(viewAtt);
     }
 
     public void loginFailed(String failed) {
         clearFeilds();
-        hideLottieLoadingAnimation();
+
         Toast.makeText(getContext(), failed, Toast.LENGTH_SHORT).show();
 
     }
