@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class HomeFragment extends Fragment implements  OnItemClickListener , HomeGateWay {
+public class HomeFragment extends Fragment implements  OnItemClickListener  {
 
     private RecyclerView recyclerView ;
     private HomeAdapter homeAdapter ;
@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
     private int mealId = 0 ;
     private LottieAnimationView lottieAnimationView ;
     private Date calendar ;
-    private String imageUrl  ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -163,23 +162,22 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         Navigation.findNavController(view).navigate(homeFragmentDirections);
     }
 
-    @Override
-    public void showMeals(FoodObjectResponse foodObjectResponse) {
-      lottieAnimationView.setVisibility(View.GONE);
-      dailyMealCardView.setVisibility(View.VISIBLE);
-      recyclerView.setVisibility(View.VISIBLE);
-      homeAdapter.setRandomMealsResponse(foodObjectResponse) ;
-      homeAdapter.notifyDataSetChanged();
+    public void showRandomMeals(FoodObjectResponse foodObjectResponse){
+        lottieAnimationView.setVisibility(View.GONE);
+        dailyMealCardView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        homeAdapter.setRandomMealsResponse(foodObjectResponse) ;
+        homeAdapter.notifyDataSetChanged();
     }
-    @Override
-    public void showRandomMeal(FoodObjectResponse randomDailyMealResponse) {
-        Glide.with(requireActivity()).load(randomDailyMealResponse.getListOfRandomMeals().get(0).getMealImage())
+
+    void showRandomDailyMeal(FoodObjectResponse foodObjectResponse){
+        Glide.with(requireActivity()).load(foodObjectResponse.getListOfRandomMeals().get(0).getMealImage())
                 .placeholder(R.drawable.food)
                 .error(R.drawable.fooderror)
                 .into(dailyMealImage) ;
-        mealId = randomDailyMealResponse.getListOfRandomMeals().get(0).getId() ;
-        mealIdSharedPreference(randomDailyMealResponse);
-        imageUrlSharedPreference(randomDailyMealResponse);
+        mealId = foodObjectResponse.getListOfRandomMeals().get(0).getId() ;
+        mealIdSharedPreference(foodObjectResponse);
+        imageUrlSharedPreference(foodObjectResponse);
     }
     private void imageUrlSharedPreference(FoodObjectResponse randomDailyMealResponse){
         SharedPreferences imageSharedPreference =  getActivity().getSharedPreferences("imageSharedPreference " , Context.MODE_PRIVATE);
@@ -188,16 +186,14 @@ public class HomeFragment extends Fragment implements  OnItemClickListener , Hom
         editor.apply();
     }
 
+    void showError(String error){
+        Toast.makeText(getContext(), "Failed" + error, Toast.LENGTH_SHORT).show();
+    }
+
     private void mealIdSharedPreference(FoodObjectResponse randomDailyMealResponse){
         SharedPreferences idSharedPreference =  getActivity().getSharedPreferences("idSharedPreference " , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = idSharedPreference.edit() ;
         editor.putInt("mealId" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getId());
         editor.apply();
     }
-
-    @Override
-    public void showError(String msg) {
-
-    }
-
 }

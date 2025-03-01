@@ -81,13 +81,13 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
 
     private void calenderIconClicked() {
         calenderIcon.setOnClickListener(clicked ->{
-
                 datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         detailsPresenter.insertMealToCalender(year , month, dayOfMonth , mealId , mealUrl , mealNameString);
                     }
                 }, 2025 , 0 , 15) ;
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             });
 
@@ -147,7 +147,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
     @Override
     public void ShowDetails(DetailsResponse detailsResponse) {
           setMealImage(detailsResponse);
-          setChips(detailsResponse);
+          setbuttons(detailsResponse);
           setMealNameAndInstruction(detailsResponse);
           setIngredientList(detailsResponse);
           setYoutubeVideo(detailsResponse);
@@ -171,7 +171,7 @@ public class DetailsFragment extends Fragment implements DetailsGateWay  {
                 .error(R.drawable.fooderror)
                 .into(mealImage);
     }
-    private void setChips(DetailsResponse detailsResponse) {
+    private void setbuttons(DetailsResponse detailsResponse) {
         categoryBtn.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCategory());
         countryBtn.setText(detailsResponse.getListOfRandomMeals().get(0).getMealCountry());
     }

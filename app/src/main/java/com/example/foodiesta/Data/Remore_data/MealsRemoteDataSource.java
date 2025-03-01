@@ -7,8 +7,9 @@ import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
 import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 import com.example.foodiesta.Presentation.Serach.SearchGateWay;
 import com.example.foodiesta.Utilities.OnDetailedResponse;
-import com.example.foodiesta.Utilities.OnFoodObjectResponse;
 
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +25,7 @@ public class MealsRemoteDataSource {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
          api = retrofit.create(Api.class);
     }
@@ -35,36 +37,12 @@ public class MealsRemoteDataSource {
     }
 
 
-    public void getRandomMealsResponse(OnFoodObjectResponse onFoodObjectResponse){
-
-        Call<FoodObjectResponse> responseCall = api.getListOfIngredients("");
-        responseCall.enqueue(new Callback<FoodObjectResponse>() {
-            @Override
-            public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
-                onFoodObjectResponse.success(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
-                onFoodObjectResponse.failed("Error :" + t.getMessage());
-            }
-        });
+    public Single getRandomMealsResponse(){
+        return api.getListOfIngredients("");
     }
 
-    public void getRandomDailyMeal(OnFoodObjectResponse onFoodObjectResponse) {
-        Call<FoodObjectResponse> responseCall = api.getRandomDailyMeal() ;
-        responseCall.enqueue(new Callback<FoodObjectResponse>() {
-            @Override
-            public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
-                onFoodObjectResponse.successGetDailyRandomMeal(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
-                onFoodObjectResponse.failed("feild in daily meal : " + t.getMessage());
-            }
-        });
-
+    public Single getRandomDailyMeal() {
+        return api.getRandomDailyMeal() ;
     }
 
     public void getMealDetails(int id  , OnDetailedResponse onDetailedResponse){
@@ -99,7 +77,7 @@ public class MealsRemoteDataSource {
 
 
     public void getListOfSpacificCategory(SearchGateWay searchGateWay ,String categoryName) {
-        Call<FoodObjectResponse> responseCall = api.getListOfIngredients(categoryName) ;
+      /*  Call<FoodObjectResponse> responseCall = api.getListOfIngredients(categoryName) ;
         responseCall.enqueue(new Callback<FoodObjectResponse>() {
             @Override
             public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
@@ -110,7 +88,7 @@ public class MealsRemoteDataSource {
             public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
     public void getListOfAllIngredients(SearchGateWay searchGateWay){
@@ -129,7 +107,7 @@ public class MealsRemoteDataSource {
     }
 
     public void getListOfSpacificIngredient(SearchGateWay searchGateWay,String ingredientName) {
-        Call<FoodObjectResponse> responseCall = api.getListOfIngredients(ingredientName) ;
+        /*Call<FoodObjectResponse> responseCall = api.getListOfIngredients(ingredientName) ;
         responseCall.enqueue(new Callback<FoodObjectResponse>() {
             @Override
             public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
@@ -140,7 +118,7 @@ public class MealsRemoteDataSource {
             public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
     public void getListOfCountries(SearchGateWay searchGateWay) {

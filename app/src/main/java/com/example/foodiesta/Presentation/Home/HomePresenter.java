@@ -2,38 +2,66 @@ package com.example.foodiesta.Presentation.Home;
 
 import com.example.foodiesta.Data.Repository.Home_repo.HomeRepository;
 import com.example.foodiesta.Utilities.FoodObjectResponse;
-import com.example.foodiesta.Utilities.OnFoodObjectResponse;
 
-public class HomePresenter implements OnFoodObjectResponse {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class HomePresenter  {
 
     private HomeRepository repository ;
-    private HomeGateWay homeGateWay ;
+    private HomeFragment homeFragment ;
 
-    public HomePresenter(HomeRepository repository , HomeGateWay homeGateWay) {
+    public HomePresenter(HomeRepository repository , HomeFragment homeFragment) {
         this.repository = repository;
-        this.homeGateWay =  homeGateWay;
+        this.homeFragment = homeFragment ;
     }
 
     public void getAllRemoteMeals(){
-        //return Random meal Response
-        repository.getAllRemoteMeals(this) ;
+
+      Single<FoodObjectResponse> observable =  repository.getRandomMeals() ;
+      observable.subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new SingleObserver<FoodObjectResponse>() {
+                  @Override
+                  public void onSubscribe(@NonNull Disposable d) {
+
+                  }
+
+                  @Override
+                  public void onSuccess(@NonNull FoodObjectResponse foodObjectResponse) {
+                      homeFragment.showRandomMeals(foodObjectResponse);
+                  }
+
+                  @Override
+                  public void onError(@NonNull Throwable e) {
+                      homeFragment.showError(e.getMessage());
+                  }
+              }) ;
+
     }
     public void getRandomMeal(){
-        repository.getRandomMeal(this) ;
-    }
+      Single<FoodObjectResponse> observable =   repository.getRandomDailyMeal() ;
+      observable.subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new SingleObserver<FoodObjectResponse>() {
+                  @Override
+                  public void onSubscribe(@NonNull Disposable d) {
 
-    @Override
-    public void success(FoodObjectResponse foodObjectResponse) {
-        homeGateWay.showMeals(foodObjectResponse);
-    }
+                  }
 
-    @Override
-    public void successGetDailyRandomMeal(FoodObjectResponse foodObjectResponse) {
-        homeGateWay.showRandomMeal(foodObjectResponse);
-    }
+                  @Override
+                  public void onSuccess(@NonNull FoodObjectResponse foodObjectResponse) {
+                      homeFragment.showRandomDailyMeal(foodObjectResponse);
+                  }
 
-    @Override
-    public void failed(String msg) {
-        homeGateWay.showError(msg);
+                  @Override
+                  public void onError(@NonNull Throwable e) {
+                    homeFragment.showError(e.getMessage());
+                  }
+              }) ;
     }
 }

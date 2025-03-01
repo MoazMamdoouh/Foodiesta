@@ -12,5 +12,10 @@
             android:id="@+id/favoriteFragment2"
             android:icon="@drawable/favorite_icon"
             android:title="" />
+        <item
+            android:id="@+id/calenderFragment2"
+            android:icon="@drawable/calendar"
+            android:title="" />
+
 
 </menu>

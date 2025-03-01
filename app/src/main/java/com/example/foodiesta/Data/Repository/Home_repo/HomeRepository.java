@@ -2,7 +2,8 @@ package com.example.foodiesta.Data.Repository.Home_repo;
 
 
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
-import com.example.foodiesta.Utilities.OnFoodObjectResponse;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class HomeRepository {
 
@@ -12,10 +13,10 @@ public class HomeRepository {
         this.mealsRemoteDataSource = mealsRemoteDataSource;
     }
 
-    public void getAllRemoteMeals(OnFoodObjectResponse onFoodObjectResponse){
-        mealsRemoteDataSource.getRandomMealsResponse(onFoodObjectResponse);
+    public Single getRandomMeals(){
+       return  mealsRemoteDataSource.getRandomMealsResponse();
     }
-    public void getRandomMeal(OnFoodObjectResponse onFoodObjectResponse){
-        mealsRemoteDataSource.getRandomDailyMeal(onFoodObjectResponse);
+    public Single getRandomDailyMeal(){
+        return mealsRemoteDataSource.getRandomDailyMeal();
     }
 }

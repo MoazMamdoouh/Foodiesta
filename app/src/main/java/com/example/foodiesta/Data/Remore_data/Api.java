@@ -6,6 +6,7 @@ import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
 import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
 
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,10 +14,10 @@ import retrofit2.http.Query;
 public interface Api {
 
     @GET("filter.php")
-    Call<FoodObjectResponse> getListOfIngredients(@Query("i") String mealName) ;
+    Single<FoodObjectResponse> getListOfIngredients(@Query("i") String mealName) ;
 
     @GET("random.php")
-    Call<FoodObjectResponse> getRandomDailyMeal();
+    Single<FoodObjectResponse> getRandomDailyMeal();
 
     @GET("lookup.php")
     Call<DetailsResponse> getMealDetails(@Query("i") int id) ;
