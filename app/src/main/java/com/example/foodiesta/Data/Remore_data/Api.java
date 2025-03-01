@@ -24,16 +24,16 @@ public interface Api {
 
 
     @GET("categories.php")
-    Call<CategoryObjectResponse> getListOfCategory(@Query("c") String categoryName) ;
+    Single<CategoryObjectResponse> getAllCategoryNames() ;
 
     @GET("list.php")
-    Call<IngredientObjectResponse> getAllIngredientsNames(@Query("i") String ingredientList) ;
+    Single<IngredientObjectResponse> getAllIngredientsNames(@Query("i") String ingredientList) ;
 
     @GET("list.php")
-    Call<CountryObjectResponse> getAllCountriesNames(@Query("a") String countryName) ;
+    Single<CountryObjectResponse> getAllCountriesNames(@Query("a") String countryName) ;
 
     @GET("filter.php")
-    Call<FoodObjectResponse> getListOFSpacificCountry(@Query("a") String country) ;
+    Single<FoodObjectResponse> getListOFSpacificCountry(@Query("a") String country) ;
 
 
 

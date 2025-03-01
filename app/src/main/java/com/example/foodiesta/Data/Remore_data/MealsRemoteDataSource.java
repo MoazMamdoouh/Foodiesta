@@ -1,16 +1,7 @@
 package com.example.foodiesta.Data.Remore_data;
 
-import com.example.foodiesta.Model.Search.Country.CountryObjectResponse;
-import com.example.foodiesta.Utilities.FoodObjectResponse;
-import com.example.foodiesta.Model.Search.Category.CategoryObjectResponse;
-import com.example.foodiesta.Model.Search.Ingredient.IngredientObjectResponse;
-import com.example.foodiesta.Presentation.Serach.SearchGateWay;
-
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.core.Single;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -47,95 +38,29 @@ public class MealsRemoteDataSource {
         return api.getMealDetails(id) ;
     }
 
-    public void getAllCategories(SearchGateWay searchGateWay){
-        Call<CategoryObjectResponse> responseCall = api.getListOfCategory("list") ;
-        responseCall.enqueue(new Callback<CategoryObjectResponse>() {
-            @Override
-            public void onResponse(Call<CategoryObjectResponse> call, Response<CategoryObjectResponse> response) {
-                searchGateWay.getListOfAllCategories(response.body() ,"category" );
-            }
-
-            @Override
-            public void onFailure(Call<CategoryObjectResponse> call, Throwable t) {
-
-            }
-        });
+    public Single getAllCategories(){
+       return api.getAllCategoryNames();
     }
 
 
-    public void getListOfSpacificCategory(SearchGateWay searchGateWay ,String categoryName) {
-      /*  Call<FoodObjectResponse> responseCall = api.getListOfIngredients(categoryName) ;
-        responseCall.enqueue(new Callback<FoodObjectResponse>() {
-            @Override
-            public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
-                    searchGateWay.getListByFilter(response.body() , "category");
-            }
-
-            @Override
-            public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
-
-            }
-        });*/
+    public Single getListOfSpacificCategory(String categoryName) {
+       return  api.getListOfIngredients(categoryName) ;
     }
 
-    public void getListOfAllIngredients(SearchGateWay searchGateWay){
-        Call<IngredientObjectResponse> responseCall = api.getAllIngredientsNames("list");
-        responseCall.enqueue(new Callback<IngredientObjectResponse>() {
-            @Override
-            public void onResponse(Call<IngredientObjectResponse> call, Response<IngredientObjectResponse> response) {
-                searchGateWay.getListOfAllIngredients(response.body() );
-            }
-
-            @Override
-            public void onFailure(Call<IngredientObjectResponse> call, Throwable t) {
-                searchGateWay.failureResponse("Error :" + t.getMessage());
-            }
-        });
-    }
-
-    public void getListOfSpacificIngredient(SearchGateWay searchGateWay,String ingredientName) {
-        /*Call<FoodObjectResponse> responseCall = api.getListOfIngredients(ingredientName) ;
-        responseCall.enqueue(new Callback<FoodObjectResponse>() {
-            @Override
-            public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
-                searchGateWay.getListByFilter(response.body() , "ingredient");
-            }
-
-            @Override
-            public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
-
-            }
-        });*/
-    }
-
-    public void getListOfCountries(SearchGateWay searchGateWay) {
-        Call<CountryObjectResponse> countryObjectResponseCall = api.getAllCountriesNames("list");
-        countryObjectResponseCall.enqueue(new Callback<CountryObjectResponse>() {
-            @Override
-            public void onResponse(Call<CountryObjectResponse> call, Response<CountryObjectResponse> response) {
-                searchGateWay.getListOfAllCountries(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<CountryObjectResponse> call, Throwable t) {
-
-            }
-        });
+    public Single getListOfAllIngredients(){
+       return api.getAllIngredientsNames("list");
 
     }
 
-    public void getListOfSpacificCountry(SearchGateWay searchGateWay, String itemName) {
-        Call<FoodObjectResponse> foodObjectResponseCall = api.getListOFSpacificCountry(itemName) ;
-        foodObjectResponseCall.enqueue(new Callback<FoodObjectResponse>() {
-            @Override
-            public void onResponse(Call<FoodObjectResponse> call, Response<FoodObjectResponse> response) {
-                    searchGateWay.getListByFilter(response.body() , "country");
-            }
+    public Single getListOfSpacificIngredient(String ingredientName) {
+       return api.getListOfIngredients(ingredientName) ;
+    }
 
-            @Override
-            public void onFailure(Call<FoodObjectResponse> call, Throwable t) {
+    public Single getListOfCountries() {
+        return  api.getAllCountriesNames("list");
+    }
 
-            }
-        });
+    public Single getListOfSpacificCountry(String itemName) {
+       return  api.getListOFSpacificCountry(itemName) ;
     }
 }

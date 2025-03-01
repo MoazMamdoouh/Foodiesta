@@ -1,5 +1,6 @@
 package com.example.foodiesta.Presentation.Serach;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,8 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     private SearchResponseAdapter searchListOfSpacificItem;
     private IngredientsAdapter allIngredientsAdapter ;
     private CountryAdapter countryAdapter ;
-    private View viewatt ;
+    private View viewAtt;
+    private String filterName = "" ;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -66,7 +68,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         categoryBtnClicked();
         ingredientBtnClicked();
         countryBtnClicked();
-        viewatt = view;
+        viewAtt = view;
     }
     private void initUI(View view) {
         searchEditText = view.findViewById(R.id.search_et_search_bar) ;
@@ -102,13 +104,14 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         categoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                filterName = "category" ;
                 showLoadingLottieFile();
                 changeFilterBtnLayout("category");
                 requestRandomListOfCategory();
-
             }
         });
     }
+    @SuppressLint("CheckResult")
     private void setupCategorySearchObserver(CategoryObjectResponse response){
         Observable<String> obs = Observable.create(emitter -> {
             searchEditText.addTextChangedListener(new TextWatcher() {
@@ -140,6 +143,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
         searchListOfSpacificItem.setListOfSearchResult(foodObjectResponse.getListOfRandomMeals());
         setupRandomMealResponseObserver(foodObjectResponse);
     }
+    @SuppressLint("CheckResult")
     private void setupRandomMealResponseObserver(FoodObjectResponse foodObjectResponse){
         Observable<String> obs = Observable.create(emitter -> {
             searchEditText.addTextChangedListener(new TextWatcher() {
@@ -182,6 +186,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
             setUpAllIngredientObserver(ingredientObjectResponse);
     }
 
+    @SuppressLint("CheckResult")
     void setUpAllIngredientObserver(IngredientObjectResponse ingredientObjectResponse){
         Observable<String> obs = Observable.create(emitter -> {
             searchEditText.addTextChangedListener(new TextWatcher() {
@@ -227,6 +232,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
             searchRecyclerView.setAdapter(countryAdapter);
             setUpAllCountriesObserver(countryObjectResponse);
     }
+    @SuppressLint("CheckResult")
     void setUpAllCountriesObserver(CountryObjectResponse countryObjectResponse){
         Observable<String> obs = Observable.create(emitter -> {
             searchEditText.addTextChangedListener(new TextWatcher() {
@@ -281,7 +287,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     @Override
     public void onFilterItemClicked(String  itemName , String filterName) {
         if(filterName.equals("category")){
-            searchPresenter.requestListOfSpacificCategory(itemName);
+            searchPresenter.requestListOfSpacificCategory(itemName );
         }else if (filterName.equals("ingredient")){
             searchPresenter.requestListOfSpacificIngredient(itemName);
         }else if (filterName.equals("country")){
@@ -294,9 +300,10 @@ public class SearchFragment extends Fragment implements SearchShowResponse , OnS
     public void onSearchItemClicked(int id) {
         SearchFragmentDirections.ActionSearchFragmentToDetailsFragment actionSearchFragmentToDetailsFragment
                 = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(id) ;
-        Navigation.findNavController(viewatt).navigate(actionSearchFragmentToDetailsFragment);
+        Navigation.findNavController(viewAtt).navigate(actionSearchFragmentToDetailsFragment);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void changeFilterBtnLayout(String filterName){
         if(filterName.equals("ingredient")){
             searchEditText.setHint("Search By Ingredient ...");

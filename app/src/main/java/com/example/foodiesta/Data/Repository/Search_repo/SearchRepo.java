@@ -1,7 +1,8 @@
 package com.example.foodiesta.Data.Repository.Search_repo;
 
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
-import com.example.foodiesta.Presentation.Serach.SearchGateWay;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class SearchRepo  {
 
@@ -10,27 +11,27 @@ public class SearchRepo  {
         mealsRemoteDataSource = MealsRemoteDataSource.getInstance() ;
     }
 
-    public void requestListOfCategories(SearchGateWay searchRepoGateWay) {
-       mealsRemoteDataSource.getAllCategories(searchRepoGateWay);
+    public Single requestListOfCategories() {
+       return mealsRemoteDataSource.getAllCategories();
     }
 
-    public void requestListOfSpacificCategory(SearchGateWay searchGateWay , String categoryName) {
-        mealsRemoteDataSource.getListOfSpacificCategory(searchGateWay,categoryName);
+    public Single requestListOfSpacificCategory( String categoryName) {
+       return  mealsRemoteDataSource.getListOfSpacificCategory(categoryName);
     }
 
-    public void requestListOfIngredient(SearchGateWay searchGateWay) {
-        mealsRemoteDataSource.getListOfAllIngredients(searchGateWay);
+    public Single requestListOfIngredient() {
+        return mealsRemoteDataSource.getListOfAllIngredients();
     }
 
-    public void requestListOfSpacificIngredient(SearchGateWay searchGateWay,String name) {
-        mealsRemoteDataSource.getListOfSpacificIngredient(searchGateWay,name);
+    public Single requestListOfSpacificIngredient(String name) {
+       return  mealsRemoteDataSource.getListOfSpacificIngredient(name);
     }
 
-    public void requestListOfCountries(SearchGateWay searchGateWay) {
-        mealsRemoteDataSource.getListOfCountries(searchGateWay);
+    public Single requestListOfCountries() {
+        return mealsRemoteDataSource.getListOfCountries();
     }
 
-    public void requestListOfSpacificCountry(SearchGateWay searchGateWay,String itemName) {
-        mealsRemoteDataSource.getListOfSpacificCountry(searchGateWay , itemName);
+    public Single requestListOfSpacificCountry(String itemName) {
+       return  mealsRemoteDataSource.getListOfSpacificCountry( itemName);
     }
 }
