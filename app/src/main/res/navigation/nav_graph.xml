@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodiesta.Presentation.Home.HomeFragment"
+        android:name="com.example.foodiesta.Home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.foodiesta.Presentation.Details.DetailsFragment"
+        android:name="com.example.foodiesta.Details.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <argument
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.foodiesta.Presentation.Serach.SearchFragment"
+        android:name="com.example.foodiesta.Search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <argument
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.foodiesta.Presentation.Splash.SplashFragment"
+        android:name="com.example.foodiesta.Splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
 
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.foodiesta.Presentation.Welcome.WelcomeFragment"
+        android:name="com.example.foodiesta.Welcome.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.foodiesta.Presentation.Registration.RegistrationFragment"
+        android:name="com.example.foodiesta.Registration.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -101,7 +101,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.foodiesta.Presentation.Login.LoginFragment"
+        android:name="com.example.foodiesta.Login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -113,7 +113,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment2"
-        android:name="com.example.foodiesta.Presentation.Favorite.FavoriteFragment"
+        android:name="com.example.foodiesta.Favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" >
         <action
@@ -128,7 +128,7 @@
     </fragment>
     <fragment
         android:id="@+id/calenderFragment2"
-        android:name="com.example.foodiesta.Presentation.Calender.CalenderFragment"
+        android:name="com.example.foodiesta.Calender.CalenderFragment"
         android:label="fragment_calender"
         tools:layout="@layout/fragment_calender" >
         <action
@@ -146,7 +146,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.foodiesta.Presentation.Profile.ProfileFragment"
+        android:name="com.example.foodiesta.Profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/fools_gold"
-    tools:context=".Presentation.Welcome.WelcomeFragment">
+    tools:context=".Welcome.WelcomeFragment">
 
     <Button
         android:id="@+id/welcome_btn_login"

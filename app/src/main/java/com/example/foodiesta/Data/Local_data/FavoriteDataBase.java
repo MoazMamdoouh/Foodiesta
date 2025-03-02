@@ -6,8 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.foodiesta.Model.Calender.CalenderEntity;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
+import com.example.foodiesta.Calender.Calender.CalenderEntity;
+import com.example.foodiesta.Favorite.Favorite.FavoriteEntity;
 
 @Database(entities = {FavoriteEntity.class , CalenderEntity.class} , version = 1)
 public abstract class FavoriteDataBase extends RoomDatabase {

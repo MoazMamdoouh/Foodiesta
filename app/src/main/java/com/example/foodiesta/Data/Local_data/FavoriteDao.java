@@ -7,8 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.foodiesta.Model.Calender.CalenderEntity;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
+import com.example.foodiesta.Calender.Calender.CalenderEntity;
+import com.example.foodiesta.Favorite.Favorite.FavoriteEntity;
 
 import java.util.List;
 

@@ -5,11 +5,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.foodiesta.Model.Calender.CalenderEntity;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
-import com.example.foodiesta.Presentation.Login.OnLoginResponse;
-import com.example.foodiesta.Presentation.Profile.OnFireStoreResponse;
-import com.example.foodiesta.Presentation.Registration.OnRegistrationResponse;
+import com.example.foodiesta.Calender.Calender.CalenderEntity;
+import com.example.foodiesta.Favorite.Favorite.FavoriteEntity;
+import com.example.foodiesta.Login.OnLoginResponse;
+import com.example.foodiesta.Profile.OnFireStoreResponse;
+import com.example.foodiesta.Registration.OnRegistrationResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

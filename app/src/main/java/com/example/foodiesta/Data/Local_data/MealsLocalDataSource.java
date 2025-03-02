@@ -1,19 +1,15 @@
 package com.example.foodiesta.Data.Local_data;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-
-import com.example.foodiesta.Model.Calender.CalenderEntity;
-import com.example.foodiesta.Model.Favorite.FavoriteEntity;
+import com.example.foodiesta.Calender.Calender.CalenderEntity;
+import com.example.foodiesta.Favorite.Favorite.FavoriteEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealsLocalDataSource {
