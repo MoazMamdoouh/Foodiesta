@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fools_gold"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Details.DetailsFragment">
 
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="10dp"
-        android:backgroundTint="#FAF2DD"
+        android:backgroundTint="@color/purple"
         app:cardElevation="10dp">
         <ImageView
             android:id="@+id/details_iv_favorite"
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/category"
-                    android:backgroundTint="@color/bright_orange"
+                    android:backgroundTint="@color/purple"
                     android:textColor="@color/white"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Country"
-                    android:backgroundTint="@color/bright_orange"
+                    android:backgroundTint="@color/purple"
                     android:textColor="@color/white"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"

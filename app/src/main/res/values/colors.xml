@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="fools_gold">#FFEEC2</color>
-    <color name="bright_orange">#F9BC1F</color>
-    <color name="fools_gold_transparent">#80FFEEC2</color>
+    <color name="purple">#8457D5</color>
+    <color name="fools_gold_transparent">#8457D580</color>
     <color name="gray">#575757</color>
 </resources>

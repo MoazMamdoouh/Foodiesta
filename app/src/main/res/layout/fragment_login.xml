@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fools_gold"
+    android:background="@color/purple"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Login.LoginFragment">
 
     <LinearLayout
         android:id="@+id/login_linear_layout"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
         android:background="@drawable/registration_shape"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
             android:text="@string/login"
             android:layout_gravity="center"
             android:textSize="32sp"
-            android:textColor="@color/bright_orange"
+            android:textColor="@color/purple"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_text_layout_email"
@@ -62,8 +62,8 @@
             android:text="@string/forget_password"
             android:layout_gravity="end"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="6dp"
             />
         <Button
             android:id="@+id/login_btn_registration"
@@ -81,12 +81,12 @@
             android:id="@+id/login_btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|bottom"
             android:layout_margin="8dp"
             android:text="@string/login"
             android:background="@drawable/welcome_registration_btn_shape"
             app:backgroundTint="@null"
-            android:textColor="@color/bright_orange"
+            android:textColor="@color/purple"
             />
     </LinearLayout>
 

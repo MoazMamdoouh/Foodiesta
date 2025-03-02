@@ -18,6 +18,8 @@ import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.CustomDialog;
+import com.example.foodiesta.Utilities.LoadingDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,6 +38,7 @@ public class ProfileFragment<T> extends Fragment {
     private Button favoriteBackUpBtn , calenderBackUpBtn , logOutBtn , downloadFavoriteBtn , downloadCalenderBtn;
     private FirebaseFirestore firebaseFirestore;
     private ProfilePresenter profilePresenter;
+    private LoadingDialog loadingDialog ;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -71,8 +74,16 @@ public class ProfileFragment<T> extends Fragment {
     private void logOutBtnClicked(View view) {
         logOutBtn.setOnClickListener(
                 clicked -> {
-                    FirebaseAuth.getInstance().signOut();
-                    Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_welcomeFragment);
+                    new MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Logout" )
+                            .setMessage("Are you sure you want Logout ?")
+                            .setPositiveButton("logout", (dialog, which) -> {
+                                FirebaseAuth.getInstance().signOut();
+                                Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_welcomeFragment);
+                            })
+                            .setNegativeButton("Cancel", (dialog, which) -> {
+                            })
+                            .show();
                 }
         );
     }
@@ -86,6 +97,7 @@ public class ProfileFragment<T> extends Fragment {
         logOutBtn = view.findViewById(R.id.profile_btn_log_out) ;
         downloadFavoriteBtn = view.findViewById(R.id.profile_btn_fetch_favorite) ;
         downloadCalenderBtn = view.findViewById(R.id.profile_btn_fetch_calendet) ;
+        loadingDialog = new LoadingDialog(getContext()) ;
         //fire base
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -101,6 +113,7 @@ public class ProfileFragment<T> extends Fragment {
     private void favoriteBackUpBtnClicked() {
         favoriteBackUpBtn.setOnClickListener(
                 click -> {
+                    showLoadingAnimation();
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                     profilePresenter.getListOfFavoriteMeal(userId, firebaseFirestore);
                 }
@@ -110,6 +123,7 @@ public class ProfileFragment<T> extends Fragment {
     private void downloadFavoriteBtnClicked() {
         downloadFavoriteBtn.setOnClickListener(
                 clicked -> {
+                    showLoadingAnimation();
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                     profilePresenter.downloadAllFavoriteMeals(userId,firebaseFirestore);
                     Toast.makeText(getContext(), "clicked", Toast.LENGTH_LONG).show();
@@ -118,8 +132,7 @@ public class ProfileFragment<T> extends Fragment {
     }
 
     public void successInsertFavorite(String type) {
-        CustomDialog customDialog = new CustomDialog(getContext()) ;
-        customDialog.success("BackUp Success" , "");
+        hideLoadingAnimation();
         if(type.equals("favorite")){
             profilePresenter.deleteAllFavoriteMealsFromRoom();
         }else {
@@ -129,8 +142,7 @@ public class ProfileFragment<T> extends Fragment {
     }
 
     void successDownLoadFavorite(List<T> downloadedList  , String type){
-        CustomDialog customDialog = new CustomDialog(getContext()) ;
-        customDialog.success("DownLoad Success" , "");
+        hideLoadingAnimation();
         if(type.equals("favorite")){
             profilePresenter.inseMealsList(downloadedList , type);
         }else {
@@ -140,6 +152,7 @@ public class ProfileFragment<T> extends Fragment {
     private void calenderBtnClicked(){
         calenderBackUpBtn.setOnClickListener(
                 clicked -> {
+                    showLoadingAnimation();
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                     profilePresenter.insertCalenderMealsToServer(firebaseFirestore , userId) ;
                 }
@@ -149,6 +162,7 @@ public class ProfileFragment<T> extends Fragment {
     private void downloadCalenderBtn(){
         downloadCalenderBtn.setOnClickListener(
                 clicked ->{
+                    showLoadingAnimation();
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                     profilePresenter.downLoadAllCalenderMeals(userId,firebaseFirestore);
                 }
@@ -168,6 +182,13 @@ public class ProfileFragment<T> extends Fragment {
                 }
             }
         });
+    }
+
+    private void showLoadingAnimation(){
+        loadingDialog.showLoadingAnimation();
+    }
+    private void hideLoadingAnimation(){
+        loadingDialog.hideDialog();
     }
 
 }

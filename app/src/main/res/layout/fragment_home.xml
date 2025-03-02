@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fools_gold"
+    android:background="@color/purple"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Home.HomeFragment"
     >
@@ -33,7 +33,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/get_food"
-      android:textColor="@color/bright_orange"
+      android:textColor="@color/white"
       app:layout_constraintTop_toBottomOf="@id/home_card_daily_meal"
       android:layout_margin="8dp"
       android:textStyle="bold"

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fools_gold"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Search.SearchFragment">
 
@@ -15,6 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/search_bar_shape"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:text="@string/ingredient"
-        android:textColor="@color/bright_orange"
+        android:textColor="@color/purple"
         android:background="@drawable/search_btn_background"
         app:backgroundTint="@null"
         />
@@ -47,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:text="@string/Country"
-        android:textColor="@color/bright_orange"
+        android:textColor="@color/purple"
         android:background="@drawable/search_btn_background"
         app:backgroundTint="@null"
         />
@@ -60,7 +61,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:text="@string/category"
-        android:textColor="@color/bright_orange"
+        android:textColor="@color/purple"
         android:background="@drawable/search_btn_background"
         app:backgroundTint="@null"
         />
@@ -86,15 +87,5 @@
     app:lottie_rawRes="@raw/search_animation"
     app:lottie_loop="true"
     />
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/search_lottie_file_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/search_btn_country"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:lottie_rawRes="@raw/pizza_loading"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

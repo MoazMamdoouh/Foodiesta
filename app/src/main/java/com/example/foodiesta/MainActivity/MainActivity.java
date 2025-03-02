@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
                                 fragmentContainerView.setVisibility(View.VISIBLE);
                                 lottieAnimationView.setVisibility(View.GONE);
                                 lottieAnimationView.cancelAnimation();
-                                bottomNavigationView.setBackgroundColor(getColor(R.color.bright_orange));
+                                bottomNavigationView.setBackgroundColor(getColor(R.color.purple));
                                 connectionFlag = true ;
-                                setStatusBarColor(R.color.bright_orange);
+                                setStatusBarColor(R.color.purple);
                                 Log.i("connection", " connection");
                             }
                         }

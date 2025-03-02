@@ -20,6 +20,7 @@ import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.MainActivity.MainActivity;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.CustomDialog;
+import com.example.foodiesta.Utilities.LoadingDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,10 +33,10 @@ public class RegistrationFragment extends Fragment {
     private RegistrationPresenter registrationPresenter ;
     private String chefName ,chefEmail , chefPassword , confirmPassword ;
     private View viewAtt ;
-    private LottieAnimationView lottieAnimationView ;
     private FirebaseUser firebaseUser ;
     private FirebaseAuth firebaseAuth ;
     private CustomDialog customDialog ;
+    private LoadingDialog loadingDialog ;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -160,18 +161,14 @@ public class RegistrationFragment extends Fragment {
         confirmPasswordEditText = view.findViewById(R.id.registration_ti_confirm_password);
         loginBtn = view.findViewById(R.id.registration_btn_login) ;
         registration = view.findViewById(R.id.registration_btn_registration) ;
-        lottieAnimationView = view.findViewById(R.id.registration_lottie_file_loading) ;
-        lottieAnimationView.setVisibility(View.GONE);
         customDialog = new CustomDialog(getContext()) ;
     }
 
     private void showLoadingAnimation(){
-        lottieAnimationView.setVisibility(View.VISIBLE);
-        lottieAnimationView.playAnimation();
+       loadingDialog.showLoadingAnimation();
     }
     private void hideLoadingAnimation(){
-        lottieAnimationView.setVisibility(View.GONE);
-        lottieAnimationView.cancelAnimation();
+        loadingDialog.hideDialog();
     }
 
     private void clearTextFeilds(){

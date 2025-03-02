@@ -25,10 +25,10 @@
         tools:layout_editor_absoluteY="1dp" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         app:itemIconTint="@color/black"
-        android:background="@drawable/search_btn_clicked_background"
+        android:background="@color/purple"
         app:menu="@menu/bottom_nav_menu"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

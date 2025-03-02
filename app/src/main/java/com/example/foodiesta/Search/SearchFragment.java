@@ -23,6 +23,8 @@ import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.Search.Category.CategoryObjectResponse;
 import com.example.foodiesta.Search.Ingredient.IngredientObjectResponse;
 import com.example.foodiesta.R;
+import com.example.foodiesta.Utilities.LoadingDialog;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -36,11 +38,12 @@ public class SearchFragment extends Fragment implements SearchShowResponse, OnSe
     private EditText searchEditText ;
     private Button ingredientBtn ,countryBtn , categoryBtn ;
     private boolean filterFlag = true ;
-    private LottieAnimationView lottieAnimationView , lottieLoadingAnimation ;
+    private LottieAnimationView lottieAnimationView ;
     private SearchResponseAdapter searchListOfSpacificItem;
     private IngredientsAdapter allIngredientsAdapter ;
     private CountryAdapter countryAdapter ;
     private View viewAtt;
+    private LoadingDialog loadingDialog ;
     private String filterName = "" ;
     public SearchFragment() {
         // Required empty public constructor
@@ -77,8 +80,6 @@ public class SearchFragment extends Fragment implements SearchShowResponse, OnSe
         ingredientBtn = view.findViewById(R.id.search_btn_ingredient) ;
         countryBtn = view.findViewById(R.id.search_btn_country) ;
         categoryBtn = view.findViewById(R.id.search_btn_category) ;
-        lottieLoadingAnimation = view.findViewById(R.id.search_lottie_file_loading) ;
-        lottieLoadingAnimation.setVisibility(View.GONE) ;
     }
     private void initRecyclerView(View view) {
         searchRecyclerView = view.findViewById(R.id.search_rv_list) ;
@@ -264,11 +265,10 @@ public class SearchFragment extends Fragment implements SearchShowResponse, OnSe
 
     private void showLoadingLottieFile(){
         lottieAnimationView.setVisibility(View.GONE);
-        lottieLoadingAnimation.setVisibility(View.VISIBLE);
-        lottieLoadingAnimation.playAnimation();
+        loadingDialog.showLoadingAnimation();
     }
     private void disableLoadingLottieFile(){
-        lottieLoadingAnimation.setVisibility(View.GONE);
+      loadingDialog.hideDialog();
     }
 
     @Override
@@ -311,30 +311,30 @@ public class SearchFragment extends Fragment implements SearchShowResponse, OnSe
             ingredientBtn.setTextColor(getResources().getColor(R.color.white));
 
             countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            countryBtn.setTextColor(getResources().getColor(R.color.purple));
 
             categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            categoryBtn.setTextColor(getResources().getColor(R.color.purple));
         }else if (filterName.equals("category")){
             searchEditText.setHint("Search By Category ...");
             categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
             categoryBtn.setTextColor(getResources().getColor(R.color.white));
 
             ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            ingredientBtn.setTextColor(getResources().getColor(R.color.purple));
 
             countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            countryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            countryBtn.setTextColor(getResources().getColor(R.color.purple));
         }else if (filterName.equals("country")){
             searchEditText.setHint("Search By Country ...");
             countryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_clicked_background));
             countryBtn.setTextColor(getResources().getColor(R.color.white));
 
             ingredientBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            ingredientBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            ingredientBtn.setTextColor(getResources().getColor(R.color.purple));
 
             categoryBtn.setBackground(getResources().getDrawable(R.drawable.search_btn_background));
-            categoryBtn.setTextColor(getResources().getColor(R.color.bright_orange));
+            categoryBtn.setTextColor(getResources().getColor(R.color.purple));
         }
     }
 }
