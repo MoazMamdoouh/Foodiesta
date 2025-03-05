@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,8 @@ import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Favorite.Favorite.FavoriteEntity;
 import com.example.foodiesta.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
     private RecyclerView recyclerView ;
     private FavoriteAdapter favoriteAdapter ;
     private FavoritePresenter favoritePresenter ;
-
+    private View viewAtt ;
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -50,6 +53,7 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
         initUI(view);
         initPresenter() ;
         requestFavoriteMeals();
+        viewAtt = view ;
     }
 
      void requestFavoriteMeals() {
@@ -72,6 +76,7 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
         recyclerView.setLayoutManager(gridLayoutManager);
         favoriteAdapter = new FavoriteAdapter(getContext() , new ArrayList<>() , this) ;
         recyclerView.setAdapter(favoriteAdapter);
+
     }
 
     @Override
@@ -89,6 +94,8 @@ public class FavoriteFragment extends Fragment implements OnFavoriteItemClicked 
 
     @Override
     public void onFavoriteCardClicked(int id) {
-        
+        FavoriteFragmentDirections.ActionFavoriteFragment2ToDetailsFragment actionFavoriteFragment2ToDetailsFragment
+                = FavoriteFragmentDirections.actionFavoriteFragment2ToDetailsFragment(id) ;
+        Navigation.findNavController(viewAtt).navigate(actionFavoriteFragment2ToDetailsFragment);
     }
 }

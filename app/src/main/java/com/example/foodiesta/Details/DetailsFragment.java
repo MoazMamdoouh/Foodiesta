@@ -24,7 +24,9 @@ import com.bumptech.glide.Glide;
 import com.example.foodiesta.Data.Local_data.MealsLocalDataSource;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteDataSource;
 import com.example.foodiesta.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -48,6 +50,7 @@ public class DetailsFragment extends Fragment  {
    private String mealUrl ;
    private String mealNameString  ;
    private DatePickerDialog datePickerDialog ;
+   private FirebaseAuth firebaseAuth ;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -80,6 +83,17 @@ public class DetailsFragment extends Fragment  {
 
     private void calenderIconClicked() {
         calenderIcon.setOnClickListener(clicked ->{
+            if(firebaseAuth.getCurrentUser() == null){
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("You need To login ")
+                        .setMessage("Sorry you need to login First to continue")
+                        .setPositiveButton("Login", (dialog, which) -> {
+                            Navigation.findNavController(clicked).navigate(R.id.action_detailsFragment_to_loginFragment);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                        })
+                        .show();
+            }else {
                 datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -88,6 +102,8 @@ public class DetailsFragment extends Fragment  {
                 }, 2025 , 0 , 15) ;
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
+            }
+
             });
 
     }
@@ -96,8 +112,21 @@ public class DetailsFragment extends Fragment  {
         favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favIcon.setImageResource(R.drawable.favorite_icon);
-                detailsPresenter.insertMealToFavorite(mealId , mealUrl , mealNameString );
+                if(firebaseAuth.getCurrentUser() == null){
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle("You need To login ")
+                            .setMessage("Sorry you need to login First to continue")
+                            .setPositiveButton("Login", (dialog, which) -> {
+                              Navigation.findNavController(v).navigate(R.id.action_detailsFragment_to_loginFragment);
+                            })
+                            .setNegativeButton("Cancel", (dialog, which) -> {
+                            })
+                            .show();
+                }else {
+                    favIcon.setImageResource(R.drawable.favorite_icon);
+                    detailsPresenter.insertMealToFavorite(mealId , mealUrl , mealNameString );
+                }
+
             }
         });
     }
@@ -113,7 +142,6 @@ public class DetailsFragment extends Fragment  {
                 detailsFragmentToSearchFragment =
                 com.example.foodiesta.Details.DetailsFragmentDirections.actionDetailsFragmentToSearchFragment(categoryName) ;
         Navigation.findNavController(view).navigate(detailsFragmentToSearchFragment);
-        Log.i("TAG", "sendCategoryNameToSearch: "+ categoryName);
     }
     private void initDetailsPresenter() {
         DetailsRepo detailsRepo = new DetailsRepo(MealsRemoteDataSource.getInstance() ,new MealsLocalDataSource(getContext())) ;
@@ -133,6 +161,7 @@ public class DetailsFragment extends Fragment  {
         favIcon = view.findViewById(R.id.details_iv_favorite) ;
         calenderIcon = view.findViewById(R.id.details_iv_Calender) ;
         initRecyclerView(view);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.details_rv_ingrediants);

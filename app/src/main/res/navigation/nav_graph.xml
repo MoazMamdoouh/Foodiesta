@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -125,6 +128,9 @@
         <action
             android:id="@+id/action_favoriteFragment2_to_calenderFragment2"
             app:destination="@id/calenderFragment2" />
+        <action
+            android:id="@+id/action_favoriteFragment2_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/calenderFragment2"
@@ -143,6 +149,9 @@
         <action
             android:id="@+id/action_calenderFragment2_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_calenderFragment2_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

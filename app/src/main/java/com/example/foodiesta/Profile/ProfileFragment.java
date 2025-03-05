@@ -126,7 +126,6 @@ public class ProfileFragment<T> extends Fragment {
                     showLoadingAnimation();
                     userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                     profilePresenter.downloadAllFavoriteMeals(userId,firebaseFirestore);
-                    Toast.makeText(getContext(), "clicked", Toast.LENGTH_LONG).show();
                 }
         );
     }

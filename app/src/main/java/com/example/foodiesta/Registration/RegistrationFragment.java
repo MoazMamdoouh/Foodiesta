@@ -1,21 +1,23 @@
 package com.example.foodiesta.Registration;
 
-import android.os.Bundle;
 
+import android.graphics.SurfaceTexture;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.MainActivity.MainActivity;
 import com.example.foodiesta.R;
@@ -24,7 +26,7 @@ import com.example.foodiesta.Utilities.LoadingDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
+import java.io.IOException;
 
 public class RegistrationFragment extends Fragment {
 
@@ -60,7 +62,6 @@ public class RegistrationFragment extends Fragment {
         initPresenter();
         registrationBtnClicked(view);
         loginBtnClicked(view);
-
         ((MainActivity) requireActivity()).showBottomNav(false);
 
     }
@@ -162,6 +163,7 @@ public class RegistrationFragment extends Fragment {
         loginBtn = view.findViewById(R.id.registration_btn_login) ;
         registration = view.findViewById(R.id.registration_btn_registration) ;
         customDialog = new CustomDialog(getContext()) ;
+        loadingDialog = new LoadingDialog(getContext()) ;
     }
 
     private void showLoadingAnimation(){
@@ -177,5 +179,7 @@ public class RegistrationFragment extends Fragment {
         chefPasswordEditText.setText("");
         confirmPasswordEditText.setText("");
     }
+
+
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +29,7 @@ public class CalenderFragment extends Fragment  implements OnCalenderIconClicked
     private CalenderPresenter calenderPresenter ;
     private RecyclerView recyclerView ;
     private CalenderAdapter calenderAdapter ;
+    private View viewAttr ;
     public CalenderFragment() {
         // Required empty public constructor
     }
@@ -51,7 +53,7 @@ public class CalenderFragment extends Fragment  implements OnCalenderIconClicked
         super.onViewCreated(view, savedInstanceState);
         initUI(view);
         intiPresenter();
-
+        viewAttr = view ;
         CalenderClicked();
 
     }
@@ -106,5 +108,12 @@ public class CalenderFragment extends Fragment  implements OnCalenderIconClicked
 
                 })
                 .show();
+    }
+
+    @Override
+    public void calenderCardClicked(int id) {
+        CalenderFragmentDirections.ActionCalenderFragment2ToDetailsFragment actionCalenderFragment2ToDetailsFragment
+                = CalenderFragmentDirections.actionCalenderFragment2ToDetailsFragment(id) ;
+        Navigation.findNavController(viewAttr).navigate(actionCalenderFragment2ToDetailsFragment);
     }
 }

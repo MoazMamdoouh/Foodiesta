@@ -152,6 +152,7 @@ public class MealsRemoteFireBase {
                             for (DocumentSnapshot document : task.getResult()) {
                                 FavoriteEntity meal = document.toObject(FavoriteEntity.class);
                                 favoriteEntities.add(meal);
+                                Log.i("TAG", "onComplete: " + meal);
                             }
                             onFireStoreResponse.successDownload(favoriteEntities , "favorite");
                         } else {

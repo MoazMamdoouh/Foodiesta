@@ -51,7 +51,7 @@ public class ProfilePresenter implements OnFireStoreResponse {
     @Override
     public void successDownload(List listedDownload , String type) {
         profileFragment.successDownLoadFavorite(listedDownload , type);
-        Log.i("TAG", "successDownload: ");
+
     }
 
     @Override

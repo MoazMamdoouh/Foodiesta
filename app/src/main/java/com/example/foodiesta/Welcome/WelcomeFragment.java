@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -18,9 +19,7 @@ import com.example.foodiesta.R;
 
 public class WelcomeFragment extends Fragment {
 
-    private Button loginBtn ;
-    private Button registrationBtn , guestBtn  ;
-
+    private AppCompatButton welcomeBtn ;
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -45,34 +44,18 @@ public class WelcomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) requireActivity()).showBottomNav(false);
         initUI(view);
-        loginBtnClicked(view);
-        registrationBtnClicked(view);
-        guestBtnClicked(view);
-
+        welcomeBtnClicked(view);
     }
 
-    private void loginBtnClicked(View view) {
-        loginBtn.setOnClickListener(click ->{
-            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
-        });
+    private void welcomeBtnClicked(View view) {
+        welcomeBtn.setOnClickListener(
+                clicked -> Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registrationFragment)
+        );
     }
 
-    private void registrationBtnClicked(View view) {
-        registrationBtn.setOnClickListener(click ->
-                        Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registrationFragment)
-                );
-    }
-
-    private void guestBtnClicked(View view){
-        guestBtn.setOnClickListener(clicked ->{
-            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_homeFragment);
-        });
-    }
 
     private void initUI(View view) {
-        loginBtn = view.findViewById(R.id.welcome_btn_login) ;
-        registrationBtn = view.findViewById(R.id.welcome_btn_registration) ;
-        guestBtn = view.findViewById(R.id.welcome_btn_guest) ;
+        welcomeBtn = view.findViewById(R.id.welcome_btn) ;
     }
 
 }

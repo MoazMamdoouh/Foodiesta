@@ -71,6 +71,8 @@ dependencies {
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation ("io.reactivex.rxjava3:rxjava:3.1.6")
 
+    //bluer
+    implementation ("com.github.Dimezis:BlurView:version-2.0.6")
 
 
 }

@@ -43,7 +43,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderViewHolder> {
         Glide.with(context).load(calenderEntities.get(position).getMealImage())
                 .into(holder.mealImage) ;
         holder.mealName.setText(calenderEntities.get(position).getMealName());
-        holder.calenderCardView.setOnClickListener(clicked ->{
+        holder.calenderIcon.setOnClickListener(clicked ->{
             int id = calenderEntities.get(position).getMealId() ;
             int year = calenderEntities.get(position).getYear() ;
             int month = calenderEntities.get(position).getMonth();
@@ -52,6 +52,12 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderViewHolder> {
             String imageName = calenderEntities.get(position).getMealName();
             onCalenderIconClicked.onCalenderIconClicked(id , year , month , day , imageImage , imageName);
         });
+
+        holder.calenderCardView.setOnClickListener(
+                clicked ->{
+                    onCalenderIconClicked.calenderCardClicked(calenderEntities.get(position).getMealId());
+                }
+        );
     }
 
     @Override

@@ -80,6 +80,7 @@ public class SearchFragment extends Fragment implements SearchShowResponse, OnSe
         ingredientBtn = view.findViewById(R.id.search_btn_ingredient) ;
         countryBtn = view.findViewById(R.id.search_btn_country) ;
         categoryBtn = view.findViewById(R.id.search_btn_category) ;
+        loadingDialog = new LoadingDialog(getContext());
     }
     private void initRecyclerView(View view) {
         searchRecyclerView = view.findViewById(R.id.search_rv_list) ;
