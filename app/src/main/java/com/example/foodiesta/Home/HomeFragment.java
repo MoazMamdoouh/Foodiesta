@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,9 +28,17 @@ import com.example.foodiesta.Utilities.FoodObjectResponse;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.LoadingDialog;
 import com.example.foodiesta.Utilities.OnItemClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment implements  OnItemClickListener  {
@@ -41,6 +52,10 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
     private int mealId = 0 ;
     private LoadingDialog loadingDialog ;
     private Date calendar ;
+    private FirebaseAuth firebaseAuth ;
+    private Group profileGroup ;
+    private TextView userName ;
+    private FirebaseFirestore firebaseFirestore ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -65,10 +80,11 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view ;
-        loadingDialog = new LoadingDialog(getContext());
         initUI(view);
         initHomePresenter();
         requestMeals() ;
+        isUserLogin() ;
+        getUserName() ;
         ((MainActivity) requireActivity()).showBottomNav(true);
          dailyMealCardView.setOnClickListener(click ->
                  navigateThroughDailyMeal()
@@ -79,6 +95,15 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
 
 
     }
+
+    private void isUserLogin() {
+        if(firebaseAuth.getCurrentUser() == null){
+            profileGroup.setVisibility(View.GONE);
+        }else{
+            profileGroup.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void getCurrentDate() {
         String  format = DateFormat.getDateInstance().format(calendar);
         SharedPreferences timeSharedPreference = getActivity().getSharedPreferences("timeSharedPreference " , Context.MODE_PRIVATE);
@@ -135,6 +160,11 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(homeAdapter);
         calendar = Calendar.getInstance().getTime();
+        loadingDialog = new LoadingDialog(getContext());
+        profileGroup = view.findViewById(R.id.home_group) ;
+        firebaseAuth = FirebaseAuth.getInstance();
+        userName = view.findViewById(R.id.home_tv_user_name);
+        firebaseFirestore = FirebaseFirestore.getInstance() ;
     }
     @Override
     public void onItemClicked(int id) {
@@ -176,5 +206,19 @@ public class HomeFragment extends Fragment implements  OnItemClickListener  {
         SharedPreferences.Editor editor = idSharedPreference.edit() ;
         editor.putInt("mealId" ,randomDailyMealResponse.getListOfRandomMeals().get(0).getId());
         editor.apply();
+    }
+
+    private void getUserName(){
+       String userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+
+        DocumentReference documentReference = firebaseFirestore.collection("chef_data").document(userId);
+        documentReference.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value != null && value.exists()){
+                    userName.setText(value.getString("chefName"));
+                }
+            }
+        });
     }
 }

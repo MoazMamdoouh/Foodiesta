@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class RegistrationFragment extends Fragment {
 
     private TextInputEditText chefNameEditText ,chefEmailEditText ,chefPasswordEditText ,confirmPasswordEditText;
     private Button loginBtn , registration ;
+    private AppCompatButton guestBtn ;
     private RegistrationPresenter registrationPresenter ;
     private String chefName ,chefEmail , chefPassword , confirmPassword ;
     private View viewAtt ;
@@ -62,6 +64,7 @@ public class RegistrationFragment extends Fragment {
         initPresenter();
         registrationBtnClicked(view);
         loginBtnClicked(view);
+        guestBtnClicked();
         ((MainActivity) requireActivity()).showBottomNav(false);
 
     }
@@ -161,6 +164,7 @@ public class RegistrationFragment extends Fragment {
         chefPasswordEditText = view.findViewById(R.id.registration_ti_password);
         confirmPasswordEditText = view.findViewById(R.id.registration_ti_confirm_password);
         loginBtn = view.findViewById(R.id.registration_btn_login) ;
+        guestBtn = view.findViewById(R.id.registration_btn_guest);
         registration = view.findViewById(R.id.registration_btn_registration) ;
         customDialog = new CustomDialog(getContext()) ;
         loadingDialog = new LoadingDialog(getContext()) ;
@@ -178,6 +182,13 @@ public class RegistrationFragment extends Fragment {
         chefEmailEditText.setText("");
         chefPasswordEditText.setText("");
         confirmPasswordEditText.setText("");
+    }
+
+    private void guestBtnClicked(){
+        guestBtn.setOnClickListener(
+                clicked ->Navigation.findNavController(viewAtt).navigate(R.id.action_registrationFragment_to_homeFragment)
+        );
+
     }
 
 

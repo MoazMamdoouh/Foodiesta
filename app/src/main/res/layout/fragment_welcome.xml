@@ -26,9 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
-        android:background="@drawable/welcome_shape"
         app:backgroundTint="@null"
+        android:background="@drawable/welcome_shape"
         android:drawableStart="@drawable/arrow_"
+        android:drawableTint="@color/black"
+        android:drawablePadding="8dp"
         android:paddingStart="32dp"
         />
 </FrameLayout>

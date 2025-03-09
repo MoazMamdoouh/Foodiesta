@@ -28,4 +28,5 @@
     <string name="logout">LogOut</string>
     <string name="download_favorite_meals">DownLoad Favorite Meals</string>
     <string name="download_calender_meals">DownLoad Calender Meals</string>
+    <string name="guest">Guest</string>
 </resources>
