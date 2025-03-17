@@ -24,6 +24,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
         this.favoriteEntities = favoriteEntities;
         this.onFavoriteItemClicked = onFavoriteItemClicked ;
     }
+
+    public void removeItem(int position) {
+        if (position >= 0 && position < favoriteEntities.size()) {
+            favoriteEntities.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public FavoriteEntity getItem(int position) {
+        return (position >= 0 && position < favoriteEntities.size()) ? favoriteEntities.get(position) : null;
+    }
     public void  setList(List<FavoriteEntity> favoriteEntities){
         this.favoriteEntities = favoriteEntities ;
         notifyDataSetChanged();

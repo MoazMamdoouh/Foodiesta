@@ -74,6 +74,8 @@ dependencies {
     //bluer
     implementation ("com.github.Dimezis:BlurView:version-2.0.6")
 
+    //swipe item
+    implementation ("it.xabaras.android:recyclerview-swipedecorator:1.4")
 
 
 

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!connectionFlag && firebaseAuth.getCurrentUser() == null) {
                    return false ;
                 } else if (!connectionFlag) {
-                    if(item.getItemId() == R.id.homeFragment || item.getItemId() == R.id.searchFragment || item.getItemId() == R.id.profileFragment){
+                    if(item.getItemId() == R.id.homeFragment || item.getItemId() == R.id.searchFragment){
                         fragmentContainerView.setVisibility(View.GONE);
                         lottieAnimationView.setVisibility(View.VISIBLE);
                         lottieAnimationView.playAnimation();
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    if (item.getItemId() == R.id.favoriteFragment2 || item.getItemId() == R.id.calenderFragment2 || item.getItemId() == R.id.profileFragment) {
+                    if (item.getItemId() == R.id.favoriteFragment2 || item.getItemId() == R.id.calenderFragment2 ) {
                         if (firebaseAuth.getCurrentUser() == null) {
                             showDialog(navController);
                             return false;

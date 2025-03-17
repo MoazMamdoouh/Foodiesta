@@ -23,8 +23,8 @@
             android:id="@+id/action_homeFragment_to_calenderFragment2"
             app:destination="@id/calenderFragment2" />
         <action
-            android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -55,9 +55,6 @@
         <action
             android:id="@+id/action_searchFragment_to_calenderFragment2"
             app:destination="@id/calenderFragment2" />
-        <action
-            android:id="@+id/action_searchFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -147,9 +144,6 @@
             android:id="@+id/action_calenderFragment2_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_calenderFragment2_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_calenderFragment2_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
@@ -159,19 +153,7 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_profileFragment_to_calenderFragment2"
-            app:destination="@id/calenderFragment2" />
-        <action
-            android:id="@+id/action_profileFragment_to_favoriteFragment2"
-            app:destination="@id/favoriteFragment2" />
-        <action
-            android:id="@+id/action_profileFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

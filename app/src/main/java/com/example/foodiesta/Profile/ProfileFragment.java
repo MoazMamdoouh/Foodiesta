@@ -19,6 +19,7 @@ import com.example.foodiesta.Data.Remore_data.MealsRemoteFireBase;
 import com.example.foodiesta.R;
 import com.example.foodiesta.Utilities.CustomDialog;
 import com.example.foodiesta.Utilities.LoadingDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,7 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 import java.util.Objects;
 
-public class ProfileFragment<T> extends Fragment {
+public class ProfileFragment<T> extends BottomSheetDialogFragment {
 
     private TextView chefNameTextView, chefEmailTextView;
     private FirebaseAuth firebaseAuth;
@@ -79,7 +80,9 @@ public class ProfileFragment<T> extends Fragment {
                             .setMessage("Are you sure you want Logout ?")
                             .setPositiveButton("logout", (dialog, which) -> {
                                 FirebaseAuth.getInstance().signOut();
-                                Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_welcomeFragment);
+                                dismiss();
+                                Navigation.findNavController(requireActivity() , R.id.fragmentContainerView)
+                                        .navigate(R.id.action_homeFragment_to_loginFragment);
                             })
                             .setNegativeButton("Cancel", (dialog, which) -> {
                             })
